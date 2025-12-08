@@ -1,0 +1,99 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="col-md-6">
+                    <form (ngSubmit)="onSubmit()" [formGroup]="form" (keydown.enter)="$event.preventDefault()"
+                        autocomplete="off">
+                        <div class="row">
+
+                            <div class="form-group col-md-2 mt-2">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="isPublished"
+                                        formControlName="isPublished">
+                                    <label class="custom-control-label" for="isPublished">Published</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-label-group">
+                                    <select id="type" name="type" class="form-control" placeholder="Type"
+                                        [ngClass]="submitted && form.controls['type'].hasError('required')?'is-invalid':''"
+                                        formControlName="type">
+                                        <option [value]=null>
+                                            --Select Type--
+                                        </option>
+                                        <option *ngFor="let item of appCommon.CustomMessageType" [value]="item.id">
+                                            {{ item.text }}
+                                        </option>
+                                    </select>
+                                    <label for="type">Type<span class="text-danger">*</span></label>
+                                    <div class="invalid-feedback">
+                                        <span>This value is required.</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-label-group">
+                                    <input type="text" id="shortName" class="form-control" formControlName="shortName"
+                                        placeholder="Short Name"
+                                        [ngClass]="submitted && form.controls['shortName'].hasError('required')?'is-invalid':''" />
+                                    <label for="shortName">Short Name<span class="text-danger">*</span></label>
+                                    <div class="invalid-feedback">
+                                        <span>This value is required.</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-label-group">
+                                    <input type="text" id="heading" class="form-control" formControlName="heading"
+                                        placeholder="Heading"
+                                        [ngClass]="submitted && form.controls['heading'].hasError('required')?'is-invalid':''" />
+                                    <label for="heading">Heading<span class="text-danger">*</span></label>
+                                    <div class="invalid-feedback">
+                                        <span>This value is required.</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-label-group">
+                                    <ckeditor [editor]="Editor" formControlName="text" required
+                                        [ngClass]="submitted && form.controls['text'].hasError('required')?'is-invalid':''">
+                                    </ckeditor>
+                                    <div class="invalid-feedback">
+                                        <span>This value is required.</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary btn-sm mr-2 btn-sm">
+                                        <i class="ri-download-2-line align-middle mr-2"></i>
+                                        <ng-container *ngIf="submitLoading">
+                                            <span class="indicator-progress" [style.display]="'block'">
+                                                Please wait...
+                                                <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                            </span>
+                                        </ng-container>
+                                        <ng-container *ngIf="submitLoading ===false">
+                                            <span class="indicator-label">{{ form.value.id ? 'Update' : 'Submit'
+                                                }}</span>
+                                        </ng-container>
+                                    </button>
+                                    <button type="button" class="btn btn-light btn-sm" (click)="clear()">
+                                        <i class=" ri-eraser-line align-middle mr-2"></i> Clear
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,128 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="col-md-6">
+                    <form (ngSubmit)="submit()" [formGroup]="form" (keydown.enter)="$event.preventDefault()"
+                        autocomplete="off">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-label-group">
+                                    <input type="text" id="userName" class="form-control" formControlName="userName"
+                                        placeholder="Full Name"
+                                        [ngClass]="submitted && form.controls['userName'].hasError('required')?'is-invalid':''" />
+                                    <label for="userName">User Name<span class="text-danger">*</span></label>
+                                    <div class="invalid-feedback">
+                                        <span>This value is required.</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-label-group">
+                                    <input type="text" id="FullName" class="form-control" formControlName="fullName"
+                                        placeholder="Full Name"
+                                        [ngClass]="submitted && form.controls['fullName'].hasError('required')?'is-invalid':''" />
+                                    <label for="FullName">Full Name<span class="text-danger">*</span></label>
+                                    <div class="invalid-feedback">
+                                        <span>This value is required.</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-label-group">
+                                    <input type="text" id="PhoneNumber" class="form-control"
+                                        formControlName="phoneNumber" placeholder="Phone Number"
+                                        [ngClass]="submitted && form.controls['phoneNumber'].hasError('required')?'is-invalid':''" />
+                                    <label for="PhoneNumber">Phone Number<span class="text-danger">*</span></label>
+                                    <div class="invalid-feedback">
+                                        <span>This value is required.</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-label-group">
+                                    <select id="RoleId" name="RoleId" class="form-control" placeholder="Role"
+                                        [ngClass]="submitted && form.controls['roleId'].hasError('required')?'is-invalid':''"
+                                        formControlName="roleId">
+                                        <option [value]=null>
+                                            --Select Role--
+                                        </option>
+                                        <option *ngFor="let item of appCommon.EnRoleForAdmin" [value]="item.id">
+                                            {{ item.text }}
+                                        </option>
+                                    </select>
+                                    <label for="RoleId">Role<span class="text-danger">*</span></label>
+                                    <div class="invalid-feedback">
+                                        <span>This value is required.</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-label-group">
+                                    <input type="email" id="Email" class="form-control" formControlName="email"
+                                        placeholder="Email"
+                                        [ngClass]="submitted && form.controls['email'].hasError('required')?'is-invalid':''" />
+                                    <label for="Email">Email<span class="text-danger">*</span></label>
+                                    <div class="invalid-feedback">
+                                        <span>This value is required.</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6" *ngIf="!form.value.id">
+                                <div class="form-label-group">
+                                    <input type="password" id="Password" class="form-control" minlength="6" required
+                                        formControlName="password" placeholder="Password"
+                                        [ngClass]="submitted && form.controls['password'].hasError('required')?'is-invalid':''" />
+                                    <label for="Password">Password<span class="text-danger">*</span></label>
+                                    <div class="invalid-feedback">
+                                        <span>This value is required.</span>
+                                    </div>
+                                    <div *ngIf="(form.get('password').dirty || form.get('password').touched) && form.controls['password'].value.length < 6"
+                                        class="text-danger">Minimum 6 character required.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6" *ngIf="!form.value.id">
+                                <div class="form-label-group">
+                                    <input type="password" id="ConfirmPassword" class="form-control" minlength="6"
+                                        required formControlName="confirmPassword" placeholder="Confirm Password"
+                                        [ngClass]="submitted && form.controls['confirmPassword'].hasError('required')?'is-invalid':''" />
+                                    <label for="ConfirmPassword">Confirm Password<span
+                                            class="text-danger">*</span></label>
+                                    <div class="invalid-feedback">
+                                        <span>This value is required.</span>
+                                        <span>Password Mismatch.</span>
+                                    </div>
+                                    <div *ngIf="(form.controls['password'].value != form.controls['confirmPassword'].value) && (form.get('confirmPassword').dirty || form.get('confirmPassword').touched)"
+                                        class="text-danger">Password Mismatch.</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary btn-sm mr-2 btn-sm">
+                                        <i class="ri-download-2-line align-middle mr-2"></i>
+                                        <ng-container *ngIf="isBtnLoading">
+                                            <span class="indicator-progress" [style.display]="'block'">
+                                                Please wait...
+                                                <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                            </span>
+                                        </ng-container>
+                                        <ng-container *ngIf="isBtnLoading ===false">
+                                            <span class="indicator-label">{{ form.value.id ? 'Update' : 'Submit'
+                                                }}</span>
+                                        </ng-container>
+                                    </button>
+                                    <button type="button" class="btn btn-light btn-sm" (click)="clear()">
+                                        <i class=" ri-eraser-line align-middle mr-2"></i> Clear
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

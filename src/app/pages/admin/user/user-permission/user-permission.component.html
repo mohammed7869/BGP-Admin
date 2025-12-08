@@ -1,0 +1,98 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box d-flex align-items-center justify-content-between mr-4 ml-4">
+                <h4 class="mb-0">User Permissions</h4>
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Master</a>
+                        </li>
+                        <li class="breadcrumb-item"><a>User</a>
+                        </li>
+                        <li class="breadcrumb-item active">Permissions
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="panel fixedHeightContainer">
+                        <div class="row">
+                            <div class="col-sm-9">
+                                <h4 class="card-title">User Permissions</h4>
+                            </div>
+                            <div class="col-sm-3">
+                                <select id="RoleId" name="RoleId" class="form-control" placeholder="Role"
+                                    (change)="selectRole($event.target.value)">
+                                    <option [value]=null>
+                                        --Select Role--
+                                    </option>
+                                    <option *ngFor="let item of appCommon.EnRoleType" [value]="item.id">
+                                        {{ item.text }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <hr class="hr_mrgn">
+                        <div class="panel-body">
+                            <div class="table-responsive table_content">
+                                <table class="table table-bordered mb-0" fixed-header>
+                                    <thead class="th_primary">
+                                        <tr>
+                                            <th>Module</th>
+                                            <th *ngFor="let item of appCommon.EnPermissionTextList">
+                                                <label class="mr-2 pointer" for="{{item.text}}">{{item.text}}</label>
+                                                <input type="checkbox" ng-model="up.ischecked"
+                                                    (change)="onActionCheckChange(item)" id="{{item.text}}" />
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody *ngIf="recordList.length">
+                                        <ng-container *ngFor="let section of selectionList">
+                                            <tr class="alert alert-success" style="background-color: #ecf0f4">
+                                                <td class="text-left" colspan="9">{{section }}</td>
+                                            </tr>
+                                            <tr *ngFor="let up of recordList | permissionFilter : section">
+                                                <td>{{up.text}}</td>
+                                                <td *ngFor="let ac of up.accessPermissions">
+                                                    <div *ngIf="(!ac.isActive && ac.isDisable)"><small>NA</small></div>
+                                                    <div *ngIf="!ac.isDisable" class="custom-control custom-switch">
+                                                        <input type="checkbox" (change)="onCheckBoxClick(ac)"
+                                                            class="custom-control-input" [checked]=ac.isActive
+                                                            id="{{ac.id}}">
+                                                        <label class="custom-control-label" for="{{ac.id}}"></label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </ng-container>
+                                    </tbody>
+                                </table>
+                                <div class="col-sm-12 col-md-12 col-xs-12 m-b-1 text-right">
+                                    <div class="text-center mt-3" *ngIf="!recordList.length">NA - Not Available</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button *ngIf="recordList.length" type="button" (click)="saveUserPermissions()"
+                        class="btn btn-primary btn-sm mr-2 btn-sm mt-3 float-right">
+                        <i class="ri-rotate-lock-line align-middle mr-2"></i>
+                        <ng-container *ngIf="submitLoading">
+                            <span class="indicator-progress" [style.display]="'block'">
+                                Please wait...
+                                <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                            </span>
+                        </ng-container>
+                        <ng-container *ngIf="!submitLoading">
+                            <span class="indicator-label">UpdatePermissions</span>
+                        </ng-container>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

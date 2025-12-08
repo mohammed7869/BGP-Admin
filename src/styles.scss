@@ -1,0 +1,246 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* Importing Bootstrap SCSS file. */
+// @import '~bootstrap/scss/bootstrap';
+.img_hgt_wth {
+  height: 20px;
+  width: 20px;
+  margin-right: 15px;
+}
+
+@import "ag-grid-community/dist/styles/ag-grid.css";
+@import "ag-grid-community/dist/styles/ag-theme-alpine.css";
+
+
+.page-title-box {
+  padding-bottom: 10px !important;
+}
+
+.ag-theme-alpine .ag-cell {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.ag-theme-alpine .ag-header-cell {
+  padding-left: 6px;
+  padding-right: 6px;
+}
+
+.ag-cell .ag-cell-wrapper {
+  display: block !important;
+}
+
+.rag-red {
+  background-color: #CE0000 !important;
+  color: white !important;
+}
+
+.img_hgt_wth {
+  height: 20px;
+  width: 20px;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.rag-red_font {
+  color: #CE0000 !important;
+}
+
+.rag-green_font {
+  color: lightgreen !important;
+}
+
+.ag-theme-alpine .ag-cell,
+.ag-theme-alpine .ag-full-width-row .ag-cell-wrapper.ag-row-group {
+  line-height: 35px;
+}
+
+.line-through {
+  text-decoration: line-through;
+}
+
+.img-profile {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: auto;
+  margin-bottom: auto;
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+}
+
+@import '~ngx-toastr/toastr';
+
+
+.font_s {
+  font-size: 10px !important;
+}
+
+.btn-its {
+  background-color: #ecd7a8;
+  color: #8a2900 !important;
+}
+
+.its-logo {
+  width: 25px;
+  margin-right: 1rem;
+}
+
+.min-login-height {
+  min-height: 415px;
+}
+
+.bismillah {
+  margin-top: 25px;
+}
+
+.double_border {
+  border: 4px double #eff2f7 !important;
+  font-weight: bolder !important;
+}
+
+.absolute {
+  position: absolute;
+  bottom: 10px;
+}
+
+.print_app_header {
+  text-align: center !important;
+  padding: 10px !important;
+}
+
+.table {
+  color: black !important;
+}
+
+.arabic_fonts {
+  font-family: Kanz-al-Marjaan;
+  direction: rtl !important;
+  text-align: right;
+}
+
+.form-control:focus {
+  border-color: #0b7bf3;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.664);
+}
+
+.table_forme{
+  background-color: #fef1d5;
+}
+.table_byme{
+  background-color: #d2f1e8;
+}
+.table_forme_pending{
+  background-color: #dde0f6;
+}
+.alert-light {
+  color: #7c7e80;
+  background-color: #eff2f7;
+  border-color: #eff2f7;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+
+.mr_s {
+  margin-right: 1px !important;
+}
+
+.editor {
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+
+  .NgxEditor__MenuBar {
+    // display: flex;
+    // flex-wrap: nowrap !important;
+    // padding: 3px;
+    // cursor: default;
+    // background-color: #fff;
+    // overflow-x: auto;
+
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+
+    // .NgxEditor__Popup {
+    //   position: absolute;
+    //   top: 32px;
+    //   box-shadow: #3c404326 0 2px 6px 2px;
+    //   border-radius: 4px;
+    //   background-color: rgb(255, 0, 0);
+    //   z-index: 9000;
+    //   min-width: 192px;
+    //   padding: 8px;
+    // }
+  }
+
+  .NgxEditor {
+    border-radius: 0;
+    border: none;
+    // background: rgba(255, 0, 0, 0.392);
+
+    .NgxEditor__Content {
+      min-height: 182px;
+    }
+  }
+
+  .CodeMirror {
+    border: 1px solid #eee;
+    height: auto;
+    margin-bottom: 0.7rem;
+
+    pre {
+      white-space: pre !important;
+    }
+  }
+}
+
+// * Custom scrollbar
+::-webkit-scrollbar {
+  width: 4px;
+  height: 2px;
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px #9a9a9a;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3366ff;
+  border-radius: 10px;
+}
+.badge_dormant{
+  color: #fff !important;
+  background-color:orangered !important;
+}
+
+.badge-followup{
+  color: #fff !important;
+  background-color:aqua !important;
+}
+
+.badge-billsdeleted{
+  color: #fff !important;
+  background-color:coral !important;
+}

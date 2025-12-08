@@ -1,0 +1,15 @@
+.fixedHeightContainer {
+    height: 465px;
+}
+
+.table_content {
+    height: 400px;
+    overflow: auto;
+}
+
+.th_primary {
+    position: sticky;
+    top: -1px;
+    z-index: 100;
+    background-color: #f5f5f5;
+}

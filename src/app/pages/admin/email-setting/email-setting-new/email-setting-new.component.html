@@ -1,0 +1,105 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="col-md-6">
+                    <form (ngSubmit)="onSubmit()" [formGroup]="form" (keydown.enter)="$event.preventDefault()"
+                        autocomplete="off">
+                        <div class="row">
+
+                            <div class="form-group col-md-2 mt-2">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="isPublished"
+                                        formControlName="isPublished">
+                                    <label class="custom-control-label" for="isPublished">Published</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-label-group">
+                                    <input type="email" id="SendEmailAddress" class="form-control" formControlName="sendEmailAddress"
+                                        placeholder="Send Email Address"
+                                        [ngClass]="submitted && form.controls['sendEmailAddress'].hasError('required')?'is-invalid':''" />
+                                    <label for="SendEmailAddress">Send Email<span class="text-danger">*</span></label>
+                                    <div class="invalid-feedback">
+                                        <span>This value is required.</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-label-group">
+                                    <input type="text" id="outgoingMailServer" class="form-control" formControlName="outgoingMailServer"
+                                        placeholder="Outgoing Mail Server"
+                                        [ngClass]="submitted && form.controls['outgoingMailServer'].hasError('required')?'is-invalid':''" />
+                                    <label for="outgoingMailServer">Outgoing Mail Server<span class="text-danger">*</span></label>
+                                    <div class="invalid-feedback">
+                                        <span>This value is required.</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-label-group">
+                                    <input type="email" id="receiverEmailAddress" class="form-control" formControlName="receiverEmailAddress"
+                                        placeholder="Receiver Email"
+                                        [ngClass]="submitted && form.controls['receiverEmailAddress'].hasError('required')?'is-invalid':''" />
+                                    <label for="receiverEmailAddress">Receiver Email<span class="text-danger">*</span></label>
+                                    <div class="invalid-feedback">
+                                        <span>This value is required.</span>
+                                    </div>
+                                </div>
+                            </div> 
+                            
+                            <div class="col-md-12">
+                                <div class="form-label-group">
+                                    <input type="number" id="smtpPort" class="form-control" formControlName="smtpPort"
+                                        placeholder="SMTP Port"
+                                        [ngClass]="submitted && form.controls['smtpPort'].hasError('required')?'is-invalid':''" />
+                                    <label for="smtpPort">SMTP Port<span class="text-danger">*</span></label>
+                                    <div class="invalid-feedback">
+                                        <span>This value is required.</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-label-group">
+                                    <input type="password" id="password" class="form-control" formControlName="password"
+                                        placeholder="Password"
+                                        [ngClass]="submitted && form.controls['password'].hasError('required')?'is-invalid':''" />
+                                    <label for="password">Password<span class="text-danger">*</span></label>
+                                    <div class="invalid-feedback">
+                                        <span>This value is required.</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary btn-sm mr-2 btn-sm">
+                                        <i class="ri-download-2-line align-middle mr-2"></i>
+                                        <ng-container *ngIf="submitLoading">
+                                            <span class="indicator-progress" [style.display]="'block'">
+                                                Please wait...
+                                                <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                            </span>
+                                        </ng-container>
+                                        <ng-container *ngIf="submitLoading ===false">
+                                            <span class="indicator-label">{{ form.value.id ? 'Update' : 'Submit'
+                                                }}</span>
+                                        </ng-container>
+                                    </button>
+                                    <button type="button" class="btn btn-light btn-sm" (click)="clear()">
+                                        <i class=" ri-eraser-line align-middle mr-2"></i> Clear
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
