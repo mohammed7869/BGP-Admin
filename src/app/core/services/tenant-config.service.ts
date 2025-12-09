@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Injectable } from "@angular/core";
+import { BehaviorSubject, Observable } from "rxjs";
 
 export interface TenantConfig {
   tenantId: number | null;
@@ -10,7 +10,7 @@ export interface TenantConfig {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class TenantConfigService {
   private currentConfigSubject = new BehaviorSubject<TenantConfig | null>(null);
@@ -32,7 +32,7 @@ export class TenantConfigService {
 
   private detectTenantConfig(): TenantConfig {
     // Check if config.js is loaded
-    if (typeof window !== 'undefined' && (window as any).APP_CONFIG) {
+    if (typeof window !== "undefined" && (window as any).APP_CONFIG) {
       const appConfig = (window as any).APP_CONFIG;
       const currentHost = window.location.hostname;
 
@@ -46,9 +46,9 @@ export class TenantConfigService {
     return {
       tenantId: null,
       companyCode: null,
-      companyName: "Baawan",
+      companyName: "BGP",
       logo: "assets/images/logo-dark.png",
-      title: "Baawan CMS",
+      title: "BGP Admin",
     };
   }
 
@@ -69,7 +69,9 @@ export class TenantConfigService {
   }
 
   getLogo(): string {
-    return this.currentConfigSubject.value?.logo || "assets/images/logo-dark.png";
+    return (
+      this.currentConfigSubject.value?.logo || "assets/images/logo-dark.png"
+    );
   }
 
   getTitle(): string {
@@ -78,7 +80,9 @@ export class TenantConfigService {
 
   isTenantConfigured(): boolean {
     const config = this.currentConfigSubject.value;
-    return config !== null && config.tenantId !== null && config.companyCode !== null;
+    return (
+      config !== null && config.tenantId !== null && config.companyCode !== null
+    );
   }
 
   // Method to manually set configuration (useful for testing or dynamic updates)

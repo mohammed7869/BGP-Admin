@@ -63,8 +63,8 @@ window.APP_CONFIG = {
   default: {
     tenantId: null,
     companyCode: null,
-    companyName: "Baawan",
+    companyName: "BGP",
     logo: "assets/images/logo-dark.png",
-    title: "Baawan CMS",
+    title: "BGP Admin",
   },
 };

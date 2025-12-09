@@ -21,8 +21,8 @@ export const environment = {
   apiUrl: "https://localhost:5001",
   itsOneLogin: "",
   apiImgUrl: "",
-  password: "demo12345",
-  userName: "abdul",
+  password: "",
+  userName: "",
   companyName: "mapledental",
 };
 
