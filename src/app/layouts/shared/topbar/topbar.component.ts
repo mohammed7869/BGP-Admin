@@ -21,6 +21,8 @@ export class TopbarComponent implements OnInit {
   flagvalue;
   countryName;
   valueset: string;
+  currentUser: any;
+  userInitials: string = '';
 
   listLang = [
     { text: 'English', flag: 'assets/images/flags/us.jpg', lang: 'en' },
@@ -43,6 +45,9 @@ export class TopbarComponent implements OnInit {
       wheelSpeed: 0.3
     };
 
+    // Load user data from localStorage
+    this.loadUserData();
+
     this.cookieValue = this.cookiesService.get('lang');
     const val = this.listLang.filter(x => x.lang === this.cookieValue);
     this.countryName = val.map(element => element.text);
@@ -51,6 +56,48 @@ export class TopbarComponent implements OnInit {
     } else {
       this.flagvalue = val.map(element => element.flag);
     }
+  }
+
+  /**
+   * Load user data from localStorage
+   */
+  loadUserData() {
+    const tokenInfo = localStorage.getItem('tokenInfo');
+    if (tokenInfo) {
+      try {
+        this.currentUser = JSON.parse(tokenInfo);
+        this.generateUserInitials();
+      } catch (error) {
+        console.error('Error parsing tokenInfo from localStorage:', error);
+      }
+    }
+  }
+
+  /**
+   * Generate user initials from first name and last name
+   */
+  generateUserInitials() {
+    if (this.currentUser && this.currentUser.user) {
+      const firstName = this.currentUser.user.first_Name || '';
+      const lastName = this.currentUser.user.lastname || '';
+      
+      const firstInitial = firstName.charAt(0).toUpperCase();
+      const lastInitial = lastName.charAt(0).toUpperCase();
+      
+      this.userInitials = firstInitial + lastInitial;
+    }
+  }
+
+  /**
+   * Get user display name
+   */
+  getUserDisplayName(): string {
+    if (this.currentUser && this.currentUser.user) {
+      const firstName = this.currentUser.user.first_Name || '';
+      const lastName = this.currentUser.user.lastname || '';
+      return `${firstName} ${lastName}`.trim();
+    }
+    return 'User';
   }
 
   /**
@@ -119,11 +166,6 @@ export class TopbarComponent implements OnInit {
    * Logout the user
    */
   logout() {
-    if (environment.defaultauth === 'firebase') {
-      this.authService.logout();
-    } else {
-      this.authFackservice.logout();
-    }
-    this.router.navigate(['/account/login']);
+    this.authService.logout();
   }
 }

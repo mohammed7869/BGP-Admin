@@ -1,0 +1,40 @@
+<div class="card">
+    <div class="card-body">
+        <div class="col-md-6">
+            <form (ngSubmit)="onSubmit()" [formGroup]="form" (keydown.enter)="$event.preventDefault()"
+                autocomplete="off">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-label-group">
+                            <input type="text" id="name" class="form-control" formControlName="name" placeholder="Name"
+                                [ngClass]="submitted && form.controls['name'].hasError('required')?'is-invalid':''" />
+                            <label for="name">Name<span class="text-danger">*</span></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary btn-sm mr-2 btn-sm">
+                                <i class="ri-download-2-line align-middle mr-2"></i>
+                                <ng-container *ngIf="submitLoading">
+                                    <span class="indicator-progress" [style.display]="'block'">
+                                        Please wait...
+                                        <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                    </span>
+                                </ng-container>
+                                <ng-container *ngIf="submitLoading ===false">
+                                    <span class="indicator-label">{{ form.value.id ? 'Update' : 'Submit'
+                                        }}</span>
+                                </ng-container>
+                            </button>
+                            <button type="button" class="btn btn-light btn-sm" (click)="clear()">
+                                <i class=" ri-eraser-line align-middle mr-2"></i> Clear
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

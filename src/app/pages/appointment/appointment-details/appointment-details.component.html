@@ -1,0 +1,827 @@
+<div class="appointment-details">
+  <div class="row mb-3 align-items-center">
+    <div class="col-md-6 d-flex align-items-center">
+      <h3 class="mb-0 fw-bold">Appointment Details</h3>
+    </div>
+    <div class="col-md-6 text-end">
+      <div
+        class="d-flex align-items-center justify-content-end gap-2 button-items"
+      >
+        <span
+          class="badge rounded text-white mb-2 px-3 py-2 d-flex align-items-center"
+          ngbTooltip="Appointment Status"
+          placement="top"
+          [ngClass]="getStatusBadgeClass(recordData.appStatus)"
+          style="
+            font-size: 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            min-width: 110px;
+            justify-content: center;
+          "
+        >
+          <i
+            [ngClass]="getStatusIconClass(recordData.appStatus)"
+            class="mr-1"
+            style="font-size: 12px"
+          ></i>
+          {{ appCommon.EnAppointmentStatusObj[recordData.appStatus] }}
+        </span>
+
+        <button
+          *ngIf="recordData.appStatus === 1"
+          class="btn btn-success btn-sm"
+          ngbTooltip="Book Appointment"
+          placement="top"
+          (click)="openBookAppointmentModal(recordData)"
+          [disabled]="saving"
+        >
+          <i class="fa fa-check"></i>
+        </button>
+
+        <button
+          class="btn btn-info btn-sm"
+          ngbTooltip="Add to Calendar"
+          placement="top"
+          (click)="addToGoogleCalendar(recordData)"
+          [disabled]="saving"
+        >
+          <i class="fa fa-calendar"></i>
+        </button>
+
+        <button
+          class="btn btn-warning btn-sm"
+          ngbTooltip="Reschedule"
+          placement="top"
+          (click)="updateStatusFromObservable('Rescheduled')"
+          [disabled]="saving"
+        >
+          <i class="fa fa-sync"></i>
+        </button>
+        <button
+          class="btn btn-danger btn-sm"
+          ngbTooltip="Cancel"
+          placement="top"
+          (click)="openCancelModal(recordData)"
+          [disabled]="saving"
+        >
+          <i class="fa fa-times"></i>
+        </button>
+        <button
+          class="btn btn-dark btn-sm"
+          ngbTooltip="Archive"
+          placement="top"
+          (click)="openArchiveModal(recordData)"
+          [disabled]="saving"
+        >
+          <i class="fa fa-archive"></i>
+        </button>
+        <button (click)="goBack()" type="button" class="btn btn-info btn-sm">
+          <i class="ri-arrow-left-line align-middle mr-2"></i>Back
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- <ul class="nav nav-tabs mb-4" id="appointmentTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="details-tab" data-bs-toggle="tab" data-bs-target="#details"
+                    type="button" role="tab">
+                    Details
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="forms-tab" data-bs-toggle="tab" data-bs-target="#forms" type="button"
+                    role="tab">
+                    Forms
+                </button>
+            </li>
+        </ul> -->
+
+  <!-- <div class="tab-content" id="appointmentTabsContent">
+            <div class="tab-pane fade show active" id="details" role="tabpanel"> -->
+  <div class="row g-4" *ngIf="recordData">
+    <div class="col-md-6">
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-white border-0">
+          <h6 class="mb-0 fw-bold text-primary">
+            <i class="fa fa-info-circle mr-2"></i>Appointment Details
+          </h6>
+        </div>
+        <div class="card-body">
+          <div class="row g-4">
+            <div class="col-12">
+              <label class="form-label fw-bold">
+                <i class="fa fa-clock mr-2 text-primary"></i>Appointment Time
+              </label>
+              <div class="d-flex align-items-center">
+                <span class="flex-grow-1 fw-semibold text-dark">
+                  {{ recordData.appointmentDateTime | date : "MMM dd,YYYY" }} at
+                  {{ recordData.startTime }}</span
+                >
+              </div>
+            </div>
+
+            <div class="col-12">
+              <label class="form-label fw-bold">
+                <i class="fa fa-hourglass-half mr-2 text-info"></i>Appointment
+                Duration
+              </label>
+              <div class="d-flex align-items-center">
+                <span class="flex-grow-1 fw-semibold text-dark"
+                  >{{ recordData.startTime || "" }} -
+                  {{ recordData.endTime || "" }}</span
+                >
+              </div>
+            </div>
+            <div class="col-12">
+              <label class="form-label fw-bold">
+                <i class="fa fa-calendar-check mr-2 text-success"></i>Calendar
+                Name
+              </label>
+              <div class="d-flex align-items-center">
+                <span class="flex-grow-1 fw-semibold text-dark">
+                  {{ recordData.locationName || "Not Available" }}
+                  {{ recordData.address }} {{ recordData.city }}
+                  {{ recordData.state }} {{ recordData.zipCode }}
+                </span>
+              </div>
+            </div>
+            <!-- <div class="col-12">
+                            <label class="form-label fw-bold">
+                                <i class="fa fa-user-md mr-2 text-warning"></i>Provider
+                            </label>
+                            <div class="d-flex align-items-center">
+                                <span class="flex-grow-1 fw-semibold text-dark">
+                                    {{ recordData.provider ||'Not Available' }}</span>
+                            </div>
+                        </div> -->
+            <div class="col-12">
+              <label class="form-label fw-bold">
+                <i class="fa fa-map-marker mr-2 text-danger"></i>Location
+              </label>
+              <div class="d-flex align-items-center">
+                <span class="flex-grow-1 fw-semibold text-dark">
+                  {{ recordData.locationName || "Not Available" }}
+                  {{ recordData.address }} {{ recordData.city }}
+                  {{ recordData.state }} {{ recordData.zipCode }}
+                </span>
+              </div>
+            </div>
+            <div class="col-12">
+              <label class="form-label fw-bold">
+                <i class="fa fa-sticky-note mr-2 text-warning"></i>Online
+                Booking Reason
+              </label>
+              <div class="d-flex align-items-center">
+                <span class="flex-grow-1 fw-semibold text-dark">{{
+                  recordData.reasonForVisit || "Not Available"
+                }}</span>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <label class="form-label fw-bold">
+                <i class="fa fa-comment mr-2 text-secondary"></i>Notes
+              </label>
+              <div class="d-flex align-items-center">
+                <span class="flex-grow-1 fw-semibold text-dark">{{
+                  recordData.note || "No notes"
+                }}</span>
+              </div>
+            </div>
+            <!-- <div class="col-12">
+                            <label class="form-label fw-bold">
+                                <i class="fa fa-comment mr-2 text-secondary"></i>Patient Comments
+                            </label>
+                            <div class="d-flex align-items-center">
+                                <span class="flex-grow-1 fw-semibold text-dark">{{
+                                    recordData.patientComments || 'No comments' }}</span>
+                            </div>
+                        </div> -->
+          </div>
+        </div>
+      </div>
+
+      <!-- <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-white border-0">
+                    <h6 class="mb-0 fw-bold text-dark">
+                        <i class="fa fa-bell mr-2"></i>Reminder Communication
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-light mb-0 d-flex align-items-center">
+                        <i class="fa fa-exclamation-circle mr-2 text-warning"></i>
+                        <span>{{ recordData.reminderStatus || 'No Reminder Sent' }}</span>
+                    </div>
+                </div>
+            </div> -->
+      <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white border-0">
+          <h6 class="mb-0 fw-bold text-dark">
+            <i class="fa fa-sticky-note mr-2"></i>Notes
+          </h6>
+        </div>
+        <div class="card-body">
+          <div class="d-flex align-items-start">
+            <div
+              *ngIf="!editingNotes"
+              class="flex-grow-1 d-flex align-items-start"
+            >
+              <div
+                class="alert alert-light mb-0 d-flex align-items-start flex-grow-1"
+              >
+                <i class="fa fa-info-circle mr-2 text-secondary"></i>
+                <span>{{ recordData.note || "No notes" }}</span>
+              </div>
+              <button
+                class="btn btn btn-soft-info edit-list ml-2 mt-2"
+                (click)="startEditNotes(recordData.note || '')"
+              >
+                <i class="ri-pencil-fill"></i>
+              </button>
+            </div>
+            <div
+              *ngIf="editingNotes"
+              class="flex-grow-1 d-flex align-items-start"
+            >
+              <textarea
+                class="form-control"
+                rows="3"
+                [(ngModel)]="notesValue"
+                placeholder="Enter notes here..."
+              ></textarea>
+              <div class="d-flex ml-2">
+                <button
+                  class="btn btn-sm btn-success ml-1 mt-4"
+                  (click)="saveNotesEdit(recordData)"
+                  [disabled]="saving"
+                >
+                  <i class="fa fa-check"></i>
+                </button>
+                <button
+                  class="btn btn-sm btn-danger mt-4"
+                  (click)="cancelEdit()"
+                >
+                  <i class="fa fa-times"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="card border-0 shadow-sm mb-4">
+        <div
+          class="card-header bg-white border-0 d-flex justify-content-between align-items-center"
+        >
+          <h6 class="mb-0 fw-bold text-success">
+            <i class="fa fa-user mr-2"></i>Patient Information
+          </h6>
+          <div *ngIf="recordData.isNewClient" class="d-flex align-items-center">
+            <span
+              class="badge bg-success px-3 py-2 d-flex align-items-center"
+              style="font-size: 11px; border-radius: 20px; font-weight: 600"
+            >
+              <i class="fa fa-user-plus mr-2" style="font-size: 10px"></i>
+              NEW PATIENT
+            </span>
+          </div>
+          <div
+            *ngIf="!recordData.isNewClient"
+            class="d-flex align-items-center"
+          >
+            <span
+              class="badge bg-primary px-3 py-2 d-flex align-items-center"
+              style="font-size: 11px; border-radius: 20px; font-weight: 600"
+            >
+              <i class="fa fa-user-check mr-2" style="font-size: 10px"></i>
+              RETURNING PATIENT
+            </span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-12">
+              <label class="form-label fw-bold">
+                <i class="fa fa-user mr-2 text-primary"></i>First Name
+              </label>
+              <div class="d-flex align-items-center">
+                <div
+                  *ngIf="!editingFirstName"
+                  class="flex-grow-1 d-flex align-items-center"
+                >
+                  <span class="flex-grow-1 fw-semibold text-dark">{{
+                    recordData.firstName || "Not Available"
+                  }}</span>
+                  <button
+                    class="btn btn btn-soft-info edit-list"
+                    (click)="startEditFirstName(recordData.firstName || '')"
+                  >
+                    <i class="ri-pencil-fill"></i>
+                  </button>
+                </div>
+                <div
+                  *ngIf="editingFirstName"
+                  class="flex-grow-1 d-flex align-items-center"
+                >
+                  <input
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="firstNameValue"
+                  />
+                  <button
+                    class="btn btn-sm btn-success ml-2"
+                    (click)="saveNameEdit(recordData, true)"
+                    [disabled]="saving"
+                  >
+                    <i class="fa fa-check"></i>
+                  </button>
+                  <button
+                    class="btn btn-sm btn-danger ms-1"
+                    (click)="cancelEdit()"
+                  >
+                    <i class="fa fa-times"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="col-12">
+              <label class="form-label fw-bold">
+                <i class="fa fa-user mr-2 text-primary"></i>Last Name
+              </label>
+              <div class="d-flex align-items-center">
+                <div
+                  *ngIf="!editingLastName"
+                  class="flex-grow-1 d-flex align-items-center"
+                >
+                  <span class="flex-grow-1 fw-semibold text-dark">{{
+                    recordData.lastName || "Not Available"
+                  }}</span>
+                  <button
+                    class="btn btn btn-soft-info edit-list"
+                    (click)="startEditLastName(recordData.lastName || '')"
+                  >
+                    <i class="ri-pencil-fill"></i>
+                  </button>
+                </div>
+                <div
+                  *ngIf="editingLastName"
+                  class="flex-grow-1 d-flex align-items-center"
+                >
+                  <input
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="lastNameValue"
+                  />
+                  <button
+                    class="btn btn-sm btn-success ml-2"
+                    (click)="saveNameEdit(recordData, false)"
+                    [disabled]="saving"
+                  >
+                    <i class="fa fa-check"></i>
+                  </button>
+                  <button
+                    class="btn btn-sm btn-danger ms-1"
+                    (click)="cancelEdit()"
+                  >
+                    <i class="fa fa-times"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="col-12">
+              <label class="form-label fw-bold">
+                <i class="fa fa-phone mr-2 text-success"></i>Phone Number
+              </label>
+              <div class="d-flex align-items-center">
+                <div
+                  *ngIf="!editingPhone; else editPhone"
+                  class="flex-grow-1 d-flex align-items-center"
+                >
+                  <span class="flex-grow-1 fw-semibold text-dark">{{
+                    recordData.phone || "Not Available"
+                  }}</span>
+                  <button
+                    class="btn btn btn-soft-info edit-list"
+                    (click)="startEditPhone(recordData.phone || '')"
+                  >
+                    <i class="ri-pencil-fill"></i>
+                  </button>
+                </div>
+                <ng-template #editPhone>
+                  <div class="flex-grow-1 d-flex align-items-center">
+                    <ngx-intl-tel-input
+                      [cssClass]="'w-100'"
+                      [preferredCountries]="preferredCountries"
+                      [enableAutoCountrySelect]="true"
+                      [enablePlaceholder]="true"
+                      [searchCountryFlag]="true"
+                      [searchCountryField]="[
+                        SearchCountryField.Iso2,
+                        SearchCountryField.Name
+                      ]"
+                      [selectFirstCountry]="false"
+                      [selectedCountryISO]="CountryISO.India"
+                      [maxLength]="15"
+                      [phoneValidation]="true"
+                      [separateDialCode]="false"
+                      [numberFormat]="PhoneNumberFormat.National"
+                      name="phone"
+                      [(ngModel)]="phoneValue"
+                    >
+                    </ngx-intl-tel-input>
+                    <button
+                      class="btn btn-sm btn-success ml-2"
+                      (click)="savePhoneEdit(recordData)"
+                      [disabled]="saving"
+                    >
+                      <i class="fa fa-check"></i>
+                    </button>
+                    <button
+                      class="btn btn-sm btn-danger ms-1"
+                      (click)="cancelEdit()"
+                    >
+                      <i class="fa fa-times"></i>
+                    </button>
+                  </div>
+                </ng-template>
+              </div>
+            </div>
+            <div class="col-12">
+              <label class="form-label fw-bold">
+                <i class="fa fa-envelope mr-2 text-info"></i>Email Address
+              </label>
+              <div class="d-flex align-items-center">
+                <div
+                  *ngIf="editingField !== 'email'; else editEmail"
+                  class="flex-grow-1 d-flex align-items-center"
+                >
+                  <span class="flex-grow-1 fw-semibold text-dark">{{
+                    recordData.email || "Not Available"
+                  }}</span>
+                  <button
+                    class="btn btn btn-soft-info edit-list"
+                    (click)="startEdit('email', recordData.email || '')"
+                  >
+                    <i class="ri-pencil-fill"></i>
+                  </button>
+                </div>
+                <ng-template #editEmail>
+                  <div class="flex-grow-1 d-flex align-items-center">
+                    <input
+                      type="email"
+                      class="form-control"
+                      [(ngModel)]="editValue"
+                    />
+                    <button
+                      class="btn btn-sm btn-success ml-2"
+                      (click)="saveEdit(recordData)"
+                      [disabled]="saving"
+                    >
+                      <i class="fa fa-check"></i>
+                    </button>
+                    <button
+                      class="btn btn-sm btn-danger ms-1"
+                      (click)="cancelEdit()"
+                    >
+                      <i class="fa fa-times"></i>
+                    </button>
+                  </div>
+                </ng-template>
+              </div>
+            </div>
+            <div class="col-12">
+              <label class="form-label fw-bold">
+                <i class="fa fa-calendar mr-2 text-warning"></i>Date Of Birth
+              </label>
+              <div class="d-flex align-items-center">
+                <div
+                  *ngIf="editingField !== 'dob'; else editDob"
+                  class="flex-grow-1 d-flex align-items-center"
+                >
+                  <span class="flex-grow-1 fw-semibold text-dark"
+                    >{{ recordData.dateOfBirth | date : "MMM dd yyyy"
+                    }}{{ appCommon.getAge(recordData.dateOfBirth || "") }}</span
+                  >
+                  <button
+                    class="btn btn btn-soft-info edit-list"
+                    (click)="startEdit('dob', recordData.dateOfBirth || '')"
+                  >
+                    <i class="ri-pencil-fill"></i>
+                  </button>
+                </div>
+                <ng-template #editDob>
+                  <div class="flex-grow-1 d-flex align-items-center">
+                    <input
+                      type="date"
+                      class="form-control"
+                      [(ngModel)]="editValue"
+                    />
+                    <button
+                      class="btn btn-sm btn-success ml-2"
+                      (click)="saveEdit(recordData)"
+                      [disabled]="saving"
+                    >
+                      <i class="fa fa-check"></i>
+                    </button>
+                    <button
+                      class="btn btn-sm btn-danger ms-1"
+                      (click)="cancelEdit()"
+                    >
+                      <i class="fa fa-times"></i>
+                    </button>
+                  </div>
+                </ng-template>
+              </div>
+            </div>
+            <div class="col-12">
+              <label class="form-label fw-bold">
+                <i class="fa fa-venus-mars mr-2 text-secondary"></i>Sex
+              </label>
+              <div class="d-flex align-items-center">
+                <div
+                  *ngIf="editingField !== 'gender'; else editGender"
+                  class="flex-grow-1 d-flex align-items-center"
+                >
+                  <span class="flex-grow-1 fw-semibold text-dark">{{
+                    recordData.gender || "Undisclosed"
+                  }}</span>
+                  <button
+                    class="btn btn btn-soft-info edit-list"
+                    (click)="startEdit('gender', recordData.gender || '')"
+                  >
+                    <i class="ri-pencil-fill"></i>
+                  </button>
+                </div>
+                <ng-template #editGender>
+                  <div class="flex-grow-1 d-flex align-items-center">
+                    <select class="form-control" [(ngModel)]="editValue">
+                      <option value="">Undisclosed</option>
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                      <option value="Other">Other</option>
+                      <option value="Prefer not to say">
+                        Prefer not to say
+                      </option>
+                    </select>
+                    <button
+                      class="btn btn-sm btn-success ml-2"
+                      (click)="saveEdit(recordData)"
+                      [disabled]="saving"
+                    >
+                      <i class="fa fa-check"></i>
+                    </button>
+                    <button
+                      class="btn btn-sm btn-danger ms-1"
+                      (click)="cancelEdit()"
+                    >
+                      <i class="fa fa-times"></i>
+                    </button>
+                  </div>
+                </ng-template>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card border-0 shadow-sm mb-4">
+        <div
+          class="card-header bg-white border-0 d-flex justify-content-between align-items-center"
+        >
+          <h6 class="mb-0 fw-bold text-dark">
+            <i class="fa fa-shield mr-2"></i>Insurance Information
+          </h6>
+          <button
+            *ngIf="
+              recordData.insuranceName &&
+              recordData.insuranceName !== 'Not Available'
+            "
+            class="btn btn-danger btn-sm"
+            ngbTooltip="Delete Insurance Information"
+            placement="top"
+            (click)="deleteInsuranceInfo()"
+            [disabled]="saving"
+          >
+            <i class="fa fa-trash"></i>
+          </button>
+        </div>
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-12">
+              <label class="form-label fw-bold">
+                <i class="fa fa-user-md mr-2 text-primary"></i>Insurance
+              </label>
+              <div class="d-flex align-items-center">
+                <div
+                  *ngIf="!editingInsurance"
+                  class="flex-grow-1 d-flex align-items-center"
+                >
+                  <span class="flex-grow-1 fw-semibold text-dark">{{
+                    recordData.insuranceName || "Not Available"
+                  }}</span>
+                  <button
+                    class="btn btn btn-soft-info edit-list"
+                    (click)="startEditInsurance()"
+                  >
+                    <i class="ri-pencil-fill"></i>
+                  </button>
+                </div>
+                <div
+                  *ngIf="editingInsurance"
+                  class="flex-grow-1 d-flex align-items-center"
+                >
+                  <select
+                    class="form-control"
+                    [(ngModel)]="selectedInsuranceId"
+                    style="min-width: 440px; height: 35px; font-size: 14px"
+                  >
+                    <option value="">Select Insurance</option>
+                    <option
+                      *ngFor="let insurance of insuranceList"
+                      [value]="insurance.id"
+                    >
+                      {{ insurance.name }}
+                    </option>
+                  </select>
+                  <button
+                    class="btn btn-sm btn-success ml-1"
+                    (click)="saveInsuranceEdit()"
+                    [disabled]="saving"
+                  >
+                    <i class="fa fa-check"></i>
+                  </button>
+                  <button
+                    class="btn btn-sm btn-danger ms-1"
+                    (click)="cancelEdit()"
+                  >
+                    <i class="fa fa-times"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="col-12">
+              <label class="form-label fw-bold">
+                <i class="fa fa-id-card mr-2 text-success"></i>Member ID
+              </label>
+              <div class="d-flex align-items-center">
+                <div
+                  *ngIf="editingField !== 'memberId'; else editMemberId"
+                  class="flex-grow-1 d-flex align-items-center"
+                >
+                  <span class="flex-grow-1 fw-semibold text-dark">{{
+                    recordData.memberId || "Not Available"
+                  }}</span>
+                  <button
+                    *ngIf="
+                      recordData.insuranceName &&
+                      recordData.insuranceName !== 'Not Available'
+                    "
+                    class="btn btn btn-soft-info edit-list"
+                    (click)="startEdit('memberId', recordData.memberId || '')"
+                    ngbTooltip="Edit Member ID"
+                    placement="top"
+                  >
+                    <i class="ri-pencil-fill"></i>
+                  </button>
+                  <span
+                    *ngIf="
+                      !recordData.insuranceName ||
+                      recordData.insuranceName === 'Not Available'
+                    "
+                    class="text-muted small ms-2"
+                    ngbTooltip="Please add insurance first"
+                    placement="top"
+                  >
+                    <i class="fa fa-info-circle"></i> Add insurance first
+                  </span>
+                </div>
+                <ng-template #editMemberId>
+                  <div class="flex-grow-1 d-flex align-items-center">
+                    <input
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="editValue"
+                    />
+                    <button
+                      class="btn btn-sm btn-success ml-2"
+                      (click)="saveInsuranceEdit()"
+                      [disabled]="saving"
+                    >
+                      <i class="fa fa-check"></i>
+                    </button>
+                    <button
+                      class="btn btn-sm btn-danger ms-1"
+                      (click)="cancelEdit()"
+                    >
+                      <i class="fa fa-times"></i>
+                    </button>
+                  </div>
+                </ng-template>
+              </div>
+            </div>
+            <div class="col-12">
+              <label class="form-label fw-bold">
+                <i class="fa fa-users mr-2 text-info"></i>Group Number
+              </label>
+              <div class="d-flex align-items-center">
+                <div
+                  *ngIf="editingField !== 'groupNumber'; else editGroupNumber"
+                  class="flex-grow-1 d-flex align-items-center"
+                >
+                  <span class="flex-grow-1 fw-semibold text-dark">{{
+                    recordData.groupNumber || "Not Available"
+                  }}</span>
+                  <button
+                    *ngIf="
+                      recordData.insuranceName &&
+                      recordData.insuranceName !== 'Not Available'
+                    "
+                    class="btn btn btn-soft-info edit-list"
+                    (click)="
+                      startEdit('groupNumber', recordData.groupNumber || '')
+                    "
+                    ngbTooltip="Edit Group Number"
+                    placement="top"
+                  >
+                    <i class="ri-pencil-fill"></i>
+                  </button>
+                  <span
+                    *ngIf="
+                      !recordData.insuranceName ||
+                      recordData.insuranceName === 'Not Available'
+                    "
+                    class="text-muted small ms-2"
+                    ngbTooltip="Please add insurance first"
+                    placement="top"
+                  >
+                    <i class="fa fa-info-circle"></i> Add insurance first
+                  </span>
+                </div>
+                <ng-template #editGroupNumber>
+                  <div class="flex-grow-1 d-flex align-items-center">
+                    <input
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="editValue"
+                    />
+                    <button
+                      class="btn btn-sm btn-success ml-2"
+                      (click)="saveInsuranceEdit()"
+                      [disabled]="saving"
+                    >
+                      <i class="fa fa-check"></i>
+                    </button>
+                    <button
+                      class="btn btn-sm btn-danger ms-1"
+                      (click)="cancelEdit()"
+                    >
+                      <i class="fa fa-times"></i>
+                    </button>
+                  </div>
+                </ng-template>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-0">
+                    <h6 class="mb-0 fw-bold text-dark">
+                        <i class="fa fa-bell-slash mr-2"></i>Notification Opt Outs
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-light mb-0">
+                        <span>{{ recordData.notificationOptOuts?.length ?
+                            recordData.notificationOptOuts.join(', ') : 'None' }}</span>
+                    </div>
+                </div>
+            </div> -->
+    </div>
+  </div>
+  <!-- </div> -->
+
+  <!-- <div class="tab-pane fade" id="forms" role="tabpanel">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body">
+                        <p class="text-muted">Forms functionality will be implemented here.</p>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+</div>
+
+<div
+  *ngIf="saving"
+  class="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center"
+  style="background: rgba(0, 0, 0, 0.5); z-index: 9999"
+>
+  <div class="spinner-border text-light" role="status">
+    <span class="visually-hidden">Saving...</span>
+  </div>
+</div>

@@ -1,15 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { AgRendererComponent } from 'ag-grid-angular';
-import { IAfterGuiAttachedParams, ICellRendererParams } from 'ag-grid-community';
+import { IAfterGuiAttachedParams, ICellRendererParams, ICellRendererComp } from 'ag-grid-community';
 
 @Component({
   selector: 'app-ag-view-button-renderer',
-  template: '<a (click)="onClick($event)" class="text-primary pointer" ngbTooltip="View"><i class="fas fas far fa-eye"></i></a>'
+  template: '<a (click)="onClick($event)" class="text-info pointer" title="View"><i class="fas fa-eye"></i></a>'
 })
-export class AgViewButtonRendererComponent implements AgRendererComponent {
+export class AgViewButtonRendererComponent implements AgRendererComponent, ICellRendererComp {
 
   cellValue: string;
   private params: any;
+  private element: HTMLElement;
+
+  constructor() {
+    this.element = document.createElement('div');
+  }
 
   // gets called once before the renderer is used
   agInit(params: ICellRendererParams): void {
@@ -23,7 +28,11 @@ export class AgViewButtonRendererComponent implements AgRendererComponent {
   }
 
   afterGuiAttached?(params?: IAfterGuiAttachedParams): void {
-    throw new Error('Method not implemented.');
+    // Optional method - no need to throw error
+  }
+
+  getGui(): HTMLElement {
+    return this.element;
   }
 
   onClick($event: any) {

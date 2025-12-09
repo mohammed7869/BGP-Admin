@@ -1,0 +1,85 @@
+<div class="modal-header border-0 pb-0">
+  <h4 class="modal-title fw-bold text-dark">
+    <i class="fa fa-times-circle mr-2 text-danger"></i>
+    Cancel Appointment
+  </h4>
+  <button type="button" class="btn-close" (click)="cancel()" aria-label="Close">
+    <i class="fa fa-times"></i>
+  </button>
+</div>
+
+<div class="modal-body">
+  <!-- Patient Information -->
+  <div class="patient-info mb-4">
+    <div class="d-flex align-items-center mb-3">
+      <div class="avatar-sm bg-danger mr-2 rounded-circle d-flex align-items-center justify-content-center me-3">
+        <i class="fa fa-user text-white"></i>
+      </div>
+      <div>
+        <h6 class="mb-1 fw-bold text-dark">{{ appointment?.firstName || '' }} {{ appointment?.lastName || '' }}</h6>
+        <p class="mb-1 text-muted small">{{ appointment?.email || '' }}</p>
+        <p class="mb-0 text-muted small">{{ appointment?.phone || '' }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirmation Message -->
+  <div class="alert alert-danger mb-4">
+    <i class="fa fa-exclamation-triangle mr-2"></i>
+    <strong>Please confirm your request to cancel the following appointment:</strong>
+  </div>
+
+  <!-- Appointment Details -->
+  <div class="card border-0 shadow-sm mb-4">
+    <div class="card-header bg-light">
+      <h6 class="mb-0 fw-bold text-dark">
+        <i class="fa fa-calendar mr-2 text-primary"></i>
+        Appointment Details
+      </h6>
+    </div>
+    <div class="card-body">
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label class="form-label fw-bold text-muted small"><b>Appointment Time</b></label>
+          <p class="mb-0">
+             {{appointment.appointmentDateTime | date: 'MMM dd,YYYY' }} at
+                                                {{appointment.startTime}}
+          </p>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label fw-bold text-muted small"><b>Patient Name</b></label>
+          <p class="mb-0">{{ appointment?.firstName || '' }} {{ appointment?.lastName || '' }}</p>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label fw-bold text-muted small"><b>Location</b></label>
+          <p class="mb-0">{{ appointment?.locationName || 'Not specified' }}</p>
+        </div>
+        <!-- <div class="col-md-6">
+          <label class="form-label fw-bold text-muted small"><b>Provider</b></label>
+          <p class="mb-0">{{ appointment?.provider || 'Not specified' }}</p>
+        </div> -->
+        <div class="col-12" *ngIf="appointment?.reasonForVisit">
+          <label class="form-label fw-bold text-muted small"><b>Reason</b></label>
+          <p class="mb-0">{{ appointment?.reasonForVisit }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recommendation Message -->
+  <div class="alert alert-info">
+    <i class="fa fa-info-circle mr-2"></i>
+    <strong>Recommendation:</strong> We recommend that you speak with the patient by phone prior to canceling the appointment.
+  </div>
+</div>
+
+<div class="modal-footer border-0 pt-0">
+  <button type="button" class="btn btn-secondary" (click)="cancel()">
+    <i class="fa fa-times mr-2"></i>
+    Cancel
+  </button>
+  <button type="button" class="btn btn-warning" (click)="confirmCancel()">
+    <i class="fa fa-check mr-2"></i>
+    Continue
+  </button>
+</div> 

@@ -1,0 +1,80 @@
+<div class="card">
+    <div class="card-body">
+        <div class="col-md-6">
+            <form (ngSubmit)="onSubmit()" [formGroup]="form" (keydown.enter)="$event.preventDefault()"
+                autocomplete="off">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-label-group">
+                            <input type="text" id="name" class="form-control" formControlName="name" placeholder="Location"
+                                [ngClass]="submitted && form.controls['name'].hasError('required')?'is-invalid':''" />
+                            <label for="name">Location<span class="text-danger">*</span></label>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-label-group">
+                            <input type="url" id="mapUrl" class="form-control" formControlName="mapUrl"
+                                placeholder="Map URL (e.g., https://maps.google.com/...)"
+                                [ngClass]="submitted && form.controls['mapUrl'].hasError('required')?'is-invalid':''" />
+                            <label for="mapUrl">Map URL</label>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-label-group">
+                            <textarea type="text" id="address" class="form-control" formControlName="address"
+                                placeholder="Address"
+                                [ngClass]="submitted && form.controls['address'].hasError('required')?'is-invalid':''"></textarea>
+                            <label for="address">Address<span class="text-danger">*</span></label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-label-group">
+                            <input type="text" id="city" class="form-control" formControlName="city" placeholder="City"
+                                [ngClass]="submitted && form.controls['city'].hasError('required')?'is-invalid':''" />
+                            <label for="city">City<span class="text-danger">*</span></label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-label-group">
+                            <input type="text" id="state" class="form-control" formControlName="state"
+                                placeholder="State"
+                                [ngClass]="submitted && form.controls['state'].hasError('required')?'is-invalid':''" />
+                            <label for="state">State<span class="text-danger">*</span></label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-label-group">
+                            <input type="text" id="zipCode" class="form-control" formControlName="zipCode"
+                                placeholder="Zip Code"
+                                [ngClass]="submitted && form.controls['zipCode'].hasError('required')?'is-invalid':''" />
+                            <label for="zipCode">Zip Code<span class="text-danger">*</span></label>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary btn-sm mr-2 btn-sm">
+                                <i class="ri-download-2-line align-middle mr-2"></i>
+                                <ng-container *ngIf="submitLoading">
+                                    <span class="indicator-progress" [style.display]="'block'">
+                                        Please wait...
+                                        <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                    </span>
+                                </ng-container>
+                                <ng-container *ngIf="submitLoading ===false">
+                                    <span class="indicator-label">{{ form.value.id ? 'Update' : 'Submit'
+                                        }}</span>
+                                </ng-container>
+                            </button>
+                            <button type="button" class="btn btn-light btn-sm" (click)="clear()">
+                                <i class=" ri-eraser-line align-middle mr-2"></i> Clear
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

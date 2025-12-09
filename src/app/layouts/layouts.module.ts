@@ -5,16 +5,16 @@ import { RouterModule } from '@angular/router';
 import { SharedModule } from './shared/shared.module';
 
 import { VerticalComponent } from './vertical/vertical.component';
-import { HorizontalComponent } from './horizontal/horizontal.component';
 import { LayoutComponent } from './layout/layout.component';
 
+
 @NgModule({
-  declarations: [VerticalComponent, HorizontalComponent, LayoutComponent],
+  declarations: [VerticalComponent, LayoutComponent],
   imports: [
     CommonModule,
     SharedModule,
     RouterModule
   ],
-  exports: [VerticalComponent, HorizontalComponent]
+  exports: [VerticalComponent]
 })
 export class LayoutsModule { }

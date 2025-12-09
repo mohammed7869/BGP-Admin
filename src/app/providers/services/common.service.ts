@@ -1,3 +1,4 @@
+import { CategoryService } from './category.service';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -16,7 +17,11 @@ export class CommonService {
 
   public appCommon = appCommon;
 
-  constructor(private httpClient: HttpClient, private localStorageService: LocalStorageService) { }
+  constructor(private httpClient: HttpClient, private localStorageService: LocalStorageService, private categoryService: CategoryService) { }
+  // Fetch categories for dropdowns
+  getCategoryList(): Observable<any> {
+    return this.categoryService.list();
+  }
 
   getUserData(): any { return this.localStorageService.getItem(appCommon.LocalStorageKeyType.TokenInfo); }
 

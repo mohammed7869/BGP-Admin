@@ -1,0 +1,173 @@
+<div class="container-fluid py-3">
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box d-flex align-items-center justify-content-between mr-4 ml-4">
+                <h4 class="mb-0" [hidden]="isChildRouteActive">{{pageTitle}}</h4>
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0" [hidden]="isChildRouteActive">
+                        <li class="breadcrumb-item button-items">
+                            <button *ngIf="!isChildRouteActive"
+                                class="btn btn-primary d-flex align-items-center mr-2 shadow-sm"
+                                [class.btn-warning]="showFilters" [class.btn-primary]="!showFilters" type="button"
+                                (click)="showFilters = !showFilters" title="Refine Appointments"
+                                data-bs-toggle="tooltip" data-bs-placement="top">
+                                <i class="ri-filter-3-line mr-1"></i>
+                                <span class="d-none d-sm-inline">Filters</span>
+                            </button>
+                            <button *ngIf="!isChildRouteActive"
+                                class="btn btn-success d-flex align-items-center mr-2 shadow-sm" type="button"
+                                (click)="submitItemExportToExcel(1)" title="Export to Excel"
+                                data-bs-toggle="tooltip" data-bs-placement="top">
+                                <i class="ri-file-excel-2-line mr-1"></i>
+                                <span class="d-none d-sm-inline">Export</span>
+                            </button>
+                            <!-- <button *ngIf="!isChildRouteActive" class="btn btn-primary d-flex align-items-center"
+                                (click)="onCreate()" title="Schedule Appointment" data-bs-toggle="tooltip"
+                                data-bs-placement="top">
+                                <i class="ri-calendar-check-line"></i>
+                            </button> -->
+                        </li>
+                    </ol>
+                    <ol class="breadcrumb m-0" [hidden]="!isChildRouteActive">
+                        <li class="breadcrumb-item button-items">
+                            <button *ngIf="!isChildRouteActive"
+                                class="btn btn-primary d-flex align-items-center mr-2 shadow-sm"
+                                [class.btn-warning]="showFilters" [class.btn-primary]="!showFilters" type="button"
+                                (click)="showFilters = !showFilters" title="Refine Appointments"
+                                data-bs-toggle="tooltip" data-bs-placement="top">
+                                <i class="ri-filter-3-line me-1"></i>
+                                <span class="d-none d-sm-inline">Filter</span>
+
+                            </button>
+                            <button *ngIf="!isChildRouteActive"
+                                class="btn btn-success d-flex align-items-center mr-2 shadow-sm" type="button"
+                                (click)="submitItemExportToExcel(1)" title="Export to Excel"
+                                data-bs-toggle="tooltip" data-bs-placement="top">
+                                <i class="ri-file-excel-2-line mr-1"></i>
+                                <span class="d-none d-sm-inline">Export</span>
+                            </button>
+                            <!-- <button *ngIf="!isChildRouteActive" class="btn btn-primary d-flex align-items-center"
+                                (click)="onCreate()" title="Schedule Appointment" data-bs-toggle="tooltip"
+                                data-bs-placement="top">
+                                <i class="ri-calendar-check-line"></i>
+                            </button> -->
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" [hidden]="isChildRouteActive">
+        <div class="col-12">
+            <div *ngIf="showFilters">
+                <div class="card card-body">
+                    <form [formGroup]="form" (ngSubmit)="submitSearch()">
+                        <div class="row g-2 mb-2">
+                            <div class="col-md-3">
+                                <div class="form-label-group">
+                                    <input type="date" class="form-control" formControlName="fromDate">
+                                    <label class="form-label">From Date</label>
+                                </div>
+                                <!-- <div class="form-label-group">
+                                    <input type="date" class="form-control" formControlName="fromDate" 
+                                        [required]="!isArchivedView"
+                                        [ngClass]="!isArchivedView && submitted && form.controls['fromDate'].hasError('required')?'is-invalid':''">
+                                    <label class="form-label">From Date<span class="text-danger" *ngIf="!isArchivedView">*</span></label>
+                                </div> -->
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-label-group">
+                                    <input type="date" class="form-control" formControlName="toDate">
+                                    <label class="form-label">To Date</label>
+                                </div>
+                                <!-- <div class="form-label-group">
+                                    <input type="date" class="form-control" formControlName="toDate" 
+                                        [required]="!isArchivedView"
+                                        [ngClass]="!isArchivedView && submitted && form.controls['toDate'].hasError('required')?'is-invalid':''">
+                                    <label class="form-label">To Date<span class="text-danger" *ngIf="!isArchivedView">*</span></label>
+                                </div> -->
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-label-group">
+                                    <input type="text" class="form-control" formControlName="searchText"
+                                        placeholder="Search by name">
+                                    <label class="form-label">Patient Name</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-label-group">
+                                    <input type="text" class="form-control" formControlName="phone"
+                                        placeholder="Phone Number">
+                                    <label class="form-label">Phone Number</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-label-group">
+                                    <input type="email" class="form-control" formControlName="email"
+                                        placeholder="Email Address">
+                                    <label class="form-label">Email Address</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="btn-group w-100">
+                                    <button type="button" class="btn btn-outline-secondary"
+                                        [class.active]="form.value.patientType === ''"
+                                        (click)="form.patchValue({patientType: ''})">Any</button>
+                                    <button type="button" class="btn btn-outline-secondary"
+                                        [class.active]="form.value.patientType === 'new'"
+                                        (click)="form.patchValue({patientType: 'new'})">New</button>
+                                    <button type="button" class="btn btn-outline-secondary"
+                                        [class.active]="form.value.patientType === 'returning'"
+                                        (click)="form.patchValue({patientType: 'returning'})">Returning</button>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-label-group">
+                                    <input type="text" class="form-control" formControlName="location"
+                                        placeholder="Location">
+                                    <label class="form-label">Location</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3" *ngIf="!isArchivedView">
+                                <div class="form-label-group">
+                                    <select class="form-control" formControlName="appStatus"
+                                        placeholder="Appointment Status">
+                                        <option value="0">All Status</option>
+                                        <option *ngFor="let status of appCommon.EnAppointmentStatus"
+                                            [value]="status.id">
+                                            {{status.text}}
+                                        </option>
+                                    </select>
+                                    <label class="form-label">Appointment Status</label>
+                                </div>
+                            </div>
+                            <div class="col-12 text-end">
+                                <button type="submit" class="btn btn-primary mr-2" [disabled]="isBtnLoading">
+                                    <span *ngIf="isBtnLoading" class="spinner-border spinner-border-sm me-1"
+                                        role="status" aria-hidden="true"></span>
+                                    <i *ngIf="!isBtnLoading" class="ri-check-line mr-1"></i>
+                                    Apply
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary" (click)="clear()">
+                                    <i class="ri-close-circle-line mr-1"></i>
+                                    Clear
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" [hidden]="isChildRouteActive">
+        <div class="col-12">
+            <div [ngStyle]="gridHeightWidth">
+                <ag-grid-angular style="width: 100%; height: 100%;" class="ag-theme-alpine" [rowData]="lst"
+                    [columnDefs]="columnDefs" [frameworkComponents]="frameworkComponents"
+                    (gridReady)="onGridReady($event)" [pagination]="true" [paginationPageSize]="10">
+                </ag-grid-angular>
+            </div>
+        </div>
+    </div>
+    <router-outlet></router-outlet>
+</div>

@@ -1,0 +1,234 @@
+<div class="card">
+  <div class="card-body">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" autocomplete="off">
+      <!-- Featured Image display (if present) -->
+      <div
+        class="mb-3 text-center"
+        *ngIf="recordData && getFeaturedImageFullUrl(recordData)"
+      >
+        <img
+          [src]="getFeaturedImageFullUrl(recordData)"
+          class="img-fluid rounded mb-2"
+          alt="Featured Image"
+          style="max-height: 300px"
+        />
+      </div>
+      <!-- Author Image and name (if present) -->
+      <div
+        class="media align-items-center mb-4"
+        *ngIf="recordData && recordData.authorName"
+      >
+        <img
+          *ngIf="getAuthorImageFullUrl(recordData)"
+          [src]="getAuthorImageFullUrl(recordData)"
+          class="mr-3 rounded-circle"
+          alt="Author Image"
+          style="width: 60px; height: 60px; object-fit: cover"
+        />
+        <div class="media-body ml-3">
+          <h5 class="my-0">{{ recordData.authorName }}</h5>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-check">
+                <input
+                  type="checkbox"
+                  id="isPublicMedia"
+                  class="form-check-input"
+                  formControlName="isPublicMedia"
+                />
+                <label for="isPublicMedia" class="form-label"
+                  >Public Media</label
+                >
+              </div>
+            </div>
+            <div class="col-md-12" *ngIf="!recordData">
+              <div class="form-label-group">
+                <select
+                  id="mediaType"
+                  class="form-control"
+                  formControlName="mediaType"
+                  (change)="validateMediaType()"
+                >
+                  <option value="">Select Media Type</option>
+                  <option
+                    *ngFor="let type of appCommon.EnMediaType"
+                    [value]="type.id"
+                  >
+                    {{ type.text }}
+                  </option>
+                </select>
+                <div
+                  *ngIf="submitted && form.get('mediaType').errors?.required"
+                  class="invalid-feedback d-block"
+                >
+                  Media Type is required
+                </div>
+                <label for="mediaType" class="form-label"
+                  >Media Type <span class="text-danger">*</span></label
+                >
+                <div
+                  *ngIf="form.get('mediaType').errors?.invalidMediaType"
+                  class="invalid-feedback d-block"
+                >
+                  Please select a valid media type
+                </div>
+              </div>
+            </div>
+
+            <!-- Media Type Display for Edit Mode -->
+            <div class="col-md-12" *ngIf="recordData">
+              <div class="form-group">
+                <label class="form-label">Media Type</label>
+                <div class="form-control-plaintext">
+                  {{ recordData.mediaType }}
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-12" *ngIf="!recordData">
+              <div class="form-label-group">
+                <div class="d-flex align-items-center">
+                  <input
+                    type="file"
+                    id="mediaFile"
+                    class="form-control"
+                    (change)="onFileSelected($event)"
+                    [accept]="getAcceptFileTypes()"
+                  />
+                  <button
+                    *ngIf="selectedFile"
+                    type="button"
+                    class="btn btn-outline-danger btn-sm ml-2"
+                    (click)="clearSelectedFile()"
+                  >
+                    <i class="ri-close-line"></i>
+                  </button>
+                </div>
+                <div
+                  *ngIf="submitted && !selectedFile"
+                  class="invalid-feedback d-block"
+                >
+                  Media file is required
+                </div>
+                <small class="form-text font-size-11 text-muted">
+                  Supported formats: Images (JPG, JPEG, PNG, GIF, WebP), Videos
+                  (MP4, AVI), Documents (PDF, DOC, DOCX, TXT)
+                </small>
+                <div *ngIf="selectedFile" class="mt-2">
+                  <small class="text-success">
+                    <i class="ri-file-line mr-1"></i>Selected:
+                    {{ selectedFile.name }}
+                  </small>
+                </div>
+              </div>
+            </div>
+
+            <!-- Media Preview for Edit Mode -->
+            <div class="col-md-12" *ngIf="recordData">
+              <div class="form-group">
+                <label class="form-label">Current Media</label>
+                <div class="media-preview-container">
+                  <div
+                    *ngIf="recordData.mediaType === 'Image'"
+                    class="image-preview"
+                  >
+                    <img
+                      [src]="getMediaPreviewUrl()"
+                      [alt]="recordData.altText || 'Media preview'"
+                      class="img-fluid rounded"
+                      style="max-height: 200px; max-width: 100%"
+                    />
+                  </div>
+                  <div
+                    *ngIf="recordData.mediaType === 'Video'"
+                    class="video-preview"
+                  >
+                    <video
+                      controls
+                      class="img-fluid rounded"
+                      style="max-height: 200px; max-width: 100%"
+                    >
+                      <source
+                        [src]="getMediaPreviewUrl()"
+                        [type]="getVideoMimeType()"
+                      />
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
+                  <div
+                    *ngIf="recordData.mediaType === 'Document'"
+                    class="document-preview"
+                  >
+                    <div class="document-info p-3 bg-light rounded">
+                      <i
+                        class="ri-file-line text-primary"
+                        style="font-size: 2rem"
+                      ></i>
+                      <div class="mt-2">
+                        <strong>{{
+                          getFileNameFromUrl(recordData.url)
+                        }}</strong>
+                      </div>
+                      <small class="text-muted"
+                        >{{ recordData.mediaType }} Document</small
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-label-group">
+                <input
+                  type="text"
+                  id="altText"
+                  class="form-control"
+                  placeholder="Enter alt text for accessibility"
+                  formControlName="altText"
+                  autocomplete="off"
+                />
+                <label for="altText" class="form-label">Alt Text</label>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="button-items">
+                <button
+                  type="submit"
+                  class="btn btn-primary btn-sm"
+                  [disabled]="submitLoading"
+                >
+                  <ng-container *ngIf="submitLoading">
+                    <span class="indicator-progress" [style.display]="'block'">
+                      <span
+                        class="spinner-border spinner-border-sm align-middle me-2"
+                      ></span>
+                      {{ recordData ? "Updating..." : "Creating..." }}
+                    </span>
+                  </ng-container>
+                  <ng-container *ngIf="!submitLoading">
+                    <span class="indicator-label">
+                      <i class="ri-save-line align-middle me-2"></i>
+                      {{ recordData ? "Update" : "Create" }}
+                    </span>
+                  </ng-container>
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-light"
+                  (click)="onCancel()"
+                >
+                  <i class="ri-close-line align-middle me-2"></i>Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

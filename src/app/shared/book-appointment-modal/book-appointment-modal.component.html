@@ -1,0 +1,50 @@
+<div class="modal-header border-0 pb-0">
+  <h4 class="modal-title fw-bold text-dark">
+    <i class="fa fa-check-circle mr-2 text-success"></i>
+    Book Appointment
+  </h4>
+  <button type="button"  (click)="closeModal()" aria-label="Close">
+    <i class="fa fa-times"></i>
+  </button>
+</div>
+
+<div class="modal-body">
+  <p class="mb-4">Please confirm your request to mark the following appointment as booked:</p>
+  
+  <div class="appointment-details mb-4">
+    <div class="detail-item d-flex align-items-center mb-2">
+      <i class="fa fa-calendar text-primary me-3" style="width: 20px;"></i>
+      <span class="fw-semibold">{{ appointmentData?.appointmentDateTime | date:'MMM dd, yyyy' }} at {{ appointmentData?.startTime }}</span>
+    </div>
+    
+    <div class="detail-item d-flex align-items-center mb-2">
+      <i class="fa fa-user text-primary me-3" style="width: 20px;"></i>
+      <span class="fw-semibold">{{ appointmentData?.firstName }} {{ appointmentData?.lastName }}</span>
+    </div>
+    
+    <div class="detail-item d-flex align-items-center mb-2">
+      <i class="fa fa-stethoscope text-primary me-3" style="width: 20px;"></i>
+      <span class="fw-semibold">{{ appointmentData?.providerName || 'Not Available' }}</span>
+    </div>
+    
+    <div class="detail-item d-flex align-items-center mb-2">
+      <i class="fa fa-map-marker text-primary me-3" style="width: 20px;"></i>
+      <span class="fw-semibold">{{ appointmentData?.locationName || 'Not Available' }}</span>
+    </div>
+  </div>
+  
+  <div class="alert alert-info">
+    <strong>{{ appointmentData?.firstName }} {{ appointmentData?.lastName }}</strong> will receive an email shortly booking the appointment. No further action is required.
+  </div>
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+  <button type="button" 
+          class="btn btn-warning" 
+          (click)="confirmBooking()" 
+          [disabled]="isSubmitting">
+    <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-2" role="status"></span>
+    Continue
+  </button>
+</div>

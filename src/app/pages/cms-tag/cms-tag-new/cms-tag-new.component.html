@@ -1,0 +1,55 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+          <!-- Hidden field for ID -->
+          <input type="hidden" formControlName="id">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-label-group">
+                <input type="text" class="form-control" formControlName="name" placeholder="Enter tag name"
+                  (blur)="generateSlug()" [class.is-invalid]="submitted && form.get('name').errors?.required">
+                <label for="name">Name <span class="text-danger">*</span></label>
+                <div class="invalid-feedback" *ngIf="submitted && form.get('name').errors?.required">
+                  Name is required.
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-label-group">
+                <input type="text" class="form-control" formControlName="slug" placeholder="Enter URL slug"
+                  [class.is-invalid]="submitted && form.get('slug').errors?.required">
+                <label for="slug">Slug <span class="text-danger">*</span></label>
+                <div class="invalid-feedback" *ngIf="submitted && form.get('slug').errors?.required">
+                  Slug is required.
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="button-items">
+                <button type="submit" class="btn btn-primary btn-sm" [disabled]="isBtnLoading">
+                  <ng-container *ngIf="isBtnLoading">
+                    <span class="indicator-progress" [style.display]="'block'">
+                      {{isEditMode ? 'Updating' : 'Creating'}}
+                      <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                    </span>
+                  </ng-container>
+                  <ng-container *ngIf="!isBtnLoading">
+                    <span class="indicator-label">
+                      <i class="ri-save-line align-middle me-2"></i>
+                      {{isEditMode ? 'Update' : 'Create'}}
+                    </span>
+                  </ng-container>
+                </button>
+                <button type="button" class="btn btn-light btn-sm" (click)="onCancel()">
+                  <i class="ri-close-line align-middle ml-2"></i>Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

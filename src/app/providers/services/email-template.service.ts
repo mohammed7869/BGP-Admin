@@ -2,8 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-
-const baseURL = `${environment.apiUrl}/EmailTemplate`;
+const baseURL = `${environment.apiUrl}/api/1/email-template`;
 
 @Injectable({
   providedIn: 'root'
@@ -13,28 +12,23 @@ export class EmailTemplateService {
   constructor(private httpClient: HttpClient) { }
 
   list(fdata): Observable<any> {
-    return this.httpClient.post(`${baseURL}/List`, fdata);
+    return this.httpClient.get(`${baseURL}/get/all`);
   }
 
   create(data: any): Observable<any> {
-    return this.httpClient.post(`${baseURL}/Add`, data);
+    return this.httpClient.post(`${baseURL}/create`, data);
   }
 
   delete(id: number): Observable<any> {
-    return this.httpClient.post(`${baseURL}/Delete`, id);
+    return this.httpClient.delete(`${baseURL}/delete/${id}`);
   }
 
   detail(id: number): Observable<any> {
-    return this.httpClient.post(`${baseURL}/Get`, id);
+    return this.httpClient.get(`${baseURL}/get/${id}`);
   }
 
   update(data: any): Observable<any> {
-    return this.httpClient.post(`${baseURL}/Update`, data);
-  }
-
-  dropdownList(): Observable<any> {
-    var fdata = {}
-    return this.httpClient.post(`${baseURL}/DropDownList`, fdata);
+    return this.httpClient.post(`${baseURL}/update`, data);
   }
 
   export(fdata: any): Observable<any> {

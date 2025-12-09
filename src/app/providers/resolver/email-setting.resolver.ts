@@ -5,7 +5,7 @@ import {
   ActivatedRouteSnapshot
 } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { EmailSettingNewComponent } from 'src/app/pages/admin/email-setting/email-setting-new/email-setting-new.component';
+import { EmailSettingNewComponent } from 'src/app/pages/email-setting/email-setting-new/email-setting-new.component';
 import { EmailSettingService } from '../services/email-setting.service';
 
 @Injectable({

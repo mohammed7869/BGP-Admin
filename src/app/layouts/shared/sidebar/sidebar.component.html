@@ -50,6 +50,7 @@
               <li *ngFor="let subitem of item.subItems">
                 <a [routerLink]="subitem.link" *ngIf="!hasItems(subitem)" class="side-nav-link-ref"
                   [attr.data-parent]="subitem.parentId" routerLinkActive="active">
+                  <i class="{{ subitem.icon }}" *ngIf="subitem.icon"></i>
                   {{ subitem.label | translate }}
                 </a>
                 <a *ngIf="hasItems(subitem)" class="side-nav-link-a-ref has-arrow" href="javascript:void(0);"

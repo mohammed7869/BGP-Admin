@@ -1,80 +1,131 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-
-import { AuthenticationService } from '../../../core/services/auth.service';
-import { AuthfakeauthenticationService } from '../../../core/services/authfake.service';
-
-import { ActivatedRoute, Router } from '@angular/router';
-import { first } from 'rxjs/operators';
-
-import { environment } from '../../../../environments/environment';
+import { Router } from '@angular/router';
+import { LocalStorageService } from 'src/app/providers/services/local-storage.service';
+import { appCommon } from 'src/app/common/_appCommon';
+import { AuthServiceService } from 'src/app/providers/services/auth-service.service';
+import { ToastrMessageService } from 'src/app/providers/services/toastr-message.service';
+import { environment } from 'src/environments/environment';
+import { TenantConfigService } from 'src/app/core/services/tenant-config.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
 
+export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   submitted = false;
   error = '';
-  returnUrl: string;
-
-  // set the currenr year
+  isBtnLoading: boolean = false;
+  fieldTextType!: boolean;
   year: number = new Date().getFullYear();
+  userLoginData: any;
+  isUserRemembered: boolean = false;
 
-  // tslint:disable-next-line: max-line-length
-  constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private router: Router, public authenticationService: AuthenticationService, public authFackservice: AuthfakeauthenticationService) { }
+  @ViewChild('shortcode') shortcode: ElementRef;
+  @ViewChild('email') email: ElementRef;
+  @ViewChild('password') password: ElementRef;
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router,
+    public authService: AuthServiceService,
+    private localStorageServiceService: LocalStorageService,
+    private toastrMessageService: ToastrMessageService,
+    public tenantConfigService: TenantConfigService
+  ) {
+    var userLoginData = this.localStorageServiceService.getItem(appCommon.LocalStorageKeyType.UserLoginDetail);
+    if (userLoginData && Object.keys(userLoginData).length > 0) {
+      this.userLoginData = userLoginData;
+      this.isUserRemembered = !!this.userLoginData?.userLoginName;
+    }
+  }
 
   ngOnInit() {
     document.body.removeAttribute('data-layout');
     document.body.classList.add('auth-body-bg');
-
-    this.loginForm = this.formBuilder.group({
-      email: ['admin@themesdesign.in', [Validators.required, Validators.email]],
-      password: ['123456', [Validators.required]],
-    });
-
-    // reset login status
-    // this.authenticationService.logout();
-    // get return url from route parameters or default to '/'
-    // tslint:disable-next-line: no-string-literal
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    this.createLoginForm();
   }
 
-  // convenience getter for easy access to form fields
-  get f() { return this.loginForm.controls; }
+  createLoginForm() {
+    // Check if tenant is configured via URL
+    const isTenantConfigured = this.tenantConfigService.isTenantConfigured();
+    const defaultCompanyCode = isTenantConfigured
+      ? this.tenantConfigService.getCompanyCode()
+      : (this.userLoginData?.companyShortCode || environment.companyName || '');
 
-  /**
-   * Form submit
-   */
-  onSubmit() {
-    this.submitted = true;
+    this.loginForm = this.formBuilder.group({
+      email: [this.userLoginData?.userLoginName || environment.userName || '', Validators.required],
+      password: [environment.password || null, Validators.required],
+      shortcode: [defaultCompanyCode, Validators.required],
+    });
 
-    // stop here if form is invalid
-    if (this.loginForm.invalid) {
-      return;
+    if (this.isUserRemembered) {
+      this.loginForm.get('email')?.disable();
+      this.loginForm.get('shortcode')?.disable();
+      this.focusOnPassword();
     } else {
-      if (environment.defaultauth === 'firebase') {
-        this.authenticationService.login(this.f.email.value, this.f.password.value).then((res: any) => {
-          this.router.navigate(['/']);
-        })
-          .catch(error => {
-            this.error = error ? error : '';
-          });
+      // If tenant is configured via URL, disable company code field
+      if (isTenantConfigured) {
+        this.loginForm.get('shortcode')?.disable();
+        this.focusOnEmail();
       } else {
-        this.authFackservice.login(this.f.email.value, this.f.password.value)
-          .pipe(first())
-          .subscribe(
-            data => {
-              this.router.navigate(['/']);
-            },
-            error => {
-              this.error = error ? error : '';
-            });
+        this.focusOnShortcode();
       }
     }
   }
 
+  onNotYouClick() {
+    this.isUserRemembered = false;
+    this.localStorageServiceService.removeItem(appCommon.LocalStorageKeyType.UserLoginDetail);
+    this.userLoginData = null;
+    
+    // Recreate the form with proper tenant configuration
+    this.createLoginForm();
+  }
+  get f() { return this.loginForm.controls; }
+
+  onAdminSubmit() {
+
+    if (this.loginForm.invalid) {
+      this.error = "Username and Password not valid !";
+      return;
+    }
+    else {
+      this.isBtnLoading = true;
+      this.submitted = true;
+
+      this.authService.adminLogin(this.f.email.value,
+        this.f.password.value, this.f.shortcode.value)
+        .subscribe(
+          data => {
+            this.toastrMessageService.showSuccess("Login Successful", 'Success');
+            this.router.navigate(["appointments"]);
+          },
+          error => {
+            this.error = error.message;
+            this.submitted = false;
+            this.isBtnLoading = false;
+          }
+        )
+    }
+  }
+
+  toggleFieldTextType() {
+    this.fieldTextType = !this.fieldTextType;
+  }
+
+  focusOnShortcode() {
+    setTimeout(() => this.shortcode?.nativeElement?.focus(), 50);
+  }
+
+  focusOnPassword() {
+    setTimeout(() => this.password?.nativeElement?.focus(), 50);
+  }
+
+  focusOnEmail() {
+    setTimeout(() => this.email?.nativeElement?.focus(), 50);
+  }
 }

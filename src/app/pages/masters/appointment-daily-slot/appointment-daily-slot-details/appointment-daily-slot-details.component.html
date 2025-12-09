@@ -1,0 +1,109 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="col-md-8">
+                    <form (ngSubmit)="onSubmit()" [formGroup]="form" (keydown.enter)="$event.preventDefault()"
+                        autocomplete="off">
+                        <div class="row">
+
+                            <div class="col-md-6">
+                                <div class="form-label-group">
+                                    <select id="locationId" class="form-control" formControlName="locationId"
+                                        [ngClass]="submitted && form.controls['locationId'].hasError('required')?'is-invalid':''">
+                                        <option value="">Select Location</option>
+                                        <option *ngFor="let location of locationList" [value]="location.id">
+                                            {{ location.name }}
+                                        </option>
+                                    </select>
+                                    <label for="locationId">Location<span class="text-danger">*</span></label>
+                                    <div class="invalid-feedback">
+                                        <span>This value is required.</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-label-group">
+                                    <select id="dayOfWeek" class="form-control" formControlName="dayOfWeek"
+                                        [ngClass]="submitted && form.controls['dayOfWeek'].hasError('required')?'is-invalid':''">
+                                        <option value="">Select Day of Week</option>
+                                        <option *ngFor="let day of appCommon.EnWeekDays" [value]="day.id">
+                                            {{ day.text }}
+                                        </option>
+                                    </select>
+                                    <label for="dayOfWeek">Day of Week<span class="text-danger">*</span></label>
+                                    <div class="invalid-feedback">
+                                        <span>This value is required.</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-label-group">
+                                    <input type="time" id="startTime" class="form-control" formControlName="startTime"
+                                        placeholder="Start Time"
+                                        [ngClass]="submitted && form.controls['startTime'].hasError('required')?'is-invalid':''" />
+                                    <label for="startTime">Start Time<span class="text-danger">*</span></label>
+                                    <div class="invalid-feedback">
+                                        <span>This value is required.</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-label-group">
+                                    <input type="time" id="endTime" class="form-control" formControlName="endTime"
+                                        placeholder="End Time"
+                                        [ngClass]="submitted && form.controls['endTime'].hasError('required')?'is-invalid':''" />
+                                    <label for="endTime">End Time<span class="text-danger">*</span></label>
+                                    <div class="invalid-feedback">
+                                        <span>This value is required.</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-label-group">
+                                    <select id="slotDuration" class="form-control" formControlName="slotDuration"
+                                        [ngClass]="submitted && form.controls['slotDuration'].hasError('required')?'is-invalid':''">
+                                        <option value="">Select Slot Duration</option>
+                                        <option *ngFor="let slot of appCommon.EnTimeSlots" [value]="slot.id">
+                                            {{ slot.text }}
+                                        </option>
+                                    </select>
+                                    <label for="slotDuration">Slot Duration<span class="text-danger">*</span></label>
+                                    <div class="invalid-feedback">
+                                        <span>This value is required.</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary btn-sm mr-2">
+                                        <i class="ri-download-2-line align-middle mr-2"></i>
+                                        <ng-container *ngIf="submitLoading">
+                                            <span class="indicator-progress" [style.display]="'block'">
+                                                Please wait...
+                                                <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                            </span>
+                                        </ng-container>
+                                        <ng-container *ngIf="submitLoading === false">
+                                            <span class="indicator-label">{{ form.value.id ? 'Update' : 'Submit'
+                                                }}</span>
+                                        </ng-container>
+                                    </button>
+                                    <button type="button" class="btn btn-light btn-sm mr-2" (click)="clear()">
+                                        <i class="ri-eraser-line align-middle mr-2"></i> Clear
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

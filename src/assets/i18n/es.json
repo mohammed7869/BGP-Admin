@@ -223,6 +223,13 @@
         "GOOGLEMAP": "mapas de Google"
       }
     },
+    "SETTINGS": {
+      "TEXT": "Configuración",
+      "LIST": {
+        "EMAIL_SETTINGS": "Configuración de correo electrónico",
+        "EMAIL_TEMPLATES": "Plantillas de correo electrónico"
+      }
+    },
     "MULTILEVEL": {
       "TEXT": "Multi nivel",
       "LIST": {

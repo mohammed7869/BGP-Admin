@@ -1,15 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { AgRendererComponent } from 'ag-grid-angular';
-import { IAfterGuiAttachedParams, ICellRendererParams } from 'ag-grid-community';
+import { IAfterGuiAttachedParams, ICellRendererParams, ICellRendererComp } from 'ag-grid-community';
 
 @Component({
-  selector: 'app-ag-edit-button-renderer',
+  selector: 'app-ag-delete-button-renderer',
   template: '<a (click)="onClick($event)" class="text-danger pointer" ngbTooltip="Delete"><i class="fas fa-trash-alt"></i></a>'
 })
-export class AgDeleteButtonRendererComponent implements AgRendererComponent {
+export class AgDeleteButtonRendererComponent implements AgRendererComponent, ICellRendererComp {
 
   cellValue: string;
   private params: any;
+  private element: HTMLElement;
+
+  constructor() {
+    this.element = document.createElement('div');
+  }
 
   // gets called once before the renderer is used
   agInit(params: ICellRendererParams): void {
@@ -23,7 +28,11 @@ export class AgDeleteButtonRendererComponent implements AgRendererComponent {
   }
 
   afterGuiAttached?(params?: IAfterGuiAttachedParams): void {
-    throw new Error('Method not implemented.');
+    // Optional method - no need to throw error
+  }
+
+  getGui(): HTMLElement {
+    return this.element;
   }
 
   onClick($event: any) {

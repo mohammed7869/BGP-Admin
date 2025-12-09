@@ -1,0 +1,75 @@
+<div class="modal-header">
+  <h4 class="modal-title">Archive Appointment</h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="cancel()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body">
+  <div class="row" *ngIf="appointment">
+    <div class="col-12">
+      <div class="alert alert-warning">
+        <i class="fas fa-exclamation-triangle mr-2"></i>
+        <strong>Archive Appointment</strong>
+      </div>
+      
+      <div class="appointment-details mb-3">
+        <h6 class="fw-bold mb-3">Appointment Details:</h6>
+        
+        <div class="row mb-2">
+          <div class="col-4"><strong>Patient:</strong></div>
+          <div class="col-8">{{ appointment.firstName }} {{ appointment.lastName }}</div>
+        </div>
+        
+        <div class="row mb-2">
+          <div class="col-4"><strong>Email:</strong></div>
+          <div class="col-8">{{ appointment.email }}</div>
+        </div>
+        
+        <div class="row mb-2">
+          <div class="col-4"><strong>Phone:</strong></div>
+          <div class="col-8">{{ appointment.phone }}</div>
+        </div>
+        
+        <div class="row mb-2">
+          <div class="col-4"><strong>Date:</strong></div>
+          <div class="col-8">
+            {{ appointment.appointmentDateTime | date:'fullDate' }}
+          </div>
+        </div>
+        
+        <div class="row mb-2">
+          <div class="col-4"><strong>Time:</strong></div>
+          <div class="col-8">{{ appointment.startTime || appointment.appointmentTime }}</div>
+        </div>
+        
+        <div class="row mb-2">
+          <div class="col-4"><strong>Location:</strong></div>
+          <div class="col-8">{{ appointment.locationName }}</div>
+        </div>
+        
+        <div class="row mb-2" *ngIf="appointment.reasonForVisit">
+          <div class="col-4"><strong>Reason:</strong></div>
+          <div class="col-8">{{ appointment.reasonForVisit }}</div>
+        </div>
+      </div>
+      
+      <div class="alert alert-info">
+        <i class="fas fa-info-circle mr-2"></i>
+        <small>
+          <strong>Note:</strong> Archived appointments will be hidden from the main appointment list but can be restored later if needed.
+          The appointment data will be preserved.
+        </small>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="cancel()">
+    <i class="fas fa-times mr-1"></i> Cancel
+  </button>
+  <button type="button" class="btn btn-warning" (click)="confirmArchive()">
+    <i class="fas fa-archive mr-1"></i> Archive Appointment
+  </button>
+</div>

@@ -223,6 +223,13 @@
         "GOOGLEMAP": "Карты Гугл"
       }
     },
+    "SETTINGS": {
+      "TEXT": "Настройки",
+      "LIST": {
+        "EMAIL_SETTINGS": "Настройки электронной почты",
+        "EMAIL_TEMPLATES": "Шаблоны электронной почты"
+      }
+    },
     "MULTILEVEL": {
       "TEXT": "Многоуровневый",
       "LIST": {

@@ -2,14 +2,12 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { first } from 'rxjs/operators';
+import { first, tap } from 'rxjs/operators';
 import { appCommon } from 'src/app/common/_appCommon';
 import { environment } from 'src/environments/environment';
-import { CommonService } from './common.service';
 import { LocalStorageService } from './local-storage.service';
-import { ToastrMessageService } from './toastr-message.service';
 
-const baseURL = `${environment.apiUrl}/Accounts`;
+const baseURL = `${environment.apiUrl}/api/1`;
 @Injectable({
   providedIn: 'root'
 })
@@ -22,21 +20,26 @@ export class AuthServiceService {
     private httpClient: HttpClient,
     private localStorageServiceService: LocalStorageService,
     private router: Router,
-    private toastrMessageService: ToastrMessageService,
-    private commonService: CommonService,
   ) { }
 
-  adminLogin(username: string, password: string) {
+  adminLogin(username: string, password: string, shortcode: string) {
 
     var data = {
-      'email': username,
-      'password': password
+      'username': username,
+      'password': password,
+      'shortcode': shortcode
     }
 
-    return this.httpClient.post<any>(`${baseURL}/AdminAuthenticate`, data)
-      .pipe(first(user => {
-        if (user && user.jwtToken) {
+    return this.httpClient.post<any>(`${baseURL}/login`, data)
+      .pipe(tap(user => {
+        if (user) {
+          var userLoginDetail = {
+            companyShortCode: user.company.shortCode,
+            userLoginName: user.user.login_Name,
+            userName: `${user.user.first_Name} ${user.user.lastname}`
+          };
           this.localStorageServiceService.setItem(this.appCommon.LocalStorageKeyType.TokenInfo, user);
+          this.localStorageServiceService.setItem(this.appCommon.LocalStorageKeyType.UserLoginDetail, userLoginDetail);
         }
         return user;
       }));
@@ -58,35 +61,8 @@ export class AuthServiceService {
       }));
   }
 
-  itsLogin(token: string, dt: string) {
-
-    var data = {
-      'tokenKey': token,
-      'dataString': dt
-    }
-
-    return this.httpClient.post<any>(`${baseURL}/ITSOneLogin`, data)
-      .pipe(first(user => {
-        if (user && user.jwtToken) {
-          this.localStorageServiceService.setItem(this.appCommon.LocalStorageKeyType.TokenInfo, user);
-        }
-        return user;
-      }));
-  }
-
   logout() {
-    this.userData = this.commonService.getUserData();
-
-    this.toastrMessageService.showSuccess("You have been logged out.", "Success");
-    if (!this.userData.type) {
-      this.router.navigate(['/auth/admin']);
-    } else if (this.userData.type == 'ITS' && this.userData.fromAdmin) {
-      this.router.navigate(['/auth/proxy']);
-    } else if (this.userData.type == 'ITS') {
-      window.location.href = environment.itsOneLogin;
-    } else if (this.userData.type == 'Staff') {
-      this.router.navigate(['/auth/user']);
-    }
+    this.router.navigate(['/account/login']);
     this.localStorageServiceService.removeItem(this.appCommon.LocalStorageKeyType.TokenInfo);
   }
 
@@ -165,23 +141,6 @@ export class AuthServiceService {
   verifyOtpUser(data) {
     return this.httpClient.post<any>(environment.apiUrl + '/Accounts/validate-reset-token', data)
       .pipe(first(user => {
-        return user;
-      }));
-  }
-
-  adminUserLogin(username: string, password: string, applicantUsername: string) {
-
-    var data = {
-      'email': username,
-      'password': password,
-      'applicantUsername': applicantUsername
-    }
-
-    return this.httpClient.post<any>(`${baseURL}/AdminApplicantAuthenticate`, data)
-      .pipe(first(user => {
-        if (user && user.jwtToken) {
-          this.localStorageServiceService.setItem(this.appCommon.LocalStorageKeyType.TokenInfo, user);
-        }
         return user;
       }));
   }

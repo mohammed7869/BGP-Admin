@@ -1,0 +1,55 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <form [formGroup]="form" (ngSubmit)="onSubmit()" autocomplete="off">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-label-group">
+                  <input type="text" id="metaKey" class="form-control" placeholder="Enter meta key"
+                    formControlName="metaKey" autocomplete="off" />
+                  <label for="metaKey">Meta Key <span class="text-danger">*</span></label>
+                  <div *ngIf="submitted && form.controls['metaKey'].errors" class="text-danger">
+                    <small *ngIf="form.controls['metaKey'].errors['required']">Meta Key is required</small>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-label-group">
+                  <textarea id="metaValue" class="form-control" rows="3" placeholder="Enter meta value"
+                    formControlName="metaValue" autocomplete="off"></textarea>
+                  <label for="metaValue">Meta Value <span class="text-danger">*</span></label>
+                  <div *ngIf="submitted && form.controls['metaValue'].errors" class="text-danger">
+                    <small *ngIf="form.controls['metaValue'].errors['required']">Meta Value is required</small>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="button-items">
+                  <button type="submit" class="btn btn-primary btn-sm" [disabled]="submitLoading">
+                    <ng-container *ngIf="submitLoading">
+                      <span class="indicator-progress" [style.display]="'block'">
+                        {{recordData ? 'Updating' : 'Creating'}}
+                        <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                      </span>
+                    </ng-container>
+                    <ng-container *ngIf="!submitLoading">
+                      <span class="indicator-label">
+                        <i class="ri-save-line align-middle mr-2"></i>
+                        {{recordData ? 'Update' : 'Create'}}
+                      </span>
+                    </ng-container>
+                  </button>
+                  <button type="button" class="btn btn-light btn-sm" (click)="onBack()">
+                    <i class="ri-close-line align-middle mr-2"></i>Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

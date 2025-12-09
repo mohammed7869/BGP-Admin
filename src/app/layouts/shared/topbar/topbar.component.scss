@@ -1,0 +1,19 @@
+.user-initials-circle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #556ee6;
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: uppercase;
+  margin-right: 8px;
+}
+
+.header-item {
+  display: flex;
+  align-items: center;
+}

@@ -1,0 +1,115 @@
+<div class="modal-header">
+  <h4 class="modal-title">{{ title }}</h4>
+  <button type="button" class="close" aria-label="Close" (click)="close()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body">
+  <!-- Search Input -->
+  <div class="form-group mb-3">
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <span class="input-group-text">
+          <i class="ri-search-line"></i>
+        </span>
+      </div>
+      <input 
+        type="text" 
+        class="form-control" 
+        placeholder="Search images by name or alt text..."
+        [(ngModel)]="searchTerm"
+        (input)="filterImages()"
+      >
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="text-center py-4">
+    <div class="spinner-border text-primary" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+    <p class="mt-2 text-muted">Loading images...</p>
+  </div>
+
+  <!-- Images Grid -->
+  <div *ngIf="!loading">
+    <div *ngIf="filteredImages.length === 0" class="text-center py-4">
+      <i class="ri-image-line text-muted" style="font-size: 3rem;"></i>
+      <p class="mt-2 text-muted">No images found</p>
+    </div>
+    
+    <div class="row">
+      <div 
+        *ngFor="let image of filteredImages" 
+        class="col-md-4 col-sm-6 mb-3"
+      >
+        <div 
+          class="image-item card h-100"
+          [class.selected]="selectedImage?.id === image.id"
+          (click)="selectImage(image)"
+        >
+          <div class="card-body p-2 text-center">
+            <div class="image-preview mb-2">
+                             <img 
+                 [src]="image.url" 
+                 [alt]="image.altText || 'Image'"
+                 class="img-fluid rounded"
+                 style="max-height: 120px; width: 100%; object-fit: cover;"
+                 onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjRjVGNUY1Ii8+CjxwYXRoIGQ9Ik04MCAxMDBDODAgODkuNTQ0NyA4OC4wMDAxIDgxIDk4IDgxQzEwNy45OTkgODEgMTE2IDg5LjU0NDcgMTE2IDEwMEMxMTYgMTEwLjQ1NSA4MC45OTkgMTE5IDk4IDExOUM4OC4wMDAxIDExOSA4MCAxMTAuNDU1IDgwIDEwMFoiIGZpbGw9IiNDQ0NDQ0MiLz4KPHBhdGggZD0iTTEwMCAxMzBDMTEwLjQ1NSAxMzAgMTE5IDEyMS40NTUgMTE5IDExMUMxMTkgMTAwLjU0NSAxMTAuNDU1IDkyIDEwMCA5MkM4OS41NDQ3IDkyIDgxIDEwMC41NDUgODEgMTExQzgxIDEyMS40NTUgODkuNTQ0NyAxMzAgMTAwIDEzMFoiIGZpbGw9IiNDQ0NDQ0MiLz4KPHBhdGggZD0iTTEyMCAxMDBDMTIwIDg5LjU0NDcgMTI4LjAwMDEgODEgMTM4IDgxQzE0Ny45OTkgODEgMTU2IDg5LjU0NDcgMTU2IDEwMEMxNTYgMTEwLjQ1NSAxNDcuOTk5IDExOSAxMzggMTE5QzEyOC4wMDAxIDExOSAxMjAgMTEwLjQ1NSAxMjAgMTAwWiIgZmlsbD0iI0NDQ0NDQyIvPgo8L3N2Zz4='"
+               >
+            </div>
+            <div class="image-info">
+              <small class="text-muted d-block text-truncate" [title]="image.altText || 'No alt text'">
+                {{ image.altText || 'No alt text' }}
+              </small>
+              <small class="text-muted d-block text-truncate" [title]="image.url">
+                {{ image.url | slice:0:30 }}{{ image.url.length > 30 ? '...' : '' }}
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Selected Image Info -->
+  <div *ngIf="selectedImage" class="selected-image-info mt-3 p-3 bg-light rounded">
+    <h6 class="mb-2">Selected Image:</h6>
+    <div class="d-flex align-items-center">
+             <img 
+         [src]="selectedImage.url" 
+         [alt]="selectedImage.altText || 'Selected image'"
+         class="mr-3 rounded"
+         style="width: 60px; height: 60px; object-fit: cover;"
+         onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjRjVGNUY1Ii8+CjxwYXRoIGQ9Ik04MCAxMDBDODAgODkuNTQ0NyA4OC4wMDAxIDgxIDk4IDgxQzEwNy45OTkgODEgMTE2IDg5LjU0NDcgMTE2IDEwMEMxMTYgMTEwLjQ1NSA4MC45OTkgMTE5IDk4IDExOUM4OC4wMDAxIDExOSA4MCAxMTAuNDU1IDgwIDEwMFoiIGZpbGw9IiNDQ0NDQ0MiLz4KPHBhdGggZD0iTTEwMCAxMzBDMTEwLjQ1NSAxMzAgMTE5IDEyMS40NTUgMTE5IDExMUMxMTkgMTAwLjU0NSAxMTAuNDU1IDkyIDEwMCA5MkM4OS41NDQ3IDkyIDgxIDEwMC41NDUgODEgMTExQzgxIDEyMS40NTUgODkuNTQ0NyAxMzAgMTAwIDEzMFoiIGZpbGw9IiNDQ0NDQ0MiLz4KPHBhdGggZD0iTTEyMCAxMDBDMTIwIDg5LjU0NDcgMTI4LjAwMDEgODEgMTM4IDgxQzE0Ny45OTkgODEgMTU2IDg5LjU0NDcgMTU2IDEwMEMxNTYgMTEwLjQ1NSAxNDcuOTk5IDExOSAxMzggMTE5QzEyOC4wMDAxIDExOSAxMjAgMTEwLjQ1NSAxMjAgMTAwWiIgZmlsbD0iI0NDQ0NDQyIvPgo8L3N2Zz4='"
+       >
+      <div class="flex-grow-1">
+        <p class="mb-1"><strong>{{ selectedImage.altText || 'No alt text' }}</strong></p>
+        <small class="text-muted">{{ selectedImage.url }}</small>
+      </div>
+      <button 
+        type="button" 
+        class="btn btn-outline-secondary btn-sm"
+        (click)="clearSelection()"
+      >
+        <i class="ri-close-line"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary btn-sm" (click)="close()">
+    Cancel
+  </button>
+  <button 
+    type="button" 
+    class="btn btn-primary btn-sm" 
+    [disabled]="!selectedImage"
+    (click)="confirmSelection()"
+  >
+    <i class="ri-check-line mr-1"></i>
+    Select Image
+  </button>
+</div>

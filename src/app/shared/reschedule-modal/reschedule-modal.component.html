@@ -1,0 +1,421 @@
+<div class="modal-header border-0 pb-0">
+  <h4 class="modal-title fw-bold text-dark">
+    <i class="fa fa-calendar-alt mr-2 text-primary"></i>
+    Reschedule Appointment
+  </h4>
+  <!-- Patient Information -->
+  <div class="patient-info">
+    <div class="d-flex align-items-center">
+      <div class="avatar-sm bg-primary mr-2 rounded-circle d-flex align-items-center justify-content-center me-3">
+        <i class="fa fa-user text-white"></i>
+      </div>
+      <div>
+        <h6 class="mb-0 fw-bold text-dark">{{ appointment?.firstName || '' }} {{ appointment?.lastName || '' }}</h6>
+        <p class="mb-0 text-muted small">{{ appointment?.email || '' }}</p>
+        <p class="mb-0 text-muted small">{{ appointment?.phone || '' }}</p>
+      </div>
+    </div>
+  </div>
+  <button type="button" class="btn-close" (click)="cancel()" aria-label="Close">
+    <i class="fa fa-times"></i>
+  </button>
+</div>
+
+<div class="modal-body">
+
+
+  <!-- Navigation Tabs -->
+  <ul class="nav nav-tabs nav-tabs-custom mb-4" role="tablist">
+    <li class="nav-item" *ngFor="let step of steps">
+      <button class="nav-link" [class.active]="step.isActive" [class.completed]="step.isCompleted"
+        (click)="setActiveStep(step.id)" type="button">
+        {{ step.title }}
+      </button>
+    </li>
+  </ul>
+
+  <!-- Tab Content -->
+  <div class="tab-content">
+    <!-- FIND A TIME Tab -->
+    <div class="tab-pane fade" [class.show]="currentStep === 'find-time'" [class.active]="currentStep === 'find-time'">
+
+      <!-- Filters and Controls -->
+      <div class="row mb-4">
+        <div class="col-md-8">
+          <!-- Show loading state -->
+          <div *ngIf="locationsLoading" class="text-muted small">
+            Loading locations...
+          </div>
+
+          <!-- Show label for single location -->
+          <div *ngIf="!locationsLoading && locations.length === 1" class="selected-location">
+            <label class="form-label small text-muted mb-1">Location</label>
+            <div class="p-2 bg-light rounded">
+              <span class="text-primary">{{ locations[0].name }}, {{ locations[0].address }} {{ locations[0].city }}, {{ locations[0].state }} {{ locations[0].zipCode }}</span>
+            </div>
+          </div>
+
+          <!-- Show dropdown for multiple locations -->
+          <div class="form-label-group" *ngIf="!locationsLoading && locations.length > 1">
+            <select id="selectedLocationId" class="form-control" [ngModel]="selectedLocationId"
+              (ngModelChange)="onLocationChange($event)">
+              <option value=null disabled>Select a location</option>
+              <option *ngFor="let location of locations" [value]="location.id">
+                {{ location.name }}
+              </option>
+            </select>
+            <label for="selectedLocationId">Location<span class="text-danger">*</span></label>
+          </div>
+          <!-- Show no locations message -->
+          <div *ngIf="!locationsLoading && locations.length === 0" class="text-muted small">
+            No locations available
+          </div>
+        </div>
+        <div class="col-md-4 mt-2">
+          <div class="d-flex align-items-center">
+            <button type="button" class="btn btn-sm btn-outline-secondary mr-2" (click)="navigateDateRange('prev')">
+              <i class="fa fa-chevron-left"></i>
+            </button>
+            <span class="text-muted small">{{ currentDateRange.start | date:'MMM dd, yyyy' }} - {{ currentDateRange.end
+              | date:'MMM dd, yyyy' }}</span>
+            <button type="button" class="btn btn-sm btn-outline-secondary ms-2" (click)="navigateDateRange('next')">
+              <i class="fa fa-chevron-right"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- Calendar Grid -->
+      <div class="calendar-grid">
+        <!-- Loading state -->
+        <div *ngIf="timeSlotsLoading || locationsLoading" class="text-center py-4">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <p class="mt-2 text-muted">Loading available time slots...</p>
+        </div>
+
+        <!-- No location selected state -->
+        <div *ngIf="!selectedLocationId && !locationsLoading && locations.length > 1" class="text-center py-4">
+          <p class="text-muted">Please select a location to view available time slots.</p>
+        </div>
+
+        <!-- Loading slots for selected location -->
+        <div *ngIf="selectedLocationId && (appointmentSlots.length === 0)" class="text-center py-4">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <p class="mt-2 text-muted">Loading appointment time slots...</p>
+        </div>
+
+        <!-- Time slots display -->
+        <div *ngIf="selectedLocationId && appointmentSlots.length > 0 && !timeSlotsLoading && !locationsLoading"
+          class="row">
+          
+                     <!-- Current time info and restrictions notice -->
+           <div class="col-12 mb-3">
+             <div class="alert alert-info">
+               <i class="fa fa-info-circle me-2"></i>
+               <strong>Current Time:</strong> {{ getCurrentTime() }} on {{ getCurrentDate() | date:'MMM dd, yyyy' }}
+               <span *ngIf="getNextAvailableTimeSlot()" class="ms-3">
+                 <strong>Next Available Today:</strong> {{ getNextAvailableTimeSlot() }}
+               </span>
+               <br>
+               <small class="text-muted">
+                 • Past time slots are automatically disabled and marked with a clock icon (🕐)
+                 • Booked time slots are marked with a lock icon (🔒)
+                 • Only future time slots are available for selection
+                 • Time periods: Morning (00:00-11:59), Afternoon (12:00-16:59), Evening (17:00-23:59)
+               </small>
+             </div>
+           </div>
+          <div class="col-md-4" *ngFor="let date of getAvailableDates()">
+            <div class="date-column" [class.no-available-slots]="!hasAvailableTimeSlots(date)">
+              <h6 class="text-center mb-3 fw-bold text-primary">{{ formatDate(date) }}</h6>
+              <div class="time-slots">
+                <!-- Show loading for individual date -->
+                <div *ngIf="loadingSlots[selectedLocationId + '-' + date]" class="text-center py-2">
+                  <div class="spinner-border spinner-border-sm text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                  <small class="text-muted d-block mt-1">Loading slots...</small>
+                </div>
+
+                <!-- Show time slots if available -->
+                <div
+                  *ngIf="!loadingSlots[selectedLocationId + '-' + date] && availableSlots[selectedLocationId + '-' + date]?.length > 0"
+                  class="time-slots-container">
+
+                  <!-- Morning Section -->
+                  <div *ngIf="getMorningSlots(date).length > 0" class="time-section">
+                    <div class="time-period-label">
+                      <i class="fa fa-sun text-warning"></i>
+                      <span class="ms-1">Morning</span>
+                    </div>
+                    <div class="time-slots-grid">
+                      <button *ngFor="let time of getMorningSlots(date)" type="button"
+                        class="btn btn-sm mb-2" 
+                        [class.btn-outline-primary]="!isTimeSlotSelected(date, time) && !isTimeSlotDisabled(date, time)"
+                        [class.btn-primary]="isTimeSlotSelected(date, time) && !isTimeSlotDisabled(date, time)"
+                        [class.btn-outline-secondary]="isTimeSlotDisabled(date, time)"
+                        [class.text-white]="isTimeSlotSelected(date, time) && !isTimeSlotDisabled(date, time)"
+                        [class.text-muted]="isTimeSlotDisabled(date, time)"
+                        [disabled]="isTimeSlotDisabled(date, time)"
+                        [title]="getTimeSlotDisabledReason(date, time)"
+                        (click)="selectTimeSlot(date, time)">
+                        {{ time }}
+                        <i *ngIf="isTimeSlotBooked(date, time)" class="fa fa-lock ms-1"></i>
+                        <i *ngIf="isTimeSlotInPast(date, time) && !isTimeSlotBooked(date, time)" class="fa fa-clock ms-1"></i>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Afternoon Section -->
+                  <div *ngIf="getAfternoonSlots(date).length > 0" class="time-section mt-3">
+                    <div class="time-period-label">
+                      <i class="fa fa-sun text-warning"></i>
+                      <span class="ms-1">Afternoon</span>
+                    </div>
+                    <div class="time-slots-grid">
+                      <button *ngFor="let time of getAfternoonSlots(date)" type="button"
+                        class="btn btn-sm mb-2" 
+                        [class.btn-outline-primary]="!isTimeSlotSelected(date, time) && !isTimeSlotDisabled(date, time)"
+                        [class.btn-primary]="isTimeSlotSelected(date, time) && !isTimeSlotDisabled(date, time)"
+                        [class.btn-outline-secondary]="isTimeSlotDisabled(date, time)"
+                        [class.text-white]="isTimeSlotSelected(date, time) && !isTimeSlotDisabled(date, time)"
+                        [class.text-muted]="isTimeSlotDisabled(date, time)"
+                        [disabled]="isTimeSlotDisabled(date, time)"
+                        [title]="getTimeSlotDisabledReason(date, time)"
+                        (click)="selectTimeSlot(date, time)">
+                        {{ time }}
+                        <i *ngIf="isTimeSlotBooked(date, time)" class="fa fa-lock ms-1"></i>
+                        <i *ngIf="isTimeSlotInPast(date, time) && !isTimeSlotBooked(date, time)" class="fa fa-clock ms-1"></i>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Evening Section -->
+                  <div *ngIf="getEveningSlots(date).length > 0" class="time-section mt-3">
+                    <div class="time-period-label">
+                      <i class="fa fa-moon text-primary"></i>
+                      <span class="ms-1">Evening</span>
+                    </div>
+                    <div class="time-slots-grid">
+                      <button *ngFor="let time of getEveningSlots(date)" type="button"
+                        class="btn btn-sm mb-2" 
+                        [class.btn-outline-primary]="!isTimeSlotSelected(date, time) && !isTimeSlotDisabled(date, time)"
+                        [class.btn-primary]="isTimeSlotSelected(date, time) && !isTimeSlotDisabled(date, time)"
+                        [class.btn-outline-secondary]="isTimeSlotDisabled(date, time)"
+                        [class.text-white]="isTimeSlotSelected(date, time) && !isTimeSlotDisabled(date, time)"
+                        [class.text-muted]="isTimeSlotDisabled(date, time)"
+                        [disabled]="isTimeSlotDisabled(date, time)"
+                        [title]="getTimeSlotDisabledReason(date, time)"
+                        (click)="selectTimeSlot(date, time)">
+                        {{ time }}
+                        <i *ngIf="isTimeSlotBooked(date, time)" class="fa fa-lock ms-1"></i>
+                        <i *ngIf="isTimeSlotInPast(date, time) && !isTimeSlotBooked(date, time)" class="fa fa-clock ms-1"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Show no slots available message -->
+                <div
+                  *ngIf="!loadingSlots[selectedLocationId + '-' + date] && (!availableSlots[selectedLocationId + '-' + date] || availableSlots[selectedLocationId + '-' + date]?.length === 0)"
+                  class="text-center py-4">
+                  <i class="fa fa-calendar-times text-muted mb-2"></i>
+                  <small class="text-muted d-block">No appointments available</small>
+                </div>
+
+                <!-- Show message when all slots are disabled (past or booked) -->
+                <div
+                  *ngIf="!loadingSlots[selectedLocationId + '-' + date] && availableSlots[selectedLocationId + '-' + date]?.length > 0 && !hasAvailableTimeSlots(date)"
+                  class="text-center py-4">
+                  <i class="fa fa-clock text-muted mb-2"></i>
+                  <small class="text-muted d-block">All time slots are unavailable</small>
+                </div>
+              </div>
+
+              <style>
+                .time-slots-container {
+                  max-height: 400px;
+                  overflow-y: auto;
+                  padding-right: 8px;
+                }
+
+                .time-section {
+                  background: #fff;
+                  border-radius: 8px;
+                  overflow: hidden;
+                }
+
+                .time-period-label {
+                  padding: 8px;
+                  background: #f8f9fa;
+                  border-bottom: 1px solid #eee;
+                  font-size: 0.875rem;
+                  color: #6c757d;
+                  font-weight: 500;
+                }
+
+                .time-slots-grid {
+                  display: grid;
+                  grid-template-columns: repeat(auto-fill, minmax(85px, 1fr));
+                  gap: 8px;
+                  padding: 8px;
+                }
+
+                .time-slots-grid button {
+                  width: 100%;
+                  text-align: center;
+                }
+
+                .time-slots-container::-webkit-scrollbar {
+                  width: 4px;
+                }
+
+                .time-slots-container::-webkit-scrollbar-thumb {
+                  background: #ccc;
+                  border-radius: 4px;
+                }
+
+                .time-slots-container::-webkit-scrollbar-track {
+                  background: #f1f1f1;
+                }
+              </style>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- APPT DETAILS Tab -->
+    <div class="tab-pane fade" [class.show]="currentStep === 'appt-details'"
+      [class.active]="currentStep === 'appt-details'">
+
+      <!-- Initial View: Only Original Appointment -->
+      <div *ngIf="!showAppointmentComparison">
+        <!-- Original Appointment Details -->
+        <div class="card border-0 shadow-sm mb-4">
+          <div class="card-header bg-primary">
+            <h6 class="mb-0 fw-bold text-white">
+              <i class="fa fa-info-circle mr-2 text-white"></i>
+              Original Appointment Request
+            </h6>
+          </div>
+          <div class="card-body">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label fw-bold text-muted small">Appointment Time</label>
+                <p class="mb-0">{{ appointment?.appointmentDateTime | date:'MMM dd, yyyy' }} at {{
+                  formatTime(appointment?.startTime) }}</p>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-bold text-muted small">Calendar Name</label>
+                <p class="mb-0">{{ appointment?.locationName || '' }}</p>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-bold text-muted small">Location</label>
+                <p class="mb-0">{{ appointment?.locationName || '' }}</p>
+              </div>
+              <div class="col-12">
+                <label class="form-label fw-bold text-muted small">Online Booking Reason</label>
+                <p class="mb-0">{{ appointment?.reasonForVisit || '' }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Comparison View: Original vs New Appointment in Column Format -->
+      <div *ngIf="showAppointmentComparison">
+        <div class="row">
+          <!-- Original Appointment Column -->
+          <div class="col-md-6">
+            <div class="card border-0 shadow-sm h-100">
+              <div class="card-header bg-primary text-white">
+                <h6 class="mb-0 fw-bold text-white">
+                  <i class="fa fa-info-circle mr-2 text-white"></i>
+                  Original appointment
+                </h6>
+              </div>
+              <div class="card-body">
+                <div class="mb-3">
+                  <label class="form-label fw-bold text-muted small">Appointment Time</label>
+                  <p class="mb-0">{{ appointment?.appointmentDateTime | date:'MMM dd, yyyy' }} at {{
+                    formatTime(appointment?.startTime) }}</p>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label fw-bold text-muted small">Calendar Name</label>
+                  <p class="mb-0">{{ appointment?.locationName || '' }}, {{appointment.address}}
+                                    {{appointment.city}} {{appointment.state}} {{appointment.zipCode}}</p>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label fw-bold text-muted small">Location</label>
+                  <p class="mb-0">{{ appointment?.locationName || '' }}, {{appointment.address}}
+                                    {{appointment.city}} {{appointment.state}} {{appointment.zipCode}}</p>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label fw-bold text-muted small">Online Booking Reason</label>
+                  <p class="mb-0">{{ appointment?.reasonForVisit || '' }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- New Appointment Column -->
+          <div class="col-md-6">
+            <div class="card border-0 shadow-sm h-100">
+              <div class="card-header bg-success text-white">
+                <h6 class="mb-0 fw-bold text-white">
+                  <i class="fa fa-calendar-check mr-2 text-white"></i>
+                  New appointment
+                </h6>
+              </div>
+              <div class="card-body">
+                <div class="mb-3">
+                  <label class="form-label fw-bold text-muted small">Appointment Time</label>
+                  <p class="mb-0 text-success fw-bold">{{ selectedDate | date:'MMM dd, yyyy' }} at {{ selectedTime }}
+                  </p>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label fw-bold text-muted small">Calendar Name</label>
+                  <p class="mb-0">{{ getSelectedLocationName() }}</p>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label fw-bold text-muted small">Location</label>
+                  <p class="mb-0">{{ getSelectedLocationName() }}</p>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label fw-bold text-muted small">Online Booking Reason</label>
+                  <p class="mb-0">{{ selectedReason }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Confirmation Message -->
+        <div class="alert alert-info mt-4">
+          <i class="fa fa-info-circle mr-2"></i>
+          <strong>{{ appointment?.firstName || '' }} {{ appointment?.lastName || '' }}</strong> will get an email
+          letting them know that the
+          appointment has been rescheduled to this time.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-footer border-0 pt-0">
+
+  <button type="button" class="btn btn-primary" [disabled]="!canContinue() || isRescheduling" (click)="continue()">
+    <ng-container *ngIf="isRescheduling">
+      <span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>
+      {{ currentStep === 'appt-details' ? 'Rescheduling...' : 'Processing...' }}
+    </ng-container>
+    <ng-container *ngIf="!isRescheduling">
+      <i class="fa fa-check mr-2"></i>
+      {{ currentStep === 'appt-details' ? 'Yes, Reschedule This' : 'Continue' }}
+    </ng-container>
+  </button>
+</div>

@@ -5,7 +5,7 @@ import {
   ActivatedRouteSnapshot
 } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { CustomMessageNewComponent } from 'src/app/pages/admin/custom-message/custom-message-new/custom-message-new.component';
+import { CustomMessageNewComponent } from 'src/app/pages/custom-message/custom-message-new/custom-message-new.component';
 import { CustomMessageService } from '../services/custom-message.service';
 
 @Injectable({

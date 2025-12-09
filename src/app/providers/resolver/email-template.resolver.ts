@@ -5,8 +5,8 @@ import {
   ActivatedRouteSnapshot
 } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { EmailTemplateNewComponent } from 'src/app/pages/admin/email-template/email-template-new/email-template-new.component';
 import { EmailTemplateService } from '../services/email-template.service';
+import { EmailTemplateNewComponent } from 'src/app/pages/email-template/email-template-new/email-template-new.component';
 
 @Injectable({
   providedIn: 'root'

@@ -7,54 +7,19 @@ export interface IDicMapping1 {
 }
 
 const GeneralCustomTypes: IDicMapping = {
-  //"1": "New Appllication Admin Text",
-  "2": "New Appllication Applicant Text",
-  //"3": "Appllication Recevied Admin Text",
-  "4": "Appllication Recevied Applicant Text",
-  //"5": "Appllication Paid Admin Text",
-  "6": "Appllication Paid Applicant Text",
-  "7": "New Ticket Receiver Text",
-  "8": "New Ticket Applicant Text",
-  "9": "Ticket Replied Text",
-  "10": "New Entry Admin Text",
-  "11": "New Entry Applicant Text",
-  "12": "New Entry Approved Applicant Text",
-  //"13": "New Bank Details Added Admin Text",
-  //"14": "Bank Details Verified Applicant Text",
-  "15": "Family Member Verified Applicant Text",
-  "16": "New Family Member Admin Text",
-  "17": "Appllication Marked Followup Applicant Text",
-  "18": "Appllication Marked Followup Complete Applicant Text",
-  "19": "Appllication Rejected Applicant Text",
-  "20": "New Profile Approved Applicant Text",
-  "21": "Application Reopen Applicant Text",
-  "22": "Child Academic Details Updated Applicant Text",
+  "1": "" 
 }
 
 const EmailTemplateType: IDicMapping = {
-  //"1": "New Appllication Admin Email",
-  "2": "New Appllication Applicant Email",
-  //"3": "Appllication Recevied Admin Email",
-  "4": "Appllication Recevied Applicant Email",
-  //"5": "Appllication Paid Admin Email",
-  "6": "Appllication Paid Applicant Email",
-  "7": "New Ticket Receiver Email",
-  "8": "New Ticket Applicant Email",
-  "9": "Ticket Replied Email",
-  "10": "New Entry Admin Email",
-  "11": "New Entry Applicant Email",
-  "12": "New Entry Approved Applicant Email",
-  //"13": "New Bank Details Added Admin Email",
-  //"14": "Bank Details Verified Applicant Email",
-  "15": "Family Member Verified Applicant Email",
-  "16": "Forgot Password Email",
-  "17": "New Family Member Admin Email",
-  "18": "Appllication Marked Followup Applicant Email",
-  "19": "Appllication Marked Followup Complete Applicant Email",
-  "20": "Appllication Rejected Applicant Email",
-  "21": "New Profile Approved Applicant Email",
-  "22": "Application Reopen Applicant Email",
-  "23": "Child Academic Details Updated Applicant Email",
+  "1": "Account Creation Email",
+  "2": "Appointment Contact Email",
+  "3": "Appointment Admin Email",
+  "4": "Appointment Cancel Email",
+  "5": "Appointment Reschedule Email",
+  "6": "Contact Us Admin Email",
+  "7": "Contact Us Contact Email",
+  "8": "Appointment Confirm Email",
+  "9": "Appointment Confirm Admin Email",
 }
 
 const MastervaluetypeObj: IDicMapping = {
@@ -169,9 +134,34 @@ const EnRoleObj: IDicMapping = {
   "5": 'Receiver'
 }
 
+const EnTimeSlotsObj: IDicMapping = {
+  "1": "15 Mins",
+  "2": '30 Mins',
+  "3": '45 Mins',
+  "4": '1 Hour',
+}
+
+const EnWeekDaysObj: IDicMapping = {
+  "0": "Sunday",
+  "1": "Monday",
+  "2": "Tuesday",
+  "3": "Wednesday",
+  "4": "Thursday",
+  "5": "Friday",
+  "6": "Saturday"
+}
+
 const EnDepartmentTypeObj: IDicMapping = {
   "1": "Category A",
   "2": 'Category B',
+}
+
+const EnAppointmentStatusObj: IDicMapping = {
+  "1": "Pending Request",
+  "2": "Booked",
+  "3": "Rescheduled",
+  "4": "Cancelled",
+  "5": "Archived",
 }
 
 export const appCommon = {
@@ -186,6 +176,7 @@ export const appCommon = {
     CoveringData: 'coveringData',
     ManzuriData: 'manzuriData',
     CashbookData: 'cashbookData',
+    UserLoginDetail: 'userLoginDetail'
   },
 
   EnMartialStatusType: [
@@ -301,6 +292,28 @@ export const appCommon = {
     { text: 'Employees', id: 2 },
   ],
 
+  EnTimeSlots: [
+    { text: '15 Mins', id: 1 },
+    { text: '30 Mins', id: 2 },
+    { text: '45 Mins', id: 3 },
+    { text: '1 Hour', id: 4 },
+  ],
+
+  EnTimeSlotsObj: EnTimeSlotsObj,
+
+
+  EnWeekDays: [
+    { text: 'Sunday', id: 0 },
+    { text: 'Monday', id: 1 },
+    { text: 'Tuesday', id: 2 },
+    { text: 'Wednesday', id: 3 },
+    { text: 'Thursday', id: 4 },
+    { text: 'Friday', id: 5 },
+    { text: 'Saturday', id: 6 },
+  ],
+
+  EnWeekDaysObj: EnWeekDaysObj,
+
   EnRoleType: [
     { text: 'Super Admin', id: 1 },
     { text: 'Admin', id: 2 },
@@ -349,54 +362,19 @@ export const appCommon = {
   ],
 
   CustomMessageType: [
-    //{ id: 1, text: 'New Appllication Admin Text' },
-    { id: 2, text: 'New Appllication Applicant Text' },
-    //{ id: 3, text: 'Appllication Recevied Admin Text' },
-    { id: 4, text: 'Appllication Recevied Applicant Text' },
-    //{ id: 5, text: 'Appllication Paid Admin Text' },
-    { id: 6, text: 'Appllication Paid Applicant Text' },
-    { id: 7, text: 'New Ticket Receiver Text' },
-    { id: 8, text: 'New Ticket Applicant Text' },
-    { id: 9, text: 'Ticket Replied Text' },
-    { id: 10, text: 'New Entry Admin Text' },
-    { id: 11, text: 'New Entry Applicant Text' },
-    { id: 12, text: 'New Entry Approved Applicant Text' },
-    //{ id: 13, text: 'New Bank Details Added Admin Text' },
-    //{ id: 14, text: 'Bank Details Verified Applicant Text' },
-    { id: 15, text: 'Family Member Verified Applicant Text' },
-    { id: 16, text: 'New Family Member Admin Text' },
-    { id: 17, text: 'Appllication Marked Followup Applicant Text' },
-    { id: 18, text: 'Appllication Marked Followup Complete Applicant Text' },
-    { id: 19, text: 'Appllication Rejected Applicant Text' },
-    { id: 20, text: 'New Profile Approved Applicant Text' },
-    { id: 21, text: 'Application Reopen Applicant Text' },
-    { id: 22, text: 'Child Academic Details Updated Applicant Text' },
+    { id: 1, text: '' },
   ],
 
   EmailTemplateTypes: [
-    //{ id: 1, text: 'New Appllication Admin Email' },
-    { id: 2, text: 'New Appllication Applicant Email' },
-    //{ id: 3, text: 'Appllication Recevied Admin Email' },
-    { id: 4, text: 'Appllication Recevied Applicant Email' },
-    //{ id: 5, text: 'Appllication Paid Admin Email' },
-    { id: 6, text: 'Appllication Paid Applicant Email' },
-    { id: 7, text: 'New Ticket Receiver Email' },
-    { id: 8, text: 'New Ticket Applicant Email' },
-    { id: 9, text: 'Ticket Replied Email' },
-    { id: 10, text: 'New Entry Admin Email' },
-    { id: 11, text: 'New Entry Applicant Email' },
-    { id: 12, text: 'New Entry Approved Applicant Email' },
-    //{ id: 13, text: 'New Bank Details Added Admin Email' },
-    //{ id: 14, text: 'Bank Details Verified Applicant Email' },
-    { id: 15, text: 'Family Member Verified Applicant Email' },
-    { id: 16, text: 'Forgot Password Email' },
-    { id: 17, text: 'New Family Member Admin Email' },
-    { id: 18, text: 'Appllication Marked Followup Applicant Email' },
-    { id: 19, text: 'Appllication Marked Followup Complete Applicant Email' },
-    { id: 20, text: 'Appllication Rejected Applicant Email' },
-    { id: 21, text: 'New Profile Approved Applicant Email' },
-    { id: 22, text: 'Application Reopen Applicant Email' },
-    { id: 23, text: 'Child Academic Details Updated Applicant Email' },
+    { id: 1, text: 'Account Creation Email' },
+    { id: 2, text: 'Appointment Contact Email' },
+    { id: 3, text: 'Appointment Admin Email' },
+    { id: 4, text: 'Appointment Cancel Email' },
+    { id: 5, text: 'Appointment Reschedule Email' },
+    { id: 6, text: 'Contact Us Admin Email' },
+    { id: 7, text: 'Contact Us Contact Email' },
+    { id: 8, text: 'Appointment Confirm Email' },
+    { id: 9, text: 'Appointment Confirm Admin Email' },
   ],
 
   EnDepartmentType: [
@@ -404,7 +382,69 @@ export const appCommon = {
     { text: 'Category B', id: 2 },
   ],
 
+
+  EnAppointmentStatus: [
+    { text: 'Pending Request', id: 1 },
+    { text: 'Booked', id: 2 },
+    { text: 'Rescheduled', id: 3 },
+    { text: 'Cancelled', id: 4 },
+    { text: 'Archived', id: 5 },
+  ],
+
+  EnAppointmentStatusObj: EnAppointmentStatusObj,
+
   EnDepartmentTypeObj: EnDepartmentTypeObj,
+
+  // CMS and Blog related enums
+  EnMediaType: [
+    { text: 'Image', id: 'Image' },
+    { text: 'Video', id: 'Video' },
+    { text: 'Document', id: 'Document' },
+    //{ text: 'Other', id: 'Other' }
+  ],
+
+  EnMediaTypeObj: {
+    "Image": "Image",
+    "Video": "Video",
+    "Document": "Document",
+    //"Other": "Other"
+  },
+
+  EnContentType: [
+    { text: 'Blog', id: 'Blog' },
+    { text: 'Article', id: 'Article' },
+    { text: 'Case Study', id: 'CaseStudy' }
+  ],
+
+  EnContentTypeObj: {
+    "Blog": "Blog",
+    "Article": "Article",
+    "CaseStudy": "Case Study"
+  },
+
+  EnBlogStatus: [
+    { text: 'Draft', id: 'Draft' },
+    { text: 'Published', id: 'Published' },
+    { text: 'Scheduled', id: 'Scheduled' },
+    { text: 'Archived', id: 'Archived' }
+  ],
+
+  EnBlogStatusObj: {
+    "Draft": "Draft",
+    "Published": "Published",
+    "Scheduled": "Scheduled",
+    "Archived": "Archived"
+  },
+
+  EnVisibility: [
+    { text: 'Public', id: 'Public' },
+    { text: 'Private', id: 'Private' }
+  ],
+
+  EnVisibilityObj: {
+    "Public": "Public",
+    "Private": "Private"
+  },
 
   EnPermissionTextList: [
     { text: 'View', id: 1 },
@@ -502,5 +542,16 @@ export const appCommon = {
     }
   },
 
-  replaceArabicString(item): string { return item.replace(/صاحب/g, "").replace(/</g, "بهائي").replace(/>/g, "بهائي") }
+  getAge(dob: string): string {
+    if (!dob) return '';
+    const birthDate = new Date(dob);
+    const today = new Date();
+    const age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      return ` (age ${age - 1})`;
+    }
+    return ` (age ${age})`;
+  }
 };

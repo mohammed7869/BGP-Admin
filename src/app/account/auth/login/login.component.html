@@ -1,84 +1,146 @@
-<div class="home-btn d-none d-sm-block">
-  <a routerLink=""><i class="mdi mdi-home-variant h2 text-white"></i></a>
-</div>
-<div>
-  <div class="container-fluid p-0">
-    <div class="row no-gutters">
-      <div class="col-lg-4">
-        <div class="authentication-page-content p-4 d-flex align-items-center min-vh-100">
-          <div class="w-100">
-            <div class="row justify-content-center">
-              <div class="col-lg-9">
-                <div>
-                  <div class="text-center">
-                    <div>
-                      <a routerLink="" class="logo"><img src="assets/images/logo-dark.png" height="20" alt="logo"></a>
+<div class="auth-page-wrapper auth-bg-cover d-flex justify-content-center align-items-center min-vh-100">
+    <div class="bg-overlay"></div>
+    <div class="auth-page-content overflow-hidden pt-lg-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card overflow-hidden">
+                        <div class="row g-0">
+                            <div class="col-lg-6">
+                                <div class="p-lg-5 p-4 auth-one-bg h-100">
+                                    <div class="bg-overlay"></div>
+                                    <div class="position-relative h-100 d-flex flex-column">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="p-lg-5 p-4 d-flex justify-content-center">
+                                    <div style="max-width: 400px; width: 100%;">
+                                        <div class="text-center mb-4">
+                                            <a routerLink="/" class="d-block">
+                                                <img [src]="tenantConfigService.getLogo()" alt="" height="50">
+                                            </a>
+                                        </div>
+                                        <div class="text-center">
+                                            <h5 class="text-primary">Welcome Back!</h5>
+                                            <p class="text-muted">Sign in to continue to <b>{{
+                                                    tenantConfigService.getCompanyName() }}</b>.</p>
+                                        </div>
+
+                                        <div class="mt-2">
+                                            <ngb-alert class="mb-1" [dismissible]="false" type="danger" *ngIf="error">
+                                                <strong>{{error}}</strong>
+                                            </ngb-alert>
+                                            <!-- "Not You?" functionality -->
+                                            <div
+                                                *ngIf="userLoginData && userLoginData.userLoginName && userLoginData.companyShortCode">
+                                                <div class="alert alert-success" role="alert">
+                                                    Logged in as <strong>{{ userLoginData.userName }}</strong>.
+                                                    <button type="button" class="btn btn-link p-0 text-danger"
+                                                        (click)="onNotYouClick()"><b>Not You?</b></button>
+                                                </div>
+                                            </div>
+
+                                            <form class="form-horizontal mt-2" [formGroup]="loginForm"
+                                                (ngSubmit)="onAdminSubmit()" autocomplete="off">
+                                                <ng-container *ngIf="!userLoginData">
+                                                    <div class="form-group auth-form-group-custom mb-4"
+                                                        *ngIf="!tenantConfigService.isTenantConfigured()">
+                                                        <i class="ri-building-4-line auti-custom-input-icon"></i>
+                                                        <label for="shortcode">Company Code</label>
+                                                        <input #shortcode type="text" formControlName="shortcode"
+                                                            class="form-control" id="shortcode"
+                                                            [ngClass]="{ 'is-invalid': submitted && f.shortcode.errors }"
+                                                            [disabled]="isUserRemembered"
+                                                            placeholder="Enter Company Code" />
+                                                        <div *ngIf="submitted && f.shortcode.errors"
+                                                            class="invalid-feedback">
+                                                            <div *ngIf="f.shortcode.errors.required">Company Code is
+                                                                required
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group auth-form-group-custom mb-4">
+                                                        <i class="ri-user-2-line auti-custom-input-icon"></i>
+                                                        <label for="email">User Name</label>
+                                                        <input #email type="email" formControlName="email"
+                                                            class="form-control" id="email"
+                                                            [disabled]="isUserRemembered" placeholder="Enter User Name"
+                                                            [ngClass]="{ 'is-invalid': submitted && f.email.errors }">
+                                                        <div *ngIf="submitted && f.email.errors"
+                                                            class="invalid-feedback">
+                                                            <div *ngIf="f.email.errors.required">Email is required</div>
+                                                        </div>
+                                                    </div>
+                                                </ng-container>
+                                                <div class="form-group auth-form-group-custom mb-4">
+                                                    <i class="ri-lock-2-line auti-custom-input-icon"></i>
+                                                    <label for="password">Password</label>
+                                                    <input #password type="password" formControlName="password"
+                                                        class="form-control" id="password" placeholder="Enter Password"
+                                                        [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+                                                    <div *ngIf="submitted && f.password.errors"
+                                                        class="invalid-feedback">
+                                                        <div *ngIf="f.password.errors.required">Password is required
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- <div class="d-flex justify-content-end mt-2 mb-2">
+                                                    <a routerLink="/account/forget-password" class="text-muted">Forgot
+                                                        password?</a>
+                                                </div> -->
+                                                <div class="mt-2">
+                                                    <button type="submit"
+                                                        class="btn btn-success btn-load btn-label w-100">
+                                                        <i
+                                                            class="ri-login-box-line label-icon align-middle fs-16 mr-2"></i>
+                                                        <ng-container *ngIf="!isBtnLoading">Sign In</ng-container>
+                                                        <ng-container *ngIf="isBtnLoading">
+                                                            <span class="indicator-progress">
+                                                                Please wait...
+                                                                <span
+                                                                    class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                                            </span>
+                                                        </ng-container>
+                                                    </button>
+                                                </div>
+
+                                                <div class="mt-4 text-center"  *ngIf="tenantConfigService.isTenantConfigured()">
+                                                    <div class="signin-other-title">
+                                                        <h5 class="fs-13 mb-4 title">Our Products</h5>
+                                                    </div>
+                                                    <div class="d-flex gap-2 justify-content-center">
+                                                        <span class="pointer mr-2" data-bs-toggle="tooltip"
+                                                            data-bs-trigger="hover" data-bs-placement="top"
+                                                            ngbTooltip="ERP"> <img
+                                                                src="../../../assets/images/baawan-logo-erp.svg" alt=""
+                                                                height="40"></span>
+                                                        <span class="pointer mr-2" data-bs-toggle="tooltip"
+                                                            data-bs-trigger="hover" data-bs-placement="top"
+                                                            ngbTooltip="CMS"> <img
+                                                                src="../../../assets/images/baawan-logo-cms.svg" alt=""
+                                                                height="40"></span>
+                                                        <span class="pointer mr-2" data-bs-toggle="tooltip"
+                                                            data-bs-trigger="hover" data-bs-placement="top"
+                                                            ngbTooltip="CRM"> <img
+                                                                src="../../../assets/images/baawan-logo-crm.svg" alt=""
+                                                                height="40"></span>
+                                                        <span class="pointer mr-2" data-bs-toggle="tooltip"
+                                                            data-bs-trigger="hover" data-bs-placement="top"
+                                                            ngbTooltip="E-Commerce"> <img
+                                                                src="../../../assets/images/baawan-logo-ecommerce.svg"
+                                                                alt="" height="40"></span>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-
-                    <h4 class="font-size-18 mt-4">Welcome Back !</h4>
-                    <p class="text-muted">Sign in to continue to Nazox.</p>
-                  </div>
-
-                  <div class="p-2 mt-5">
-                    <form class="form-horizontal" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-                      <ngb-alert type="danger" *ngIf="error" [dismissible]="false">{{ error }}</ngb-alert>
-                      <div class="form-group auth-form-group-custom mb-4">
-                        <i class="ri-user-2-line auti-custom-input-icon"></i>
-                        <label for="email">Email</label>
-                        <input type="email" formControlName="email" class="form-control" id="email" placeholder="Email"
-                          [ngClass]="{ 'is-invalid': submitted && f.email.errors }">
-                        <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
-                          <div *ngIf="f.email.errors.required">Email is required</div>
-                          <div *ngIf="f.email.errors.email">Email must be a valid email address</div>
-                        </div>
-                      </div>
-
-                      <div class="form-group auth-form-group-custom mb-4">
-                        <i class="ri-lock-2-line auti-custom-input-icon"></i>
-                        <label for="password">Password</label>
-                        <input type="password" formControlName="password" class="form-control" id="password"
-                          [ngClass]="{ 'is-invalid': submitted && f.password.errors }" placeholder="Password" />
-                        <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
-                          <div *ngIf="f.password.errors.required">Password is required</div>
-                        </div>
-                      </div>
-
-                      <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="customControlInline">
-                        <label class="custom-control-label" for="customControlInline">Remember me</label>
-                      </div>
-
-                      <div class="mt-4 text-center">
-                        <button class="btn btn-primary w-md waves-effect waves-light" type="submit">Log In</button>
-                      </div>
-
-                      <div class="mt-4 text-center">
-                        <a routerLink="/account/reset-password" class="text-muted"><i class="mdi mdi-lock mr-1"></i>
-                          Forgot
-                          your
-                          password?</a>
-                      </div>
-                    </form>
-                  </div>
-
-                  <div class="mt-5 text-center">
-                    <p>Don't have an account ? <a routerLink="/account/signup" class="font-weight-medium text-primary">
-                        Register </a> </p>
-                    <p>© 2020 Nazox. Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesdesign</p>
-                  </div>
                 </div>
-
-              </div>
             </div>
-          </div>
         </div>
-      </div>
-      <div class="col-lg-8">
-        <div class="authentication-bg">
-          <div class="bg-overlay"></div>
-        </div>
-      </div>
     </div>
-  </div>
 </div>
-<!-- end page -->

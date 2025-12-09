@@ -1,0 +1,74 @@
+<div class="image-input-container">
+  <label class="form-label" *ngIf="label">
+    {{ label }} <span class="text-danger" *ngIf="required">*</span>
+  </label>
+  
+  <div class="image-input-wrapper">
+    <!-- Image Preview -->
+    <div class="image-preview-container" (click)="openImageSelector()">
+      <div *ngIf="loading" class="loading-overlay">
+        <div class="spinner-border spinner-border-sm text-primary" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+      
+      <img 
+        [src]="getImageUrl()" 
+        [alt]="getImageAlt()"
+        class="image-preview"
+        [class.has-image]="selectedImage"
+        [class.no-image]="!selectedImage"
+      >
+      
+      <!-- No Image State -->
+      <div *ngIf="!selectedImage && !loading" class="no-image-state">
+        <i class="ri-image-line"></i>
+        <span class="placeholder-text">{{ placeholder }}</span>
+      </div>
+      
+      <!-- Image Overlay -->
+      <div *ngIf="selectedImage && !loading" class="image-overlay">
+        <div class="overlay-content">
+          <i class="ri-edit-line"></i>
+          <span>Click to change</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Action Buttons -->
+    <div class="image-actions">
+      <button 
+        type="button" 
+        class="btn btn-outline-primary btn-sm"
+        (click)="openImageSelector()"
+        [disabled]="disabled"
+        title="Select Image"
+      >
+        <i class="ri-image-add-line"></i>
+        Select
+      </button>
+      
+      <button 
+        *ngIf="selectedImage"
+        type="button" 
+        class="btn btn-outline-danger btn-sm"
+        (click)="clearImage()"
+        [disabled]="disabled"
+        title="Clear Image"
+      >
+        <i class="ri-delete-bin-line"></i>
+        Clear
+      </button>
+    </div>
+    
+    <!-- Image Info -->
+    <div *ngIf="selectedImage" class="image-info">
+      <small class="text-muted d-block text-truncate" [title]="selectedImage.altText || 'No alt text'">
+        <strong>Alt Text:</strong> {{ selectedImage.altText || 'No alt text' }}
+      </small>
+      <small class="text-muted d-block text-truncate" [title]="selectedImage.url">
+        <strong>URL:</strong> {{ selectedImage.url | slice:0:40 }}{{ selectedImage.url.length > 40 ? '...' : '' }}
+      </small>
+    </div>
+  </div>
+</div>
