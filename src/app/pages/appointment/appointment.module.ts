@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AppointmentListComponent } from './appointment-list/appointment-list.component';
 import { AppointmentDetailsComponent } from './appointment-details/appointment-details.component';
+import { UserEditComponent } from './user-edit/user-edit.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgbCollapseModule, NgbTooltipModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
@@ -17,7 +18,8 @@ import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
   declarations: [
     AppointmentListComponent,
     AppointmentDetailsComponent,
-    AppointmentNewComponent
+    AppointmentNewComponent,
+    UserEditComponent
   ],
   imports: [
     CommonModule,
@@ -46,6 +48,10 @@ import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
             }
           }
         ]
+      },
+      {
+        path: 'user/edit/:id',
+        component: UserEditComponent
       },
       {
         path: 'archived',

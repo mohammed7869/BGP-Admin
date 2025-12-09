@@ -1,0 +1,262 @@
+<div class="container-fluid py-3">
+  <div class="row">
+    <div class="col-12">
+      <div
+        class="page-title-box d-flex align-items-center justify-content-between mr-4 ml-4"
+      >
+        <h4 class="mb-0">Edit User</h4>
+        <div class="page-title-right">
+          <button (click)="goBack()" type="button" class="btn btn-info btn-sm">
+            <i class="ri-arrow-left-line align-middle mr-2"></i>Back
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-label-group">
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="itsId"
+                        formControlName="itsId"
+                        placeholder="Enter ITS ID"
+                        [class.is-invalid]="
+                          f.itsId.invalid && (f.itsId.dirty || f.itsId.touched)
+                        "
+                      />
+                      <label class="form-label"
+                        >ITS ID <span class="text-danger">*</span></label
+                      >
+                    </div>
+                    <div
+                      class="invalid-feedback d-block"
+                      *ngIf="f.itsId.invalid && (f.itsId.dirty || f.itsId.touched)"
+                    >
+                      <div *ngIf="f.itsId.errors?.['required']">
+                        ITS ID is required
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="form-label-group">
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="fullName"
+                        formControlName="fullName"
+                        placeholder="Enter Full Name"
+                        [class.is-invalid]="
+                          f.fullName.invalid &&
+                          (f.fullName.dirty || f.fullName.touched)
+                        "
+                      />
+                      <label class="form-label"
+                        >Full Name <span class="text-danger">*</span></label
+                      >
+                    </div>
+                    <div
+                      class="invalid-feedback d-block"
+                      *ngIf="
+                        f.fullName.invalid &&
+                        (f.fullName.dirty || f.fullName.touched)
+                      "
+                    >
+                      <div *ngIf="f.fullName.errors?.['required']">
+                        Full Name is required
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="form-label-group">
+                      <input
+                        type="email"
+                        class="form-control"
+                        id="email"
+                        formControlName="email"
+                        placeholder="Enter Email"
+                        [class.is-invalid]="
+                          f.email.invalid && (f.email.dirty || f.email.touched)
+                        "
+                      />
+                      <label class="form-label"
+                        >Email <span class="text-danger">*</span></label
+                      >
+                    </div>
+                    <div
+                      class="invalid-feedback d-block"
+                      *ngIf="f.email.invalid && (f.email.dirty || f.email.touched)"
+                    >
+                      <div *ngIf="f.email.errors?.['required']">
+                        Email is required
+                      </div>
+                      <div *ngIf="f.email.errors?.['email']">
+                        Please enter a valid email
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="form-label-group">
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="contact"
+                        formControlName="contact"
+                        placeholder="Enter Contact Number"
+                      />
+                      <label class="form-label">Contact</label>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="form-label-group">
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="rank"
+                        formControlName="rank"
+                        placeholder="Enter Rank"
+                      />
+                      <label class="form-label">Rank</label>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="form-label-group">
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="jamiyat"
+                        formControlName="jamiyat"
+                        placeholder="Enter Jamiyat"
+                      />
+                      <label class="form-label">Jamiyat</label>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="form-label-group">
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="jamaat"
+                        formControlName="jamaat"
+                        placeholder="Enter Jamaat"
+                      />
+                      <label class="form-label">Jamaat</label>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="form-label-group">
+                      <select
+                        class="form-control"
+                        id="gender"
+                        formControlName="gender"
+                      >
+                        <option value="">Select Gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                      </select>
+                      <label class="form-label">Gender</label>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="form-label-group">
+                      <input
+                        type="number"
+                        class="form-control"
+                        id="age"
+                        formControlName="age"
+                        placeholder="Enter Age"
+                        min="0"
+                      />
+                      <label class="form-label">Age</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="mb-3">
+                      <app-image-input
+                        [label]="'Profile Image'"
+                        [placeholder]="'Select profile image'"
+                        [allowFileUpload]="true"
+                        [imageUrl]="profileImageUrl"
+                        [disabled]="isUploadingImage"
+                        (fileSelected)="onFileSelected($event)"
+                        (imageCleared)="onImageCleared()"
+                      ></app-image-input>
+                      <div class="mt-2" *ngIf="selectedFile">
+                        <button
+                          type="button"
+                          class="btn btn-primary btn-sm"
+                          (click)="uploadProfileImage()"
+                          [disabled]="isUploadingImage"
+                        >
+                          <span
+                            *ngIf="isUploadingImage"
+                            class="spinner-border spinner-border-sm me-1"
+                            role="status"
+                          ></span>
+                          <i
+                            *ngIf="!isUploadingImage"
+                            class="ri-upload-line mr-1"
+                          ></i>
+                          {{ isUploadingImage ? "Uploading..." : "Upload Image" }}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-3">
+              <div class="col-12 text-end">
+                <button
+                  type="button"
+                  class="btn btn-secondary mr-2"
+                  (click)="goBack()"
+                  [disabled]="isBtnLoading"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  class="btn btn-primary"
+                  [disabled]="isBtnLoading || userForm.invalid"
+                >
+                  <span
+                    *ngIf="isBtnLoading"
+                    class="spinner-border spinner-border-sm me-1"
+                    role="status"
+                    aria-hidden="true"
+                  ></span>
+                  <i *ngIf="!isBtnLoading" class="ri-save-line mr-1"></i>
+                  {{ isBtnLoading ? "Saving..." : "Save Changes" }}
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

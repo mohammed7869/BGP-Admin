@@ -6,76 +6,127 @@
           <div class="row">
             <div class="col-md-12">
               <div class="form-label-group">
-                <input type="text" class="form-control" formControlName="name" placeholder="Enter page name"
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="name"
+                  placeholder="Enter page name"
                   [class.is-invalid]="
                     submitted && form.get('name').errors?.required
-                  " />
-                <label class="form-label">Page Name <span class="text-danger">*</span></label>
+                  "
+                />
+                <label class="form-label"
+                  >Page Name <span class="text-danger">*</span></label
+                >
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-label-group">
-                <input type="text" class="form-control" formControlName="slug" placeholder="Enter page slug"
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="slug"
+                  placeholder="Enter page slug"
                   [class.is-invalid]="
                     submitted && form.get('slug').errors?.required
-                  " />
-                <label class="form-label">Slug <span class="text-danger">*</span></label>
+                  "
+                />
+                <label class="form-label"
+                  >Slug <span class="text-danger">*</span></label
+                >
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-label-group">
-                <input type="text" class="form-control" formControlName="title" placeholder="Enter page title"
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="title"
+                  placeholder="Enter page title"
                   [class.is-invalid]="
                     submitted && form.get('title').errors?.required
-                  " />
-                <label class="form-label">Page Title <span class="text-danger">*</span></label>
+                  "
+                />
+                <label class="form-label"
+                  >Page Title <span class="text-danger">*</span></label
+                >
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-label-group">
-                <input type="text" class="form-control" formControlName="heading" placeholder="Enter page heading"
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="heading"
+                  placeholder="Enter page heading"
                   [class.is-invalid]="
                     submitted && form.get('heading').errors?.required
-                  " />
-                <label class="form-label">Page Heading <span class="text-danger">*</span></label>
+                  "
+                />
+                <label class="form-label"
+                  >Page Heading <span class="text-danger">*</span></label
+                >
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-label-group">
-                <select class="form-control" formControlName="language" [class.is-invalid]="
+                <select
+                  class="form-control"
+                  formControlName="language"
+                  [class.is-invalid]="
                     submitted && form.get('language').errors?.required
-                  ">
+                  "
+                >
                   <option value="1">English</option>
                   <option value="2">Arabic</option>
                   <option value="3">French</option>
                   <option value="4">Spanish</option>
                 </select>
-                <label class="form-label mr-2">Language <span class="text-danger">*</span></label>
+                <label class="form-label mr-2"
+                  >Language <span class="text-danger">*</span></label
+                >
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-label-group">
-                <input type="datetime-local" class="form-control" formControlName="publishDate" />
+                <input
+                  type="datetime-local"
+                  class="form-control"
+                  formControlName="publishDate"
+                />
                 <label class="form-label">Publish Date</label>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-label-group">
-                <input type="datetime-local" class="form-control" formControlName="expiryDate" />
+                <input
+                  type="datetime-local"
+                  class="form-control"
+                  formControlName="expiryDate"
+                />
                 <label class="form-label">Expiry Date</label>
               </div>
             </div>
             <div class="col-12">
               <div class="form-label-group">
-                <textarea class="form-control" formControlName="shortDesc" rows="2"
-                  placeholder="Enter short description"></textarea>
+                <textarea
+                  class="form-control"
+                  formControlName="shortDesc"
+                  rows="2"
+                  placeholder="Enter short description"
+                ></textarea>
                 <label class="form-label">Short Description</label>
               </div>
             </div>
             <div class="col-md-3">
               <div class="mb-3">
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" formControlName="isLandingPage" id="isLandingPage" />
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    formControlName="isLandingPage"
+                    id="isLandingPage"
+                  />
                   <label class="form-check-label" for="isLandingPage">
                     Landing Page
                   </label>
@@ -85,7 +136,12 @@
             <div class="col-md-3">
               <div class="mb-3">
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" formControlName="isDraft" id="isDraft" />
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    formControlName="isDraft"
+                    id="isDraft"
+                  />
                   <label class="form-check-label" for="isDraft"> Draft </label>
                 </div>
               </div>
@@ -93,7 +149,12 @@
             <div class="col-md-3">
               <div class="mb-3">
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" formControlName="isHomePage" id="isHomePage" />
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    formControlName="isHomePage"
+                    id="isHomePage"
+                  />
                   <label class="form-check-label" for="isHomePage">
                     Home Page
                   </label>
@@ -103,7 +164,12 @@
             <div class="col-md-3">
               <div class="mb-3">
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" formControlName="isPublished" id="isPublished" />
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    formControlName="isPublished"
+                    id="isPublished"
+                  />
                   <label class="form-check-label" for="isPublished">
                     Is Published
                   </label>
@@ -115,22 +181,40 @@
         <div class="col-md-6">
           <div class="row">
             <div class="col-md-6">
-              <app-image-input [imageId]="form.get('pageImageId').value" label="Page Image"
-                placeholder="Select page image" (imageSelected)="onPageImageSelected($event)"
-                (imageCleared)="onPageImageCleared()">
-              </app-image-input>
+              <div class="mb-3">
+                <label class="form-label">Profile Image</label>
+                <app-image-input
+                  [label]="''"
+                  placeholder="Select profile image"
+                  [imageId]="form.get('pageImageId').value"
+                  (imageSelected)="onPageImageSelected($event)"
+                  (imageCleared)="onPageImageCleared()"
+                >
+                </app-image-input>
+              </div>
             </div>
             <div class="col-md-6">
-              <app-image-input [imageId]="form.get('backgroundImageId').value" label="Background Image"
-                placeholder="Select background image" (imageSelected)="onBackgroundImageSelected($event)"
-                (imageCleared)="onBackgroundImageCleared()">
-              </app-image-input>
+              <div class="mb-3">
+                <label class="form-label">Background Image</label>
+                <app-image-input
+                  [label]="''"
+                  placeholder="Select background image"
+                  [imageId]="form.get('backgroundImageId').value"
+                  (imageSelected)="onBackgroundImageSelected($event)"
+                  (imageCleared)="onBackgroundImageCleared()"
+                >
+                </app-image-input>
+              </div>
             </div>
           </div>
         </div>
         <div class="col-12">
           <label class="form-label">Long Description</label>
-          <ckeditor [editor]="Editor" formControlName="longDesc" [config]="{ placeholder: 'Enter page content...' }">
+          <ckeditor
+            [editor]="Editor"
+            formControlName="longDesc"
+            [config]="{ placeholder: 'Enter page content...' }"
+          >
           </ckeditor>
         </div>
 
@@ -142,10 +226,17 @@
               <p class="card-title-desc">
                 Manage related content for this page
               </p>
-              <ul ngbNav #contentNav="ngbNav" [activeId]="1" class="nav-tabs nav-tabs-custom nav-justified">
+              <ul
+                ngbNav
+                #contentNav="ngbNav"
+                [activeId]="1"
+                class="nav-tabs nav-tabs-custom nav-justified"
+              >
                 <li [ngbNavItem]="1">
                   <a ngbNavLink>
-                    <span class="d-block d-sm-none"><i class="fas fa-blog"></i></span>
+                    <span class="d-block d-sm-none"
+                      ><i class="fas fa-blog"></i
+                    ></span>
                     <span class="d-none d-sm-block">Blogs</span>
                   </a>
                   <ng-template ngbNavContent>
@@ -153,21 +244,33 @@
                       <div class="row">
                         <div class="col-12">
                           <!-- Enhanced Header with Search and Filters -->
-                          <div class="d-flex justify-content-between align-items-center mb-4 mt-3">
+                          <div
+                            class="d-flex justify-content-between align-items-center mb-4 mt-3"
+                          >
                             <h5 class="mb-0">
                               <i class="ri-article-line me-2 text-primary"></i>
                               Available Blogs
                             </h5>
-                            <button type="button" class="btn btn-primary btn-sm" (click)="loadBlogs()"
-                              [disabled]="loadingBlogs">
+                            <button
+                              type="button"
+                              class="btn btn-primary btn-sm"
+                              (click)="loadBlogs()"
+                              [disabled]="loadingBlogs"
+                            >
                               <i class="ri-add-line" *ngIf="!loadingBlogs"></i>
-                              <span class="spinner-border spinner-border-sm" *ngIf="loadingBlogs"></span>
+                              <span
+                                class="spinner-border spinner-border-sm"
+                                *ngIf="loadingBlogs"
+                              ></span>
                               {{ loadingBlogs ? "Loading..." : "Load Blogs" }}
                             </button>
                           </div>
 
                           <!-- Enhanced Search and Filter Section -->
-                          <div class="row mb-4" *ngIf="blogs.length > 0 && !loadingBlogs">
+                          <div
+                            class="row mb-4"
+                            *ngIf="blogs.length > 0 && !loadingBlogs"
+                          >
                             <div class="col-md-4">
                               <div class="form-group">
                                 <label class="form-label">Search Blogs</label>
@@ -175,16 +278,24 @@
                                   <span class="input-group-text">
                                     <i class="ri-search-line"></i>
                                   </span>
-                                  <input type="text" class="form-control" placeholder="Search by title or author..."
-                                    [(ngModel)]="searchTerm" (input)="onSearchChange()" />
+                                  <input
+                                    type="text"
+                                    class="form-control"
+                                    placeholder="Search by title or author..."
+                                    [(ngModel)]="searchTerm"
+                                    (input)="onSearchChange()"
+                                  />
                                 </div>
                               </div>
                             </div>
                             <div class="col-md-3">
                               <div class="form-group">
                                 <label class="form-label">Content Type</label>
-                                <select class="form-control" [(ngModel)]="selectedContentType"
-                                  (change)="onContentTypeChange()">
+                                <select
+                                  class="form-control"
+                                  [(ngModel)]="selectedContentType"
+                                  (change)="onContentTypeChange()"
+                                >
                                   <option value="">All Types</option>
                                   <option value="Blog">Blog</option>
                                   <option value="Article">Article</option>
@@ -194,7 +305,11 @@
                             <div class="col-md-3">
                               <div class="form-group">
                                 <label class="form-label">Status</label>
-                                <select class="form-control" [(ngModel)]="selectedStatus" (change)="onStatusChange()">
+                                <select
+                                  class="form-control"
+                                  [(ngModel)]="selectedStatus"
+                                  (change)="onStatusChange()"
+                                >
                                   <option value="">All Status</option>
                                   <option value="Published">Published</option>
                                   <option value="Draft">Draft</option>
@@ -204,8 +319,11 @@
                             <div class="col-md-2">
                               <div class="form-group">
                                 <label class="form-label">&nbsp;</label>
-                                <button type="button" class="btn btn-outline-secondary btn-sm w-100"
-                                  (click)="clearFilters()">
+                                <button
+                                  type="button"
+                                  class="btn btn-outline-secondary btn-sm w-100"
+                                  (click)="clearFilters()"
+                                >
                                   <i class="ri-refresh-line"></i> Clear
                                 </button>
                               </div>
@@ -213,23 +331,39 @@
                           </div>
 
                           <!-- Loading state for blogs -->
-                          <div class="text-center py-5 bg-light rounded mb-3" *ngIf="loadingBlogs">
-                            <div class="spinner-border text-primary mb-3" role="status" style="width: 3rem; height: 3rem;">
+                          <div
+                            class="text-center py-5 bg-light rounded mb-3"
+                            *ngIf="loadingBlogs"
+                          >
+                            <div
+                              class="spinner-border text-primary mb-3"
+                              role="status"
+                              style="width: 3rem; height: 3rem"
+                            >
                               <span class="sr-only">Loading...</span>
                             </div>
                             <h5 class="text-muted">Loading blogs...</h5>
-                            <p class="text-muted mb-0">Please wait while we fetch the available blogs</p>
+                            <p class="text-muted mb-0">
+                              Please wait while we fetch the available blogs
+                            </p>
                           </div>
 
                           <!-- Enhanced Blog List -->
-                          <div class="table-responsive" *ngIf="filteredBlogs.length > 0 && !loadingBlogs">
+                          <div
+                            class="table-responsive"
+                            *ngIf="filteredBlogs.length > 0 && !loadingBlogs"
+                          >
                             <table class="table table-hover table-bordered">
                               <thead class="table-light">
                                 <tr>
                                   <th width="50">
                                     <div class="form-check mb-4">
-                                      <input type="checkbox" class="form-check-input" [checked]="isAllBlogsSelected()"
-                                        (change)="toggleAllBlogs($event)" />
+                                      <input
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        [checked]="isAllBlogsSelected()"
+                                        (change)="toggleAllBlogs($event)"
+                                      />
                                     </div>
                                   </th>
                                   <th>
@@ -255,21 +389,41 @@
                                 </tr>
                               </thead>
                               <tbody>
-                                <tr *ngFor="let blog of filteredBlogs" class="align-middle" [class.table-secondary]="isBlogAddedToPage(blog)">
+                                <tr
+                                  *ngFor="let blog of filteredBlogs"
+                                  class="align-middle"
+                                  [class.table-secondary]="
+                                    isBlogAddedToPage(blog)
+                                  "
+                                >
                                   <td>
                                     <div class="form-check">
-                                      <input type="checkbox" class="form-check-input" 
-                                        [checked]="isBlogSelected(blog) || isBlogAddedToPage(blog)"
+                                      <input
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        [checked]="
+                                          isBlogSelected(blog) ||
+                                          isBlogAddedToPage(blog)
+                                        "
                                         [disabled]="isBlogAddedToPage(blog)"
-                                        (change)="toggleBlogSelection(blog, $event)" />
+                                        (change)="
+                                          toggleBlogSelection(blog, $event)
+                                        "
+                                      />
                                     </div>
                                   </td>
                                   <td>
                                     <div class="d-flex align-items-center">
                                       <div class="flex-grow-1">
-                                        <h6 class="mb-0 text-truncate" style="max-width: 200px">
+                                        <h6
+                                          class="mb-0 text-truncate"
+                                          style="max-width: 200px"
+                                        >
                                           {{ blog.title }}
-                                          <span class="badge badge-soft-success badge-sm ms-2" *ngIf="isBlogAddedToPage(blog)">
+                                          <span
+                                            class="badge badge-soft-success badge-sm ms-2"
+                                            *ngIf="isBlogAddedToPage(blog)"
+                                          >
                                             <i class="ri-check-line"></i> Added
                                           </span>
                                         </h6>
@@ -279,7 +433,7 @@
                                   <td>
                                     <span class="text-muted">{{
                                       blog.authorName
-                                      }}</span>
+                                    }}</span>
                                   </td>
                                   <td>
                                     <span class="badge badge-soft-info">
@@ -288,20 +442,26 @@
                                     </span>
                                   </td>
                                   <td>
-                                    <span class="badge" [class.badge-soft-warning]="
+                                    <span
+                                      class="badge"
+                                      [class.badge-soft-warning]="
                                         blog.blogStatus === 'Draft'
-                                      " [class.badge-soft-success]="
+                                      "
+                                      [class.badge-soft-success]="
                                         blog.blogStatus === 'Published'
-                                      ">
-                                      <i class="ri-checkbox-circle-line me-1"></i>
+                                      "
+                                    >
+                                      <i
+                                        class="ri-checkbox-circle-line me-1"
+                                      ></i>
                                       {{ blog.blogStatus }}
                                     </span>
                                   </td>
                                   <td>
                                     <small class="text-muted">
                                       {{
-                                      blog.publishedDate
-                                      | date : "MMM dd, yyyy"
+                                        blog.publishedDate
+                                          | date : "MMM dd, yyyy"
                                       }}
                                     </small>
                                   </td>
@@ -311,24 +471,40 @@
                           </div>
 
                           <!-- No blogs message -->
-                          <div class="text-center py-5" *ngIf="
+                          <div
+                            class="text-center py-5"
+                            *ngIf="
                               filteredBlogs.length === 0 &&
                               !loadingBlogs &&
                               blogs.length > 0
-                            ">
-                            <i class="ri-search-line text-muted" style="font-size: 3rem"></i>
+                            "
+                          >
+                            <i
+                              class="ri-search-line text-muted"
+                              style="font-size: 3rem"
+                            ></i>
                             <h5 class="text-muted mt-3">No blogs found</h5>
                             <p class="text-muted">
                               Try adjusting your search or filter criteria
                             </p>
-                            <button type="button" class="btn btn-outline-primary" (click)="clearFilters()">
+                            <button
+                              type="button"
+                              class="btn btn-outline-primary"
+                              (click)="clearFilters()"
+                            >
                               <i class="ri-refresh-line"></i> Clear Filters
                             </button>
                           </div>
 
                           <!-- No blogs available message -->
-                          <div class="text-center py-5" *ngIf="blogs.length === 0 && !loadingBlogs">
-                            <i class="ri-article-line text-muted" style="font-size: 3rem"></i>
+                          <div
+                            class="text-center py-5"
+                            *ngIf="blogs.length === 0 && !loadingBlogs"
+                          >
+                            <i
+                              class="ri-article-line text-muted"
+                              style="font-size: 3rem"
+                            ></i>
                             <h5 class="text-muted mt-3">No blogs available</h5>
                             <p class="text-muted">
                               Click "Load Blogs" to fetch available blogs
@@ -336,17 +512,25 @@
                           </div>
 
                           <!-- Enhanced Selected Blogs Summary -->
-                          <div class="mt-4" *ngIf="selectedBlogs.length > 0 && !loadingBlogs">
+                          <div
+                            class="mt-4"
+                            *ngIf="selectedBlogs.length > 0 && !loadingBlogs"
+                          >
                             <div class="alert alert-success border-0">
-                              <div class="d-flex justify-content-between align-items-center">
+                              <div
+                                class="d-flex justify-content-between align-items-center"
+                              >
                                 <div class="d-flex align-items-center">
                                   <i class="ri-checkbox-circle-line me-2"></i>
                                   <h6 class="mb-0">
                                     {{ selectedBlogs.length }} blog(s) selected
                                   </h6>
                                 </div>
-                                <button type="button" class="btn btn-sm btn-outline-danger"
-                                  (click)="clearAllSelectedBlogs()">
+                                <button
+                                  type="button"
+                                  class="btn btn-sm btn-outline-danger"
+                                  (click)="clearAllSelectedBlogs()"
+                                >
                                   <i class="ri-close-line"></i> Clear All
                                 </button>
                               </div>
@@ -354,7 +538,11 @@
 
                             <!-- Add to CMS Page Button -->
                             <div class="text-center mb-3">
-                              <button type="button" class="btn btn-success btn-lg" (click)="addSelectedBlogsToPage()">
+                              <button
+                                type="button"
+                                class="btn btn-success btn-lg"
+                                (click)="addSelectedBlogsToPage()"
+                              >
                                 <i class="ri-add-line"></i> Add Selected Blogs
                                 to CMS Page
                               </button>
@@ -368,12 +556,17 @@
                 <!-- Future tabs can be added here -->
                 <li [ngbNavItem]="2">
                   <a ngbNavLink>
-                    <span class="d-block d-sm-none"><i class="fas fa-file-alt"></i></span>
+                    <span class="d-block d-sm-none"
+                      ><i class="fas fa-file-alt"></i
+                    ></span>
                     <span class="d-none d-sm-block">Articles</span>
                   </a>
                   <ng-template ngbNavContent>
                     <div class="text-center py-5">
-                      <i class="ri-file-text-line text-muted" style="font-size: 3rem"></i>
+                      <i
+                        class="ri-file-text-line text-muted"
+                        style="font-size: 3rem"
+                      ></i>
                       <h5 class="text-muted mt-3">Articles Management</h5>
                       <p class="text-muted">
                         Articles tab content will be added here in the future.
@@ -391,7 +584,9 @@
         <div class="col-12 mt-4" *ngIf="pageBlogs.length > 0">
           <div class="card border-primary">
             <div class="card-body">
-              <div class="d-flex justify-content-between align-items-center mb-4">
+              <div
+                class="d-flex justify-content-between align-items-center mb-4"
+              >
                 <div>
                   <h4 class="card-title mb-1">
                     <i class="ri-bookmark-line me-2 text-primary"></i>
@@ -405,29 +600,52 @@
                   <span class="badge badge-soft-primary badge-lg">
                     {{ pageBlogs.length }} blog(s)
                   </span>
-                  <button type="button" class="btn btn-success btn-sm ml-2" (click)="saveBlogMappings()"
-                    [disabled]="pageBlogs.length === 0 || savingBlogs || !hasPageBlogsChanged()">
+                  <button
+                    type="button"
+                    class="btn btn-success btn-sm ml-2"
+                    (click)="saveBlogMappings()"
+                    [disabled]="
+                      pageBlogs.length === 0 ||
+                      savingBlogs ||
+                      !hasPageBlogsChanged()
+                    "
+                  >
                     <i class="ri-save-line" *ngIf="!savingBlogs"></i>
-                    <span class="spinner-border spinner-border-sm me-1" *ngIf="savingBlogs"></span>
+                    <span
+                      class="spinner-border spinner-border-sm me-1"
+                      *ngIf="savingBlogs"
+                    ></span>
                     {{ savingBlogs ? "Saving..." : "Save Blog To Page" }}
                   </button>
                 </div>
               </div>
 
               <div class="row">
-                <div class="col-md-6 col-lg-4 mb-4" *ngFor="let pageBlog of pageBlogs; let i = index">
+                <div
+                  class="col-md-6 col-lg-4 mb-4"
+                  *ngFor="let pageBlog of pageBlogs; let i = index"
+                >
                   <div class="card border h-100 shadow-sm">
                     <div class="card-body d-flex flex-column">
-                      <div class="d-flex justify-content-between align-items-start mb-3">
-                        <h6 class="card-title mb-0 text-truncate" style="max-width: 200px">
+                      <div
+                        class="d-flex justify-content-between align-items-start mb-3"
+                      >
+                        <h6
+                          class="card-title mb-0 text-truncate"
+                          style="max-width: 200px"
+                        >
                           {{ pageBlog.blog.title }}
                         </h6>
                         <div class="d-flex align-items-center gap-2">
-                          <span class="badge badge-sm" [class.badge-soft-warning]="
+                          <span
+                            class="badge badge-sm"
+                            [class.badge-soft-warning]="
                               pageBlog.blog.blogStatus === 'Draft'
-                            " [class.badge-soft-success]="
+                            "
+                            [class.badge-soft-success]="
                               pageBlog.blog.blogStatus === 'Published'
-                            ">
+                            "
+                          >
                             {{ pageBlog.blog.blogStatus }}
                           </span>
                           <span class="badge badge-soft-primary badge-sm">
@@ -440,49 +658,90 @@
                         <div class="d-flex align-items-center mb-2">
                           <i class="ri-user-line text-muted me-2"></i>
                           <small class="text-muted">
-                            <strong>Author:</strong> {{ pageBlog.blog.authorName }}
+                            <strong>Author:</strong>
+                            {{ pageBlog.blog.authorName }}
                           </small>
                         </div>
                         <div class="d-flex align-items-center mb-2">
                           <i class="ri-bookmark-line text-muted me-2"></i>
                           <small class="text-muted">
-                            <strong>Type:</strong> {{ pageBlog.blog.contentType }}
+                            <strong>Type:</strong>
+                            {{ pageBlog.blog.contentType }}
                           </small>
                         </div>
                         <div class="d-flex align-items-center">
                           <i class="ri-calendar-line text-muted me-2"></i>
                           <small class="text-muted">
                             <strong>Published:</strong>
-                            {{ pageBlog.blog.publishedDate | date : "MMM dd, yyyy" }}
+                            {{
+                              pageBlog.blog.publishedDate
+                                | date : "MMM dd, yyyy"
+                            }}
                           </small>
                         </div>
                       </div>
 
                       <!-- Display Order Controls -->
                       <div class="mb-3">
-                        <div class="d-flex align-items-center justify-content-between">
-                          <label class="form-label mb-0 small text-muted">Display Order:</label>
-                          <div class="input-group" style="width: 140px;">
-                            <button type="button" class="btn btn-outline-secondary btn-sm btn_up_down_right"
-                              (click)="moveBlogUp(pageBlog)" [disabled]="i === 0" title="Move Up">
-                              <i class="ri-arrow-up-line" style="font-size: 0.875rem;"></i>
+                        <div
+                          class="d-flex align-items-center justify-content-between"
+                        >
+                          <label class="form-label mb-0 small text-muted"
+                            >Display Order:</label
+                          >
+                          <div class="input-group" style="width: 140px">
+                            <button
+                              type="button"
+                              class="btn btn-outline-secondary btn-sm btn_up_down_right"
+                              (click)="moveBlogUp(pageBlog)"
+                              [disabled]="i === 0"
+                              title="Move Up"
+                            >
+                              <i
+                                class="ri-arrow-up-line"
+                                style="font-size: 0.875rem"
+                              ></i>
                             </button>
-                            <input type="number" class="form-control form-control-sm text-center"
+                            <input
+                              type="number"
+                              class="form-control form-control-sm text-center"
                               [value]="pageBlog.displayOrder"
-                              (change)="updateDisplayOrder(pageBlog, +$event.target.value)" min="1"
-                              [max]="pageBlogs.length" style="border-radius: 0; border-left: 0; border-right: 0;" />
-                            <button type="button" class="btn btn-outline-secondary btn-sm btn_up_down_left"
-                              (click)="moveBlogDown(pageBlog)" [disabled]="i === pageBlogs.length - 1"
-                              title="Move Down">
-                              <i class="ri-arrow-down-line" style="font-size: 0.875rem;"></i>
+                              (change)="
+                                updateDisplayOrder(
+                                  pageBlog,
+                                  +$event.target.value
+                                )
+                              "
+                              min="1"
+                              [max]="pageBlogs.length"
+                              style="
+                                border-radius: 0;
+                                border-left: 0;
+                                border-right: 0;
+                              "
+                            />
+                            <button
+                              type="button"
+                              class="btn btn-outline-secondary btn-sm btn_up_down_left"
+                              (click)="moveBlogDown(pageBlog)"
+                              [disabled]="i === pageBlogs.length - 1"
+                              title="Move Down"
+                            >
+                              <i
+                                class="ri-arrow-down-line"
+                                style="font-size: 0.875rem"
+                              ></i>
                             </button>
                           </div>
                         </div>
                       </div>
 
                       <div class="mt-auto">
-                        <button type="button" class="btn btn-outline-danger btn-sm w-100"
-                          (click)="removeBlogFromPage(pageBlog)">
+                        <button
+                          type="button"
+                          class="btn btn-outline-danger btn-sm w-100"
+                          (click)="removeBlogFromPage(pageBlog)"
+                        >
                           <i class="ri-delete-bin-line"></i> Remove
                         </button>
                       </div>
@@ -496,12 +755,23 @@
 
         <div class="col-12 mt-2">
           <div class="d-flex justify-content-start button-items">
-            <button type="submit" class="btn btn-primary btn-sm" [disabled]="submitLoading">
+            <button
+              type="submit"
+              class="btn btn-primary btn-sm"
+              [disabled]="submitLoading"
+            >
               <i class="ri-save-line" *ngIf="!submitLoading"></i>
-              <span class="spinner-border spinner-border-sm me-1" *ngIf="submitLoading"></span>
+              <span
+                class="spinner-border spinner-border-sm me-1"
+                *ngIf="submitLoading"
+              ></span>
               {{ submitLoading ? "Saving..." : "Update" }}
             </button>
-            <button type="button" class="btn btn-secondary btn-sm" (click)="onCancel()">
+            <button
+              type="button"
+              class="btn btn-secondary btn-sm"
+              (click)="onCancel()"
+            >
               <i class="ri-close-line"></i> Cancel
             </button>
           </div>

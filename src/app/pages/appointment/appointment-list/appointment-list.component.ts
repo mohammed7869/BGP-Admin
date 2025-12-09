@@ -124,6 +124,28 @@ export class AppointmentListComponent implements OnInit {
           }
 
           this.router.navigate(["appointments"]);
+        } else if (record.table == "User") {
+          // Handle user inserts
+          var newUserRowData = {
+            id: record.id,
+            itsId: record.itsId,
+            fullName: record.fullName,
+            email: record.email,
+            contact: record.contact,
+            rank: record.rank,
+            jamiyat: record.jamiyat,
+            jamaat: record.jamaat,
+            gender: record.gender,
+            age: record.age,
+            roles: record.roles,
+            isActive: record.isActive || true,
+          };
+
+          this.lst.unshift(newUserRowData);
+          if (this.gridApi) {
+            this.gridApi.updateRowData({ add: [newUserRowData], addIndex: 0 });
+          }
+          this.router.navigate(["appointments"]);
         }
       }
     );
@@ -180,6 +202,28 @@ export class AppointmentListComponent implements OnInit {
             }
           }
           //this.router.navigate(['appointments']);
+        } else if (record.table == "User") {
+          // Handle user updates
+          let updatedUser = this.lst.find((row: any) => row.id == record.id);
+          if (updatedUser) {
+            // Update the user data
+            updatedUser.itsId = record.itsId;
+            updatedUser.fullName = record.fullName;
+            updatedUser.email = record.email;
+            updatedUser.contact = record.contact;
+            updatedUser.rank = record.rank;
+            updatedUser.jamiyat = record.jamiyat;
+            updatedUser.jamaat = record.jamaat;
+            updatedUser.gender = record.gender;
+            updatedUser.age = record.age;
+            updatedUser.roles = record.roles;
+            updatedUser.profile = record.profile;
+
+            // Update the grid
+            if (this.gridApi) {
+              this.gridApi.updateRowData({ update: [updatedUser] });
+            }
+          }
         }
       }
     );
@@ -403,6 +447,32 @@ export class AppointmentListComponent implements OnInit {
 
     this.columnDefs = [
       {
+        field: "id",
+        headerName: "",
+        width: 30,
+        cellRenderer: "editButtonRendererComponent",
+        cellRendererParams: {
+          onClick: this.onEdit.bind(this),
+        },
+        pinned: "left",
+        lockPosition: true,
+        sortable: false,
+        filter: false,
+      },
+      {
+        field: "id",
+        headerName: "",
+        width: 30,
+        cellRenderer: "deleteButtonRendererComponent",
+        cellRendererParams: {
+          onClick: this.onDelete.bind(this),
+        },
+        pinned: "left",
+        lockPosition: true,
+        sortable: false,
+        filter: false,
+      },
+      {
         field: "itsId",
         headerName: "ITS ID",
         sortable: true,
@@ -541,8 +611,37 @@ export class AppointmentListComponent implements OnInit {
   }
 
   onEdit(e: any) {
-    // User edit functionality can be added here if needed
-    // this.router.navigate(["users/edit/" + e.rowData.id]);
+    this.router.navigate(["appointments/user/edit/" + e.rowData.id]);
+  }
+
+  onDelete(e: any) {
+    if (
+      confirm(
+        `Are you sure you want to delete user "${e.rowData.fullName}"? This action cannot be undone.`
+      )
+    ) {
+      this.isBtnLoading = true;
+      this.authService.deleteUser(e.rowData.id).subscribe(
+        (data) => {
+          this.isBtnLoading = false;
+          this.toastrMessageService.showSuccess(
+            "User deleted successfully",
+            "Success"
+          );
+          this.loadUsers(); // Refresh the list
+        },
+        (error) => {
+          this.isBtnLoading = false;
+          let errorMessage = "Error deleting user";
+          if (error?.error?.message) {
+            errorMessage = error.error.message;
+          } else if (error?.message) {
+            errorMessage = error.message;
+          }
+          this.toastrMessageService.showError(errorMessage, "Error");
+        }
+      );
+    }
   }
 
   // onDelete(e: any) {

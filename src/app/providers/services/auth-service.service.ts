@@ -152,4 +152,22 @@ export class AuthServiceService {
   getUsers(): Observable<any> {
     return this.httpClient.get<any>(`${baseURL}/users`);
   }
+
+  getUserById(id: number): Observable<any> {
+    return this.httpClient.get<any>(`${baseURL}/users/${id}`);
+  }
+
+  updateUser(id: number, userData: any): Observable<any> {
+    return this.httpClient.put<any>(`${baseURL}/users/${id}`, userData);
+  }
+
+  deleteUser(id: number): Observable<any> {
+    return this.httpClient.delete<any>(`${baseURL}/users/${id}`);
+  }
+
+  uploadUserProfileImage(id: number, file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.httpClient.post<any>(`${baseURL}/users/${id}/upload-profile`, formData);
+  }
 }

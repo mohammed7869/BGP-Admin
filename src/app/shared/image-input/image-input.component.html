@@ -42,10 +42,10 @@
         class="btn btn-outline-primary btn-sm"
         (click)="openImageSelector()"
         [disabled]="disabled"
-        title="Select Image"
+        [title]="allowFileUpload ? 'Upload Image' : 'Select Image'"
       >
         <i class="ri-image-add-line"></i>
-        Select
+        {{ allowFileUpload ? 'Upload' : 'Select' }}
       </button>
       
       <button 
@@ -62,12 +62,20 @@
     </div>
     
     <!-- Image Info -->
-    <div *ngIf="selectedImage" class="image-info">
+    <div *ngIf="selectedImage && !allowFileUpload" class="image-info">
       <small class="text-muted d-block text-truncate" [title]="selectedImage.altText || 'No alt text'">
         <strong>Alt Text:</strong> {{ selectedImage.altText || 'No alt text' }}
       </small>
       <small class="text-muted d-block text-truncate" [title]="selectedImage.url">
         <strong>URL:</strong> {{ selectedImage.url | slice:0:40 }}{{ selectedImage.url.length > 40 ? '...' : '' }}
+      </small>
+    </div>
+    <div *ngIf="selectedFile && allowFileUpload" class="image-info">
+      <small class="text-muted d-block text-truncate" [title]="selectedFile.name">
+        <strong>File:</strong> {{ selectedFile.name }}
+      </small>
+      <small class="text-muted d-block">
+        <strong>Size:</strong> {{ (selectedFile.size / 1024).toFixed(2) }} KB
       </small>
     </div>
   </div>

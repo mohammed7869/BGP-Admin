@@ -3,8 +3,8 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false,
-  defaultauth: 'firebase',
+  production: true,
+  defaultauth: "firebase",
   firebaseConfig: {
     apiKey: "AIzaSyA72Pkgm0V0uu4Dvo7QeiOvfeBeecY7lGQ",
     authDomain: "nova-dental-9d870.firebaseapp.com",
@@ -12,18 +12,18 @@ export const environment = {
     storageBucket: "nova-dental-9d870.firebasestorage.app",
     messagingSenderId: "139471332728",
     appId: "1:139471332728:web:86605f552f1341d277148d",
-    measurementId: "G-MHQ4HXMDX9"
+    measurementId: "G-MHQ4HXMDX9",
   },
   cloudinary: {
-    cloudName: 'dg9yh82rf',
-    uploadPreset: 'rihaab'
+    cloudName: "dg9yh82rf",
+    uploadPreset: "rihaab",
   },
-  apiUrl: 'https://localhost:5001',
+  apiUrl: "https://bgp.baawanerp.com",
   itsOneLogin: "",
   apiImgUrl: "",
   password: "",
   userName: "",
-  companyName: ""
+  companyName: "",
 };
 
 /*
