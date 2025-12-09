@@ -18,7 +18,7 @@ export const environment = {
     cloudName: 'dg9yh82rf',
     uploadPreset: 'rihaab'
   },
-  apiUrl: 'https://api.baawancrm.com',
+  apiUrl: 'https://localhost:5001',
   itsOneLogin: "",
   apiImgUrl: "",
   password: "",

@@ -22,21 +22,25 @@ export class AuthServiceService {
     private router: Router,
   ) { }
 
-  adminLogin(username: string, password: string, shortcode: string) {
+  adminLogin(email: string, password: string, itsNumber?: string) {
 
-    var data = {
-      'username': username,
-      'password': password,
-      'shortcode': shortcode
+    var data: any = {
+      'email': email,
+      'password': password
+    };
+
+    // Add ITS number if provided
+    if (itsNumber) {
+      data.itsNumber = itsNumber;
     }
 
-    return this.httpClient.post<any>(`${baseURL}/login`, data)
+    return this.httpClient.post<any>(`${baseURL}/captain/login`, data)
       .pipe(tap(user => {
-        if (user) {
+        if (user && user.token) {
           var userLoginDetail = {
-            companyShortCode: user.company.shortCode,
-            userLoginName: user.user.login_Name,
-            userName: `${user.user.first_Name} ${user.user.lastname}`
+            userLoginName: user.email,
+            userName: user.fullName,
+            itsId: user.itsId
           };
           this.localStorageServiceService.setItem(this.appCommon.LocalStorageKeyType.TokenInfo, user);
           this.localStorageServiceService.setItem(this.appCommon.LocalStorageKeyType.UserLoginDetail, userLoginDetail);
@@ -143,5 +147,9 @@ export class AuthServiceService {
       .pipe(first(user => {
         return user;
       }));
+  }
+
+  getUsers(): Observable<any> {
+    return this.httpClient.get<any>(`${baseURL}/users`);
   }
 }

@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit {
   userLoginData: any;
   isUserRemembered: boolean = false;
 
-  @ViewChild('shortcode') shortcode: ElementRef;
+  @ViewChild('itsNumber') itsNumber: ElementRef;
   @ViewChild('email') email: ElementRef;
   @ViewChild('password') password: ElementRef;
 
@@ -50,30 +50,18 @@ export class LoginComponent implements OnInit {
   }
 
   createLoginForm() {
-    // Check if tenant is configured via URL
-    const isTenantConfigured = this.tenantConfigService.isTenantConfigured();
-    const defaultCompanyCode = isTenantConfigured
-      ? this.tenantConfigService.getCompanyCode()
-      : (this.userLoginData?.companyShortCode || environment.companyName || '');
-
     this.loginForm = this.formBuilder.group({
       email: [this.userLoginData?.userLoginName || environment.userName || '', Validators.required],
       password: [environment.password || null, Validators.required],
-      shortcode: [defaultCompanyCode, Validators.required],
+      itsNumber: [this.userLoginData?.itsId || '', Validators.required],
     });
 
     if (this.isUserRemembered) {
       this.loginForm.get('email')?.disable();
-      this.loginForm.get('shortcode')?.disable();
+      this.loginForm.get('itsNumber')?.disable();
       this.focusOnPassword();
     } else {
-      // If tenant is configured via URL, disable company code field
-      if (isTenantConfigured) {
-        this.loginForm.get('shortcode')?.disable();
-        this.focusOnEmail();
-      } else {
-        this.focusOnShortcode();
-      }
+      this.focusOnEmail();
     }
   }
 
@@ -90,7 +78,7 @@ export class LoginComponent implements OnInit {
   onAdminSubmit() {
 
     if (this.loginForm.invalid) {
-      this.error = "Username and Password not valid !";
+      this.error = "Email, ITS Number and Password are required!";
       return;
     }
     else {
@@ -98,14 +86,14 @@ export class LoginComponent implements OnInit {
       this.submitted = true;
 
       this.authService.adminLogin(this.f.email.value,
-        this.f.password.value, this.f.shortcode.value)
+        this.f.password.value, this.f.itsNumber.value)
         .subscribe(
           data => {
             this.toastrMessageService.showSuccess("Login Successful", 'Success');
             this.router.navigate(["appointments"]);
           },
           error => {
-            this.error = error.message;
+            this.error = error?.error?.message || error?.message || 'Login failed. Please check your credentials.';
             this.submitted = false;
             this.isBtnLoading = false;
           }
@@ -117,8 +105,8 @@ export class LoginComponent implements OnInit {
     this.fieldTextType = !this.fieldTextType;
   }
 
-  focusOnShortcode() {
-    setTimeout(() => this.shortcode?.nativeElement?.focus(), 50);
+  focusOnItsNumber() {
+    setTimeout(() => this.itsNumber?.nativeElement?.focus(), 50);
   }
 
   focusOnPassword() {

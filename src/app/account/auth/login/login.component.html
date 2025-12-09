@@ -33,7 +33,7 @@
                                             </ngb-alert>
                                             <!-- "Not You?" functionality -->
                                             <div
-                                                *ngIf="userLoginData && userLoginData.userLoginName && userLoginData.companyShortCode">
+                                                *ngIf="userLoginData && userLoginData.userLoginName">
                                                 <div class="alert alert-success" role="alert">
                                                     Logged in as <strong>{{ userLoginData.userName }}</strong>.
                                                     <button type="button" class="btn btn-link p-0 text-danger"
@@ -44,32 +44,28 @@
                                             <form class="form-horizontal mt-2" [formGroup]="loginForm"
                                                 (ngSubmit)="onAdminSubmit()" autocomplete="off">
                                                 <ng-container *ngIf="!userLoginData">
-                                                    <div class="form-group auth-form-group-custom mb-4"
-                                                        *ngIf="!tenantConfigService.isTenantConfigured()">
-                                                        <i class="ri-building-4-line auti-custom-input-icon"></i>
-                                                        <label for="shortcode">Company Code</label>
-                                                        <input #shortcode type="text" formControlName="shortcode"
-                                                            class="form-control" id="shortcode"
-                                                            [ngClass]="{ 'is-invalid': submitted && f.shortcode.errors }"
-                                                            [disabled]="isUserRemembered"
-                                                            placeholder="Enter Company Code" />
-                                                        <div *ngIf="submitted && f.shortcode.errors"
-                                                            class="invalid-feedback">
-                                                            <div *ngIf="f.shortcode.errors.required">Company Code is
-                                                                required
-                                                            </div>
-                                                        </div>
-                                                    </div>
                                                     <div class="form-group auth-form-group-custom mb-4">
                                                         <i class="ri-user-2-line auti-custom-input-icon"></i>
-                                                        <label for="email">User Name</label>
+                                                        <label for="email">Email</label>
                                                         <input #email type="email" formControlName="email"
                                                             class="form-control" id="email"
-                                                            [disabled]="isUserRemembered" placeholder="Enter User Name"
+                                                            [disabled]="isUserRemembered" placeholder="Enter Email"
                                                             [ngClass]="{ 'is-invalid': submitted && f.email.errors }">
                                                         <div *ngIf="submitted && f.email.errors"
                                                             class="invalid-feedback">
                                                             <div *ngIf="f.email.errors.required">Email is required</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group auth-form-group-custom mb-4">
+                                                        <i class="ri-id-card-line auti-custom-input-icon"></i>
+                                                        <label for="itsNumber">ITS Number</label>
+                                                        <input #itsNumber type="text" formControlName="itsNumber"
+                                                            class="form-control" id="itsNumber"
+                                                            [disabled]="isUserRemembered" placeholder="Enter ITS Number"
+                                                            [ngClass]="{ 'is-invalid': submitted && f.itsNumber.errors }">
+                                                        <div *ngIf="submitted && f.itsNumber.errors"
+                                                            class="invalid-feedback">
+                                                            <div *ngIf="f.itsNumber.errors.required">ITS Number is required</div>
                                                         </div>
                                                     </div>
                                                 </ng-container>
@@ -105,33 +101,6 @@
                                                     </button>
                                                 </div>
 
-                                                <div class="mt-4 text-center"  *ngIf="tenantConfigService.isTenantConfigured()">
-                                                    <div class="signin-other-title">
-                                                        <h5 class="fs-13 mb-4 title">Our Products</h5>
-                                                    </div>
-                                                    <div class="d-flex gap-2 justify-content-center">
-                                                        <span class="pointer mr-2" data-bs-toggle="tooltip"
-                                                            data-bs-trigger="hover" data-bs-placement="top"
-                                                            ngbTooltip="ERP"> <img
-                                                                src="../../../assets/images/baawan-logo-erp.svg" alt=""
-                                                                height="40"></span>
-                                                        <span class="pointer mr-2" data-bs-toggle="tooltip"
-                                                            data-bs-trigger="hover" data-bs-placement="top"
-                                                            ngbTooltip="CMS"> <img
-                                                                src="../../../assets/images/baawan-logo-cms.svg" alt=""
-                                                                height="40"></span>
-                                                        <span class="pointer mr-2" data-bs-toggle="tooltip"
-                                                            data-bs-trigger="hover" data-bs-placement="top"
-                                                            ngbTooltip="CRM"> <img
-                                                                src="../../../assets/images/baawan-logo-crm.svg" alt=""
-                                                                height="40"></span>
-                                                        <span class="pointer mr-2" data-bs-toggle="tooltip"
-                                                            data-bs-trigger="hover" data-bs-placement="top"
-                                                            ngbTooltip="E-Commerce"> <img
-                                                                src="../../../assets/images/baawan-logo-ecommerce.svg"
-                                                                alt="" height="40"></span>
-                                                    </div>
-                                                </div>
                                             </form>
                                         </div>
                                     </div>

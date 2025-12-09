@@ -59,40 +59,15 @@ export class httpInterceptor implements HttpInterceptor {
 
     let tokenInfo = this.localStorageServiceService.getItem(this.appCommon.LocalStorageKeyType.TokenInfo);
     let cloneReq = request;
-    let sessionId = tokenInfo?.user?.currentSessionId;
-    let companyId = tokenInfo?.company?.id;
-    
-    // Get tenant ID from configuration if available
-    let tenantId = this.tenantConfigService.getTenantId();
 
-    if (tokenInfo && sessionId) {
-      // Use configured tenant ID if available, otherwise use company ID from token
-      const finalTenantId = tenantId || companyId;
-      
-      if (finalTenantId) {
-        cloneReq = request.clone({
-          setHeaders: {
-            'X-TENANT-ID': String(finalTenantId),
-            'X-Session-ID': String(sessionId),
-          }
-        });
-      } else {
-        // If no tenant ID available, just add session ID
-        cloneReq = request.clone({
-          setHeaders: {
-            'X-Session-ID': String(sessionId),
-          }
-        });
-      }
+    // Use Bearer token authentication for BGP API
+    if (tokenInfo && tokenInfo.token) {
+      cloneReq = request.clone({
+        setHeaders: {
+          Authorization: `Bearer ${tokenInfo.token}`
+        }
+      });
     }
-
-    // let modifiedRequest = cloneReq;
-    // if (['POST', 'PUT', 'PATCH'].includes(cloneReq.method)) {
-    //   const body = { ...cloneReq.body, sessionId: sessionId };
-    //   modifiedRequest = cloneReq.clone({
-    //     body: body
-    //   });
-    // }
 
     return newRequest.handle(cloneReq);
   }

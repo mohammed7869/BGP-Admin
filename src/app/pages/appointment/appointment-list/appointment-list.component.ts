@@ -14,6 +14,7 @@ import { appCommon } from "src/app/common/_appCommon";
 import { AppointmentService } from "src/app/providers/services/appointment.service";
 import { RecordCreationService } from "src/app/providers/services/record-creation.service";
 import { ToastrMessageService } from "src/app/providers/services/toastr-message.service";
+import { AuthServiceService } from "src/app/providers/services/auth-service.service";
 import { AgDeleteButtonRendererComponent } from "src/app/shared/custom-ag-controls/ag-delete-button-renderer/ag-delete-button-renderer.component";
 import { AgEditButtonRendererComponent } from "src/app/shared/custom-ag-controls/ag-edit-button-renderer/ag-edit-button-renderer.component";
 import { AgCalendarButtonRendererComponent } from "src/app/shared/custom-ag-controls/ag-calendar-button-renderer/ag-calendar-button-renderer.component";
@@ -43,7 +44,7 @@ export class AppointmentListComponent implements OnInit {
   insertSubscription: Subscription;
   updateSubscription: Subscription;
   breadcrumbTitle: String = "List";
-  pageTitle: String = "Appointments";
+  pageTitle: String = "Users";
   gridHeightWidth: any = {};
   isArchivedView: boolean = false;
   @ViewChild("printable") printable: ElementRef;
@@ -52,7 +53,8 @@ export class AppointmentListComponent implements OnInit {
     private toastrMessageService: ToastrMessageService,
     private fb: FormBuilder,
     private service: AppointmentService,
-    private recordCreationService: RecordCreationService
+    private recordCreationService: RecordCreationService,
+    private authService: AuthServiceService
   ) {
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
@@ -70,14 +72,14 @@ export class AppointmentListComponent implements OnInit {
             this.isArchivedView = true;
           } else {
             this.breadcrumbTitle = "List";
-            this.pageTitle = "Appointments";
+            this.pageTitle = "Users";
             this.isArchivedView = false;
           }
 
           // Reload data if the view type changed
           if (wasArchivedView !== this.isArchivedView) {
             this.createSearchForm(); // Recreate form with proper validators
-            this.loadAppointments();
+            this.loadUsers();
           }
         } else {
           if (event.url.indexOf("appointments/new") !== -1) {
@@ -186,29 +188,17 @@ export class AppointmentListComponent implements OnInit {
   ngOnInit(): void {
     this.setGridHeight();
     this.createSearchForm();
-    this.loadAppointments();
+    this.loadUsers();
     this.checkIfArchivedView();
   }
 
-  loadAppointments() {
-    var fdata = this.getFilters();
-
-    if (fdata.fromDate) {
-      fdata.fromDate =
-        moment(fdata.fromDate).format("DD/MM/yyyy") + " " + "00:00:00";
-    }
-    if (fdata.toDate) {
-      fdata.toDate =
-        moment(fdata.toDate).format("DD/MM/yyyy") + " " + "23:59:59";
-    }
-
+  loadUsers() {
     if (this.gridApi) this.gridApi.showLoadingOverlay();
     this.isBtnLoading = true;
-    this.service.list(fdata).subscribe(
+    this.authService.getUsers().subscribe(
       (data) => {
         this.isBtnLoading = false;
-        // No need to filter here as API will return filtered data
-        this.lst = data.sort((a: any, b: any) => b.id - a.id);
+        this.lst = data || [];
 
         // Close filters div if results are found and this was triggered by a search
         if (data && data.length > 0 && this.submitted) {
@@ -220,9 +210,9 @@ export class AppointmentListComponent implements OnInit {
       (error) => {
         if (this.gridApi) this.gridApi.hideOverlay();
         this.isBtnLoading = false;
-        console.error("Error loading appointments:", error);
+        console.error("Error loading users:", error);
         // Better error handling - check different error structures
-        let errorMessage = "Error loading appointments";
+        let errorMessage = "Error loading users";
         if (error?.error?.message) {
           errorMessage = error.error.message;
         } else if (error?.message) {
@@ -237,6 +227,11 @@ export class AppointmentListComponent implements OnInit {
         }
       }
     );
+  }
+
+  loadAppointments() {
+    // Keep this method for backward compatibility, but redirect to loadUsers
+    this.loadUsers();
   }
 
   ngAfterViewInit() {}
@@ -301,45 +296,31 @@ export class AppointmentListComponent implements OnInit {
     try {
       // Prepare headers
       const headers = [
-        "Patient Name",
-        "Appointment Date & Time",
+        "ITS ID",
+        "Full Name",
         "Email",
-        "Phone",
-        "Location",
+        "Contact",
+        "Rank",
+        "Jamiyat",
+        "Jamaat",
+        "Gender",
+        "Age",
         "Status",
       ];
 
-      // Transform appointment data to array of arrays
-      const data = this.lst.map((appointment: any) => {
-        // Format patient name
-        const patientName = `${appointment.firstName || ""} ${
-          appointment.lastName || ""
-        }`.trim();
-
-        // Format appointment date and time
-        const appointmentDate = appointment.appointmentDateTime
-          ? moment(appointment.appointmentDateTime).format("MMM DD, YYYY")
-          : "";
-        const appointmentTime = appointment.startTime
-          ? moment(appointment.startTime, "HH:mm:ss").format("hh:mm A")
-          : "";
-        const appointmentDateTime =
-          appointmentDate && appointmentTime
-            ? `${appointmentDate} at ${appointmentTime}`
-            : "";
-
-        // Format status
-        const status = appointment.appStatus
-          ? appCommon.EnAppointmentStatusObj[appointment.appStatus] || "Unknown"
-          : "";
-
+      // Transform user data to array of arrays
+      const data = this.lst.map((user: any) => {
         return [
-          patientName,
-          appointmentDateTime,
-          appointment.email || "",
-          appointment.phone || "",
-          appointment.locationName || "",
-          status,
+          user.itsId || "",
+          user.fullName || "",
+          user.email || "",
+          user.contact || "",
+          user.rank || "",
+          user.jamiyat || "",
+          user.jamaat || "",
+          user.gender || "",
+          user.age || "",
+          user.isActive ? "Active" : "Inactive",
         ];
       });
 
@@ -348,19 +329,19 @@ export class AppointmentListComponent implements OnInit {
 
       // Generate filename with current date
       const currentDate = moment().format("YYYY-MM-DD");
-      const filename = `Appointments_${
+      const filename = `Users_${
         this.isArchivedView ? "Archived_" : ""
       }${currentDate}.xlsx`;
 
       // Prepare export options
       const exportOptions = {
         data: data,
-        sheetName: "Appointments",
+        sheetName: "Users",
         filename: filename,
         company: null, // Optional: can be set if company info is available
         reportTitle: this.isArchivedView
-          ? "Archived Appointments Report"
-          : "Appointments Report",
+          ? "Archived Users Report"
+          : "Users Report",
         lineData: [], // Optional: additional info lines
         merges: [], // Optional: cell merges for multi-level headers
       };
@@ -373,28 +354,28 @@ export class AppointmentListComponent implements OnInit {
         exportResult
           .then(() => {
             this.toastrMessageService.showSuccess(
-              "Appointment data exported successfully",
+              "Users data exported successfully",
               "Success"
             );
           })
           .catch((error) => {
             console.error("Error exporting to Excel:", error);
             this.toastrMessageService.showError(
-              "Error exporting appointment data",
+              "Error exporting users data",
               "Error"
             );
           });
       } else {
         // Synchronous export for small datasets
         this.toastrMessageService.showSuccess(
-          "Appointment data exported successfully",
+          "Users data exported successfully",
           "Success"
         );
       }
     } catch (error) {
       console.error("Error exporting to Excel:", error);
       this.toastrMessageService.showError(
-        "Error exporting appointment data",
+        "Error exporting users data",
         "Error"
       );
     }
@@ -403,7 +384,7 @@ export class AppointmentListComponent implements OnInit {
   generatePdf() {}
 
   search() {
-    this.loadAppointments();
+    this.loadUsers();
   }
 
   private formatAppointmentTime(date: Date, time: string): string {
@@ -422,41 +403,20 @@ export class AppointmentListComponent implements OnInit {
 
     this.columnDefs = [
       {
-        field: "id",
-        headerName: "",
-        width: 28,
-        cellRenderer: "editButtonRendererComponent",
-        cellRendererParams: {
-          onClick: this.onEdit.bind(this),
-        },
-      },
-      {
-        field: "patientName",
-        headerName: "Patient Name",
+        field: "itsId",
+        headerName: "ITS ID",
         sortable: true,
         filter: true,
         resizable: true,
-        width: 200,
-        valueFormatter: (params) => {
-          return `${params.data.firstName} ${params.data.lastName}`;
-        },
+        width: 120,
       },
       {
-        field: "appointmentDateTime",
-        headerName: "Appointment Date",
+        field: "fullName",
+        headerName: "Full Name",
         sortable: true,
         filter: true,
         resizable: true,
-        width: 180,
-        valueFormatter: function (params) {
-          const formattedTime = moment(
-            params.data.startTime,
-            "HH:mm:ss"
-          ).format("hh:mm");
-          return `${moment(params.value).format(
-            "MMM DD, YYYY"
-          )} at ${formattedTime}`;
-        },
+        width: 250,
       },
       {
         field: "email",
@@ -467,65 +427,67 @@ export class AppointmentListComponent implements OnInit {
         width: 250,
       },
       {
-        field: "phone",
-        headerName: "Phone",
+        field: "contact",
+        headerName: "Contact",
         sortable: true,
         filter: true,
         resizable: true,
         width: 150,
       },
       {
-        field: "locationName",
-        headerName: "Location",
+        field: "rank",
+        headerName: "Rank",
         sortable: true,
         filter: true,
         resizable: true,
-        width: 165,
+        width: 150,
       },
       {
-        field: "appStatus",
+        field: "jamiyat",
+        headerName: "Jamiyat",
+        sortable: true,
+        filter: true,
+        resizable: true,
+        width: 150,
+      },
+      {
+        field: "jamaat",
+        headerName: "Jamaat",
+        sortable: true,
+        filter: true,
+        resizable: true,
+        width: 200,
+      },
+      {
+        field: "gender",
+        headerName: "Gender",
+        sortable: true,
+        filter: true,
+        resizable: true,
+        width: 100,
+      },
+      {
+        field: "age",
+        headerName: "Age",
+        sortable: true,
+        filter: true,
+        resizable: true,
+        width: 80,
+      },
+      {
+        field: "isActive",
         headerName: "Status",
         sortable: true,
         filter: true,
         resizable: true,
-        width: 135,
-        cellClass: "ag-grid-status-badge",
+        width: 100,
         cellRenderer: (params) => {
-          const status = params.value;
-          let badgeClass = "bg-secondary";
-          let iconClass = "fa fa-question-circle";
-          let statusText = "Unknown";
-
-          // Set badge class, icon, and text based on status
-          if (status == 1) {
-            badgeClass = "bg-info";
-            iconClass = "fa fa-clock";
-            statusText =
-              appCommon.EnAppointmentStatusObj[status] || "Pending Request";
-          } else if (status == 2) {
-            badgeClass = "bg-success";
-            iconClass = "fa fa-check-circle";
-            statusText = appCommon.EnAppointmentStatusObj[status] || "Booked";
-          } else if (status == 3) {
-            badgeClass = "bg-warning";
-            iconClass = "fa fa-sync-alt";
-            statusText =
-              appCommon.EnAppointmentStatusObj[status] || "Rescheduled";
-          } else if (status == 4) {
-            badgeClass = "bg-danger";
-            iconClass = "fa fa-times-circle";
-            statusText =
-              appCommon.EnAppointmentStatusObj[status] || "Cancelled";
-          } else if (status == 5) {
-            badgeClass = "bg-dark";
-            iconClass = "fa fa-archive";
-            statusText = appCommon.EnAppointmentStatusObj[status] || "Archived";
-          }
-
+          const isActive = params.value;
+          const badgeClass = isActive ? "bg-success" : "bg-danger";
+          const statusText = isActive ? "Active" : "Inactive";
           return `
             <span class="badge ${badgeClass} px-3 py-2 d-flex align-items-center justify-content-center" 
-                  style="font-size: 11px; min-width: 100px; border-radius: 20px; font-weight: 600;">
-              <i class="${iconClass} mr-1" style="font-size: 12px;"></i>
+                  style="font-size: 11px; min-width: 80px; border-radius: 20px; font-weight: 600;">
               ${statusText}
             </span>
           `;
@@ -579,7 +541,8 @@ export class AppointmentListComponent implements OnInit {
   }
 
   onEdit(e: any) {
-    this.router.navigate(["appointments/edit/" + e.rowData.id]);
+    // User edit functionality can be added here if needed
+    // this.router.navigate(["users/edit/" + e.rowData.id]);
   }
 
   // onDelete(e: any) {
@@ -656,7 +619,7 @@ export class AppointmentListComponent implements OnInit {
 
     if (this.isArchivedView) {
       this.breadcrumbTitle = "Archived";
-      this.pageTitle = "Archived Appointments";
+      this.pageTitle = "Archived Users";
     }
   }
 }

@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  defaultauth: 'firebase',
+  defaultauth: "firebase",
   firebaseConfig: {
     apiKey: "AIzaSyA72Pkgm0V0uu4Dvo7QeiOvfeBeecY7lGQ",
     authDomain: "nova-dental-9d870.firebaseapp.com",
@@ -12,18 +12,18 @@ export const environment = {
     storageBucket: "nova-dental-9d870.firebasestorage.app",
     messagingSenderId: "139471332728",
     appId: "1:139471332728:web:86605f552f1341d277148d",
-    measurementId: "G-MHQ4HXMDX9"
+    measurementId: "G-MHQ4HXMDX9",
   },
   cloudinary: {
-    cloudName: 'dg9yh82rf',
-    uploadPreset: 'rihaab'
+    cloudName: "dg9yh82rf",
+    uploadPreset: "rihaab",
   },
-  apiUrl: 'https://api.baawancrm.com',
+  apiUrl: "https://localhost:5001",
   itsOneLogin: "",
   apiImgUrl: "",
   password: "demo12345",
   userName: "abdul",
-  companyName: "mapledental"
+  companyName: "mapledental",
 };
 
 /*
