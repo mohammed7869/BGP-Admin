@@ -1,0 +1,40 @@
+// Enhanced status badge styles
+::ng-deep .ag-grid-status-badge {
+  .badge {
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    &.bg-success {
+      background: linear-gradient(135deg, #a8e6cf 0%, #b8f2d6 100%) !important;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #2d5a3d !important;
+    }
+
+    &.bg-warning {
+      background: linear-gradient(135deg, #fff2a8 0%, #fff7c4 100%) !important;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #8b6914 !important;
+    }
+
+    &.bg-danger {
+      background: linear-gradient(135deg, #ffb3ba 0%, #ffc9ce 100%) !important;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #8b2635 !important;
+    }
+  }
+}
+
+// Ensure proper cell padding for status column
+::ng-deep .ag-cell {
+  &[col-id="adminApproval"] {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 8px 4px !important;
+  }
+}

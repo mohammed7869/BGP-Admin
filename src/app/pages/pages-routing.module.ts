@@ -67,6 +67,10 @@ const routes: Routes = [
     path: 'cms-page',
     loadChildren: () => import('./cms-page/cms-page.module').then((m) => m.CmsPageModule)
   },
+  {
+    path: 'miqaats',
+    loadChildren: () => import('./miqaat/miqaat.module').then((m) => m.MiqaatModule)
+  },
 ];
 
 @NgModule({

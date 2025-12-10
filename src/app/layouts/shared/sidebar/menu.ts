@@ -21,7 +21,7 @@ export const MENU: MenuItem[] = [
     id: 5,
     label: "Miqaats",
     icon: "ri-user-heart-line",
-    link: "/appointments",
+    link: "/miqaats",
   },
   // {
   //   id: 6,
