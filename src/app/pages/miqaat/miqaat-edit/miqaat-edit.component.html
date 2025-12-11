@@ -72,8 +72,7 @@
                     <div
                       class="invalid-feedback d-block"
                       *ngIf="
-                        f.jamaat.invalid &&
-                        (f.jamaat.dirty || f.jamaat.touched)
+                        f.jamaat.invalid && (f.jamaat.dirty || f.jamaat.touched)
                       "
                     >
                       <div *ngIf="f.jamaat.errors?.['required']">
@@ -306,5 +305,3 @@
     </div>
   </div>
 </div>
-
-
