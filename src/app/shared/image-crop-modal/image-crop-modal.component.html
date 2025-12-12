@@ -1,0 +1,61 @@
+<div class="modal-header">
+  <h5 class="modal-title">Crop Profile Image</h5>
+  <button type="button" class="btn-close" aria-label="Close" (click)="onCancel()"></button>
+</div>
+
+<div class="modal-body">
+  <div class="crop-container">
+    <div class="crop-section">
+      <h6 class="mb-3">Adjust the crop area to show only the face</h6>
+      <div class="image-cropper-wrapper">
+        <image-cropper
+          [imageChangedEvent]="imageChangedEvent"
+          [maintainAspectRatio]="cropperOptions.maintainAspectRatio"
+          [aspectRatio]="cropperOptions.aspectRatio"
+          [resizeToWidth]="cropperOptions.resizeToWidth"
+          [resizeToHeight]="cropperOptions.resizeToHeight"
+          [cropperMinWidth]="cropperOptions.cropperMinWidth"
+          [cropperMinHeight]="cropperOptions.cropperMinHeight"
+          [format]="cropperOptions.format"
+          [onlyScaleDown]="cropperOptions.onlyScaleDown"
+          [autoCrop]="cropperOptions.autoCrop"
+          [containWithinAspectRatio]="cropperOptions.containWithinAspectRatio"
+          (imageCropped)="imageCroppedEvent($event)"
+          (imageLoaded)="imageLoaded()"
+          (cropperReady)="cropperReady()"
+          (loadImageFailed)="loadImageFailed()"
+        ></image-cropper>
+      </div>
+    </div>
+
+    <div class="preview-section">
+      <h6 class="mb-3">Preview</h6>
+      <div class="circular-preview-wrapper">
+        <div class="circular-preview-container" *ngIf="croppedImage; else noPreview">
+          <img [src]="getCroppedImagePreview()" alt="Cropped preview" class="circular-preview-image" />
+        </div>
+        <ng-template #noPreview>
+          <div class="no-preview">
+            <i class="ri-image-line"></i>
+            <p>Preview will appear here</p>
+          </div>
+        </ng-template>
+      </div>
+      <p class="preview-hint mt-3">
+        <small class="text-muted">
+          This is how the image will appear on the user's profile
+        </small>
+      </p>
+    </div>
+  </div>
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="onCancel()">
+    <i class="ri-close-line me-1"></i>Cancel
+  </button>
+  <button type="button" class="btn btn-primary" (click)="onSave()" [disabled]="!croppedFile">
+    <i class="ri-check-line me-1"></i>Save & Upload
+  </button>
+</div>
+

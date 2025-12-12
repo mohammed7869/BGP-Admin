@@ -5,6 +5,8 @@ import { AuthServiceService } from "src/app/providers/services/auth-service.serv
 import { ToastrMessageService } from "src/app/providers/services/toastr-message.service";
 import { RecordCreationService } from "src/app/providers/services/record-creation.service";
 import { environment } from "src/environments/environment";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { ImageCropModalComponent } from "src/app/shared/image-crop-modal/image-crop-modal.component";
 
 @Component({
   selector: "app-user-edit",
@@ -27,7 +29,8 @@ export class UserEditComponent implements OnInit {
     private router: Router,
     private authService: AuthServiceService,
     private toastrMessageService: ToastrMessageService,
-    private recordCreationService: RecordCreationService
+    private recordCreationService: RecordCreationService,
+    private modalService: NgbModal
   ) {
     this.userId = +this.route.snapshot.paramMap.get("id")!;
   }
@@ -96,8 +99,38 @@ export class UserEditComponent implements OnInit {
   }
 
   onFileSelected(file: File): void {
-    this.selectedFile = file;
-    // Preview is handled by the image-input component
+    // Open crop modal instead of directly using the file
+    this.openCropModal(file);
+  }
+
+  openCropModal(file: File): void {
+    const modalRef = this.modalService.open(ImageCropModalComponent, {
+      size: 'lg',
+      backdrop: 'static',
+      keyboard: false,
+      centered: true
+    });
+
+    modalRef.componentInstance.imageFile = file;
+
+    modalRef.componentInstance.imageCropped.subscribe((croppedFile: File) => {
+      this.selectedFile = croppedFile;
+      // Update preview with cropped image
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        // Update the preview URLs so image-input component can display it
+        // Use a temporary data URL for preview (component will update via ngOnChanges)
+        this.profileImagePreview = e.target.result;
+        // Temporarily set imageUrl to data URL so component shows preview
+        // This will be replaced with server URL after upload
+        this.profileImageUrl = e.target.result;
+      };
+      reader.readAsDataURL(croppedFile);
+    });
+
+    modalRef.componentInstance.cancel.subscribe(() => {
+      this.selectedFile = null;
+    });
   }
 
   uploadProfileImage(): void {

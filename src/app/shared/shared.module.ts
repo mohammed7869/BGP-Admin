@@ -34,6 +34,8 @@ import { BookAppointmentModalComponent } from './book-appointment-modal/book-app
 import { UtcToLocalPipe } from './pipe/utc-to-local.pipe';
 import { ImageSelectorModalComponent } from './image-selector-modal/image-selector-modal.component';
 import { ImageInputComponent } from './image-input/image-input.component';
+import { ImageCropModalComponent } from './image-crop-modal/image-crop-modal.component';
+import { ImageCropperModule } from 'ngx-image-cropper';
 
 @NgModule({
   declarations: [
@@ -63,7 +65,8 @@ import { ImageInputComponent } from './image-input/image-input.component';
     BookAppointmentModalComponent,
     UtcToLocalPipe,
     ImageSelectorModalComponent,
-    ImageInputComponent
+    ImageInputComponent,
+    ImageCropModalComponent
   ],
   imports: [
     CommonModule,
@@ -74,6 +77,7 @@ import { ImageInputComponent } from './image-input/image-input.component';
     NgbAlertModule,
     NgbModalModule,
     NgxBarcodeModule,
+    ImageCropperModule,
     AgGridModule.withComponents([AgImageCellRendererComponent])
   ],
   providers: [
@@ -96,7 +100,8 @@ import { ImageInputComponent } from './image-input/image-input.component';
     BookAppointmentModalComponent,
     UtcToLocalPipe,
     ImageSelectorModalComponent,
-    ImageInputComponent
+    ImageInputComponent,
+    ImageCropModalComponent
   ]
 })
 export class SharedModuleCommon { }

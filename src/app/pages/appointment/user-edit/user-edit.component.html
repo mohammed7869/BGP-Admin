@@ -40,7 +40,9 @@
                     </div>
                     <div
                       class="invalid-feedback d-block"
-                      *ngIf="f.itsId.invalid && (f.itsId.dirty || f.itsId.touched)"
+                      *ngIf="
+                        f.itsId.invalid && (f.itsId.dirty || f.itsId.touched)
+                      "
                     >
                       <div *ngIf="f.itsId.errors?.['required']">
                         ITS ID is required
@@ -96,7 +98,9 @@
                     </div>
                     <div
                       class="invalid-feedback d-block"
-                      *ngIf="f.email.invalid && (f.email.dirty || f.email.touched)"
+                      *ngIf="
+                        f.email.invalid && (f.email.dirty || f.email.touched)
+                      "
                     >
                       <div *ngIf="f.email.errors?.['required']">
                         Email is required
@@ -204,6 +208,10 @@
                         (imageCleared)="onImageCleared()"
                       ></app-image-input>
                       <div class="mt-2" *ngIf="selectedFile">
+                        <div class="alert alert-info d-flex align-items-center mb-2" role="alert">
+                          <i class="ri-information-line me-2"></i>
+                          <small>Image has been cropped. Review the preview above before uploading.</small>
+                        </div>
                         <button
                           type="button"
                           class="btn btn-primary btn-sm"
@@ -219,7 +227,9 @@
                             *ngIf="!isUploadingImage"
                             class="ri-upload-line mr-1"
                           ></i>
-                          {{ isUploadingImage ? "Uploading..." : "Upload Image" }}
+                          {{
+                            isUploadingImage ? "Uploading..." : "Upload Image"
+                          }}
                         </button>
                       </div>
                     </div>
