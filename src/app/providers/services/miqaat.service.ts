@@ -26,6 +26,8 @@ export class MiqaatService {
 
     if (tokenInfo && tokenInfo.token) {
       headers = headers.set("Authorization", `Bearer ${tokenInfo.token}`);
+    } else {
+      console.warn("No authentication token found. Please log in again.");
     }
 
     return headers;
