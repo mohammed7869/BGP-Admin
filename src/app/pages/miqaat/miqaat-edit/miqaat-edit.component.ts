@@ -164,6 +164,82 @@ export class MiqaatEditComponent implements OnInit {
     this.router.navigate(["miqaats"]);
   }
 
+  onApprove(): void {
+    if (
+      confirm(
+        `Are you sure you want to approve miqaat "${this.miqaatData?.miqaatName || 'this miqaat'}"?`
+      )
+    ) {
+      this.isBtnLoading = true;
+      this.miqaatService
+        .updateApprovalStatus(this.miqaatId, "Approved")
+        .subscribe(
+          (data) => {
+            this.isBtnLoading = false;
+            this.toastrMessageService.showSuccess(
+              "Miqaat approved successfully",
+              "Success"
+            );
+            // Update local data and form
+            if (this.miqaatData) {
+              this.miqaatData.adminApproval = "Approved";
+            }
+            this.miqaatForm.patchValue({ adminApproval: "Approved" });
+            // Reload miqaat data to get updated information
+            this.loadMiqaat();
+          },
+          (error) => {
+            this.isBtnLoading = false;
+            let errorMessage = "Error approving miqaat";
+            if (error?.error?.message) {
+              errorMessage = error.error.message;
+            } else if (error?.message) {
+              errorMessage = error.message;
+            }
+            this.toastrMessageService.showError(errorMessage, "Error");
+          }
+        );
+    }
+  }
+
+  onReject(): void {
+    if (
+      confirm(
+        `Are you sure you want to reject miqaat "${this.miqaatData?.miqaatName || 'this miqaat'}"?`
+      )
+    ) {
+      this.isBtnLoading = true;
+      this.miqaatService
+        .updateApprovalStatus(this.miqaatId, "Rejected")
+        .subscribe(
+          (data) => {
+            this.isBtnLoading = false;
+            this.toastrMessageService.showSuccess(
+              "Miqaat rejected successfully",
+              "Success"
+            );
+            // Update local data and form
+            if (this.miqaatData) {
+              this.miqaatData.adminApproval = "Rejected";
+            }
+            this.miqaatForm.patchValue({ adminApproval: "Rejected" });
+            // Reload miqaat data to get updated information
+            this.loadMiqaat();
+          },
+          (error) => {
+            this.isBtnLoading = false;
+            let errorMessage = "Error rejecting miqaat";
+            if (error?.error?.message) {
+              errorMessage = error.error.message;
+            } else if (error?.message) {
+              errorMessage = error.message;
+            }
+            this.toastrMessageService.showError(errorMessage, "Error");
+          }
+        );
+    }
+  }
+
   get f() {
     return this.miqaatForm.controls;
   }

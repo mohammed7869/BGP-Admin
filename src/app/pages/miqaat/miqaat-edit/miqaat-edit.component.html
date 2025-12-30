@@ -5,7 +5,25 @@
         class="page-title-box d-flex align-items-center justify-content-between mr-4 ml-4"
       >
         <h4 class="mb-0">Edit Miqaat</h4>
-        <div class="page-title-right">
+        <div class="page-title-right d-flex align-items-center gap-2">
+          <button
+            class="btn btn-success btn-sm mr-2"
+            ngbTooltip="Approve Miqaat"
+            placement="top"
+            (click)="onApprove()"
+            [disabled]="isBtnLoading || miqaatData?.adminApproval === 'Approved'"
+          >
+            <i class="fa fa-check"></i>
+          </button>
+          <button
+            class="btn btn-danger btn-sm mr-2"
+            ngbTooltip="Reject Miqaat"
+            placement="top"
+            (click)="onReject()"
+            [disabled]="isBtnLoading || miqaatData?.adminApproval === 'Rejected'"
+          >
+            <i class="fa fa-times"></i>
+          </button>
           <button (click)="goBack()" type="button" class="btn btn-info btn-sm">
             <i class="ri-arrow-left-line align-middle mr-2"></i>Back
           </button>
@@ -208,6 +226,7 @@
                     <div class="form-label-group">
                       <select
                         class="form-control"
+                        disabled
                         id="adminApproval"
                         formControlName="adminApproval"
                       >
