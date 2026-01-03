@@ -21,7 +21,7 @@ export class UserEditComponent implements OnInit {
   selectedFile: File | null = null;
   profileImagePreview: string | null = null;
   isUploadingImage: boolean = false;
-  profileImageUrl: string = '';
+  profileImageUrl: string = "";
 
   constructor(
     private fb: FormBuilder,
@@ -72,13 +72,22 @@ export class UserEditComponent implements OnInit {
           age: data.age || null,
           roles: data.roles || null,
         });
-
+        debugger;
         // Load profile image preview if exists
         if (data.profile) {
           this.profileImageUrl = data.profile;
-          this.profileImagePreview = `${environment.apiUrl}/${data.profile}`;
+          // Handle both old format (just filename) and new format (bgp_uploads/filename)
+          let profilePath = data.profile;
+          if (
+            !profilePath.startsWith("bgp_uploads/") &&
+            !profilePath.startsWith("http")
+          ) {
+            // Old format: just filename, prepend bgp_uploads/
+            profilePath = `bgp_uploads/profile/${profilePath}`;
+          }
+          this.profileImagePreview = `${environment.apiUrl}/${profilePath}`;
         } else {
-          this.profileImageUrl = '';
+          this.profileImageUrl = "";
           this.profileImagePreview = null;
         }
 
@@ -105,10 +114,10 @@ export class UserEditComponent implements OnInit {
 
   openCropModal(file: File): void {
     const modalRef = this.modalService.open(ImageCropModalComponent, {
-      size: 'lg',
-      backdrop: 'static',
+      size: "lg",
+      backdrop: "static",
       keyboard: false,
-      centered: true
+      centered: true,
     });
 
     modalRef.componentInstance.imageFile = file;
@@ -157,7 +166,16 @@ export class UserEditComponent implements OnInit {
           // Update preview with new image URL
           if (data.profile) {
             this.profileImageUrl = data.profile;
-            this.profileImagePreview = `${environment.apiUrl}/${data.profile}`;
+            // Handle both old format (just filename) and new format (bgp_uploads/filename)
+            let profilePath = data.profile;
+            if (
+              !profilePath.startsWith("bgp_uploads/") &&
+              !profilePath.startsWith("http")
+            ) {
+              // Old format: just filename, prepend bgp_uploads/
+              profilePath = `bgp_uploads/${profilePath}`;
+            }
+            this.profileImagePreview = `${environment.apiUrl}/${profilePath}`;
             this.userData.profile = data.profile;
           }
         },
@@ -176,7 +194,7 @@ export class UserEditComponent implements OnInit {
 
   onImageCleared(): void {
     this.selectedFile = null;
-    this.profileImageUrl = '';
+    this.profileImageUrl = "";
     this.profileImagePreview = null;
   }
 
