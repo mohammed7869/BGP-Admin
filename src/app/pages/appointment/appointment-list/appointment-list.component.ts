@@ -232,6 +232,7 @@ export class AppointmentListComponent implements OnInit {
   ngOnInit(): void {
     this.setGridHeight();
     this.createSearchForm();
+    this.initializeColumnDefs();
     this.loadUsers();
     this.checkIfArchivedView();
   }
@@ -442,9 +443,7 @@ export class AppointmentListComponent implements OnInit {
     return `${formattedDate} at ${time}`;
   }
 
-  onGridReady(params: any) {
-    this.gridApi = params.api;
-
+  initializeColumnDefs(): void {
     this.columnDefs = [
       {
         field: "id",
@@ -564,6 +563,23 @@ export class AppointmentListComponent implements OnInit {
         },
       },
     ];
+  }
+
+  onGridReady(params: any) {
+    this.gridApi = params.api;
+
+    // Add row styling for unapproved members
+    params.api.setRowStyle((params: any) => {
+      if (params.data && params.data.isApproved === false) {
+        return { backgroundColor: "#fff3e0" }; // Orange background
+      }
+      return null;
+    });
+
+    // If data was already loaded before grid was ready, set it now
+    if (this.lst && this.lst.length > 0) {
+      this.gridApi.setRowData(this.lst);
+    }
   }
 
   frameworkComponents = {
@@ -706,6 +722,10 @@ export class AppointmentListComponent implements OnInit {
 
   onCreate() {
     this.router.navigate(["appointments/new"]);
+  }
+
+  onCreateMember() {
+    this.router.navigate(["appointments/user/new"]);
   }
 
   onBack() {

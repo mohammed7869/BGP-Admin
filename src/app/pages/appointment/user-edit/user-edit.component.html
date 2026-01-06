@@ -4,8 +4,23 @@
       <div
         class="page-title-box d-flex align-items-center justify-content-between mr-4 ml-4"
       >
-        <h4 class="mb-0">Edit User</h4>
+        <h4 class="mb-0">{{ isEditMode ? "Edit User" : "Add New Member" }}</h4>
         <div class="page-title-right">
+          <button
+            *ngIf="isEditMode && !isApproved"
+            (click)="approveMember()"
+            type="button"
+            class="btn btn-success btn-sm mr-2"
+            [disabled]="isApproving"
+          >
+            <span
+              *ngIf="isApproving"
+              class="spinner-border spinner-border-sm me-1"
+              role="status"
+            ></span>
+            <i *ngIf="!isApproving" class="ri-check-line align-middle mr-2"></i>
+            {{ isApproving ? "Approving..." : "Approve Member" }}
+          </button>
           <button (click)="goBack()" type="button" class="btn btn-info btn-sm">
             <i class="ri-arrow-left-line align-middle mr-2"></i>Back
           </button>
@@ -126,13 +141,24 @@
 
                   <div class="col-md-6">
                     <div class="form-label-group">
-                      <input
-                        type="text"
+                      <select
                         class="form-control"
                         id="rank"
                         formControlName="rank"
-                        placeholder="Enter Rank"
-                      />
+                      >
+                        <option value="Member">Member</option>
+                        <option value="Captain">Captain</option>
+                        <option value="Vice Captain">Vice Captain</option>
+                        <option value="Asst. Group Leader">
+                          Asst. Group Leader
+                        </option>
+                        <option value="Group Leader">Group Leader</option>
+                        <option value="Major (Captain)">Major (Captain)</option>
+                        <option value="Resource Admin">Resource Admin</option>
+                        <option value="Assistant Commander">
+                          Assistant Commander
+                        </option>
+                      </select>
                       <label class="form-label">Rank</label>
                     </div>
                   </div>
@@ -191,6 +217,18 @@
                       <label class="form-label">Age</label>
                     </div>
                   </div>
+                  <div class="col-md-6" *ngIf="!isEditMode">
+                    <div class="form-label-group">
+                      <input
+                        type="password"
+                        class="form-control"
+                        id="password"
+                        formControlName="password"
+                        placeholder="Enter Password"
+                      />
+                      <label class="form-label">Password</label>
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -207,7 +245,7 @@
                         (fileSelected)="onFileSelected($event)"
                         (imageCleared)="onImageCleared()"
                       ></app-image-input>
-                      <div class="mt-2" *ngIf="selectedFile">
+                      <div class="mt-2" *ngIf="selectedFile && isEditMode">
                         <div
                           class="alert alert-info d-flex align-items-center mb-2"
                           role="alert"
@@ -238,6 +276,18 @@
                           }}
                         </button>
                       </div>
+                      <div class="mt-2" *ngIf="selectedFile && !isEditMode">
+                        <div
+                          class="alert alert-info d-flex align-items-center mb-2"
+                          role="alert"
+                        >
+                          <i class="ri-information-line me-2"></i>
+                          <small
+                            >Image has been cropped. It will be uploaded when
+                            you create the member.</small
+                          >
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -266,7 +316,15 @@
                     aria-hidden="true"
                   ></span>
                   <i *ngIf="!isBtnLoading" class="ri-save-line mr-1"></i>
-                  {{ isBtnLoading ? "Saving..." : "Save Changes" }}
+                  {{
+                    isBtnLoading
+                      ? isEditMode
+                        ? "Saving..."
+                        : "Creating..."
+                      : isEditMode
+                      ? "Save Changes"
+                      : "Create Member"
+                  }}
                 </button>
               </div>
             </div>

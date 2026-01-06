@@ -50,6 +50,10 @@ import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
         ]
       },
       {
+        path: 'user/new',
+        component: UserEditComponent
+      },
+      {
         path: 'user/edit/:id',
         component: UserEditComponent
       },

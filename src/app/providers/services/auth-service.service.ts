@@ -170,4 +170,12 @@ export class AuthServiceService {
     formData.append('file', file);
     return this.httpClient.post<any>(`${baseURL}/users/${id}/upload-profile`, formData);
   }
+
+  createUser(userData: any): Observable<any> {
+    return this.httpClient.post<any>(`${baseURL}/users`, userData);
+  }
+
+  approveMember(id: number): Observable<any> {
+    return this.httpClient.put<any>(`${baseURL}/users/${id}/approve`, {});
+  }
 }

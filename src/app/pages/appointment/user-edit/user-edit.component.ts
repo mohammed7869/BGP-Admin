@@ -23,6 +23,10 @@ export class UserEditComponent implements OnInit {
   isUploadingImage: boolean = false;
   profileImageUrl: string = "";
 
+  isEditMode: boolean = false;
+  isApproved: boolean = true;
+  isApproving: boolean = false;
+
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
@@ -32,12 +36,21 @@ export class UserEditComponent implements OnInit {
     private recordCreationService: RecordCreationService,
     private modalService: NgbModal
   ) {
-    this.userId = +this.route.snapshot.paramMap.get("id")!;
+    const idParam = this.route.snapshot.paramMap.get("id");
+    if (idParam) {
+      this.userId = +idParam;
+      this.isEditMode = true;
+    } else {
+      this.userId = 0;
+      this.isEditMode = false;
+    }
   }
 
   ngOnInit(): void {
     this.createForm();
-    this.loadUser();
+    if (this.isEditMode) {
+      this.loadUser();
+    }
   }
 
   createForm(): void {
@@ -46,12 +59,13 @@ export class UserEditComponent implements OnInit {
       fullName: ["", Validators.required],
       email: ["", [Validators.required, Validators.email]],
       contact: [""],
-      rank: [""],
+      rank: ["Member"],
       jamiyat: [""],
       jamaat: [""],
       gender: [""],
       age: [null],
-      roles: [null],
+      roles: [1],
+      password: [""],
     });
   }
 
@@ -60,6 +74,7 @@ export class UserEditComponent implements OnInit {
     this.authService.getUserById(this.userId).subscribe(
       (data) => {
         this.userData = data;
+        this.isApproved = data.isApproved !== false; // Default to true if not set
         this.userForm.patchValue({
           itsId: data.itsId || "",
           fullName: data.fullName || "",
@@ -72,7 +87,7 @@ export class UserEditComponent implements OnInit {
           age: data.age || null,
           roles: data.roles || null,
         });
-        debugger;
+
         // Load profile image preview if exists
         if (data.profile) {
           this.profileImageUrl = data.profile;
@@ -211,48 +226,196 @@ export class UserEditComponent implements OnInit {
     this.isBtnLoading = true;
     const formData = this.userForm.value;
 
-    this.authService.updateUser(this.userId, formData).subscribe(
-      (data) => {
-        this.isBtnLoading = false;
-        this.toastrMessageService.showSuccess(
-          "User updated successfully",
-          "Success"
-        );
+    if (this.isEditMode) {
+      // Update existing user
+      this.authService.updateUser(this.userId, formData).subscribe(
+        (data) => {
+          this.isBtnLoading = false;
+          this.toastrMessageService.showSuccess(
+            "User updated successfully",
+            "Success"
+          );
 
-        // Announce the update to the list component
-        var listRec = {
-          table: "User",
-          id: this.userId,
-          itsId: formData.itsId,
-          fullName: formData.fullName,
-          email: formData.email,
-          contact: formData.contact,
-          rank: formData.rank,
-          jamiyat: formData.jamiyat,
-          jamaat: formData.jamaat,
-          gender: formData.gender,
-          age: formData.age,
-          roles: formData.roles,
-          profile: this.userData?.profile || null,
-        };
-        this.recordCreationService.announceUpdate(listRec);
-        this.router.navigate(["appointments"]);
-      },
-      (error) => {
-        this.isBtnLoading = false;
-        let errorMessage = "Error updating user";
-        if (error?.error?.message) {
-          errorMessage = error.error.message;
-        } else if (error?.message) {
-          errorMessage = error.message;
+          // Announce the update to the list component
+          var listRec = {
+            table: "User",
+            id: this.userId,
+            itsId: formData.itsId,
+            fullName: formData.fullName,
+            email: formData.email,
+            contact: formData.contact,
+            rank: formData.rank,
+            jamiyat: formData.jamiyat,
+            jamaat: formData.jamaat,
+            gender: formData.gender,
+            age: formData.age,
+            roles: formData.roles,
+            profile: this.userData?.profile || null,
+          };
+          this.recordCreationService.announceUpdate(listRec);
+          this.router.navigate(["appointments"]);
+        },
+        (error) => {
+          this.isBtnLoading = false;
+          let errorMessage = "Error updating user";
+          if (error?.error?.message) {
+            errorMessage = error.error.message;
+          } else if (error?.message) {
+            errorMessage = error.message;
+          }
+          this.toastrMessageService.showError(errorMessage, "Error");
         }
-        this.toastrMessageService.showError(errorMessage, "Error");
+      );
+    } else {
+      // Create new user - handle profile image upload if selected
+      if (this.selectedFile && this.profileImageUrl) {
+        // First create the user, then upload the profile image
+        this.authService.createUser(formData).subscribe(
+          (data) => {
+            // Upload profile image after user creation
+            this.authService
+              .uploadUserProfileImage(data.id, this.selectedFile!)
+              .subscribe(
+                (uploadData) => {
+                  this.isBtnLoading = false;
+                  this.toastrMessageService.showSuccess(
+                    "Member created successfully with profile image",
+                    "Success"
+                  );
+
+                  // Announce the insert to the list component
+                  var listRec = {
+                    table: "User",
+                    id: data.id,
+                    itsId: formData.itsId,
+                    fullName: formData.fullName,
+                    email: formData.email,
+                    contact: formData.contact,
+                    rank: formData.rank,
+                    jamiyat: formData.jamiyat,
+                    jamaat: formData.jamaat,
+                    gender: formData.gender,
+                    age: formData.age,
+                    roles: formData.roles,
+                    isActive: true,
+                    profile: uploadData.profile || null,
+                  };
+                  this.recordCreationService.announceInsert(listRec);
+                  this.router.navigate(["appointments"]);
+                },
+                (uploadError) => {
+                  // User created but image upload failed
+                  this.isBtnLoading = false;
+                  this.toastrMessageService.showWarning(
+                    "Member created but profile image upload failed",
+                    "Warning"
+                  );
+
+                  var listRec = {
+                    table: "User",
+                    id: data.id,
+                    itsId: formData.itsId,
+                    fullName: formData.fullName,
+                    email: formData.email,
+                    contact: formData.contact,
+                    rank: formData.rank,
+                    jamiyat: formData.jamiyat,
+                    jamaat: formData.jamaat,
+                    gender: formData.gender,
+                    age: formData.age,
+                    roles: formData.roles,
+                    isActive: true,
+                  };
+                  this.recordCreationService.announceInsert(listRec);
+                  this.router.navigate(["appointments"]);
+                }
+              );
+          },
+          (error) => {
+            this.isBtnLoading = false;
+            let errorMessage = "Error creating member";
+            if (error?.error?.message) {
+              errorMessage = error.error.message;
+            } else if (error?.message) {
+              errorMessage = error.message;
+            }
+            this.toastrMessageService.showError(errorMessage, "Error");
+          }
+        );
+      } else {
+        // Create user without profile image
+        this.authService.createUser(formData).subscribe(
+          (data) => {
+            this.isBtnLoading = false;
+            this.toastrMessageService.showSuccess(
+              "Member created successfully",
+              "Success"
+            );
+
+            // Announce the insert to the list component
+            var listRec = {
+              table: "User",
+              id: data.id,
+              itsId: formData.itsId,
+              fullName: formData.fullName,
+              email: formData.email,
+              contact: formData.contact,
+              rank: formData.rank,
+              jamiyat: formData.jamiyat,
+              jamaat: formData.jamaat,
+              gender: formData.gender,
+              age: formData.age,
+              roles: formData.roles,
+              isActive: true,
+            };
+            this.recordCreationService.announceInsert(listRec);
+            this.router.navigate(["appointments"]);
+          },
+          (error) => {
+            this.isBtnLoading = false;
+            let errorMessage = "Error creating member";
+            if (error?.error?.message) {
+              errorMessage = error.error.message;
+            } else if (error?.message) {
+              errorMessage = error.message;
+            }
+            this.toastrMessageService.showError(errorMessage, "Error");
+          }
+        );
       }
-    );
+    }
   }
 
   goBack(): void {
     this.router.navigate(["appointments"]);
+  }
+
+  approveMember(): void {
+    if (confirm("Are you sure you want to approve this member?")) {
+      this.isApproving = true;
+      this.authService.approveMember(this.userId).subscribe(
+        (data) => {
+          this.isApproving = false;
+          this.toastrMessageService.showSuccess(
+            "Member approved successfully",
+            "Success"
+          );
+          this.isApproved = true;
+          // Reload user data to refresh the view
+          this.loadUser();
+        },
+        (error) => {
+          this.isApproving = false;
+          let errorMessage = "Error approving member";
+          if (error?.error?.message) {
+            errorMessage = error.error.message;
+          } else if (error?.message) {
+            errorMessage = error.message;
+          }
+          this.toastrMessageService.showError(errorMessage, "Error");
+        }
+      );
+    }
   }
 
   get f() {
