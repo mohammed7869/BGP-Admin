@@ -4,7 +4,9 @@
       <div
         class="page-title-box d-flex align-items-center justify-content-between mr-4 ml-4"
       >
-        <h4 class="mb-0">{{ isEditMode ? "Edit User" : "Add New Member" }}</h4>
+        <h4 class="mb-0">
+          {{ isEditMode ? "Edit Member" : "Add New Member" }}
+        </h4>
         <div class="page-title-right">
           <button
             *ngIf="isEditMode && !isApproved"

@@ -72,7 +72,7 @@ export class AppointmentListComponent implements OnInit {
             this.isArchivedView = true;
           } else {
             this.breadcrumbTitle = "List";
-            this.pageTitle = "Users";
+            this.pageTitle = "Members";
             this.isArchivedView = false;
           }
 
