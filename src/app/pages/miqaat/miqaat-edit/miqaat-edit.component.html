@@ -1,27 +1,15 @@
 <div class="container-fluid py-3">
   <div class="row">
     <div class="col-12">
-      <div
-        class="page-title-box d-flex align-items-center justify-content-between mr-4 ml-4"
-      >
+      <div class="page-title-box d-flex align-items-center justify-content-between mr-4 ml-4">
         <h4 class="mb-0">Edit Miqaat</h4>
         <div class="page-title-right d-flex align-items-center gap-2">
-          <button
-            class="btn btn-success btn-sm mr-2"
-            ngbTooltip="Approve Miqaat"
-            placement="top"
-            (click)="onApprove()"
-            [disabled]="isBtnLoading || miqaatData?.adminApproval === 'Approved'"
-          >
+          <button class="btn btn-success btn-sm mr-2" ngbTooltip="Approve Miqaat" placement="top" (click)="onApprove()"
+            [disabled]="isBtnLoading || miqaatData?.adminApproval === 'Approved'">
             <i class="fa fa-check"></i>
           </button>
-          <button
-            class="btn btn-danger btn-sm mr-2"
-            ngbTooltip="Reject Miqaat"
-            placement="top"
-            (click)="onReject()"
-            [disabled]="isBtnLoading || miqaatData?.adminApproval === 'Rejected'"
-          >
+          <button class="btn btn-danger btn-sm mr-2" ngbTooltip="Reject Miqaat" placement="top" (click)="onReject()"
+            [disabled]="isBtnLoading || miqaatData?.adminApproval === 'Rejected'">
             <i class="fa fa-times"></i>
           </button>
           <button (click)="goBack()" type="button" class="btn btn-info btn-sm">
@@ -42,28 +30,17 @@
                 <div class="row">
                   <div class="col-md-12">
                     <div class="form-label-group">
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="miqaatName"
-                        formControlName="miqaatName"
-                        placeholder="Enter Miqaat Name"
-                        [class.is-invalid]="
+                      <input type="text" class="form-control" id="miqaatName" formControlName="miqaatName"
+                        placeholder="Enter Miqaat Name" [class.is-invalid]="
                           f.miqaatName.invalid &&
                           (f.miqaatName.dirty || f.miqaatName.touched)
-                        "
-                      />
-                      <label class="form-label"
-                        >Miqaat Name <span class="text-danger">*</span></label
-                      >
+                        " />
+                      <label class="form-label">Miqaat Name <span class="text-danger">*</span></label>
                     </div>
-                    <div
-                      class="invalid-feedback d-block"
-                      *ngIf="
+                    <div class="invalid-feedback d-block" *ngIf="
                         f.miqaatName.invalid &&
                         (f.miqaatName.dirty || f.miqaatName.touched)
-                      "
-                    >
+                      ">
                       <div *ngIf="f.miqaatName.errors?.['required']">
                         Miqaat Name is required
                       </div>
@@ -72,27 +49,16 @@
 
                   <div class="col-md-6">
                     <div class="form-label-group">
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="jamaat"
-                        formControlName="jamaat"
-                        placeholder="Enter Jamaat"
-                        [class.is-invalid]="
+                      <input type="text" class="form-control" id="jamaat" formControlName="jamaat"
+                        placeholder="Enter Jamaat" [class.is-invalid]="
                           f.jamaat.invalid &&
                           (f.jamaat.dirty || f.jamaat.touched)
-                        "
-                      />
-                      <label class="form-label"
-                        >Jamaat <span class="text-danger">*</span></label
-                      >
+                        " />
+                      <label class="form-label">Jamaat <span class="text-danger">*</span></label>
                     </div>
-                    <div
-                      class="invalid-feedback d-block"
-                      *ngIf="
+                    <div class="invalid-feedback d-block" *ngIf="
                         f.jamaat.invalid && (f.jamaat.dirty || f.jamaat.touched)
-                      "
-                    >
+                      ">
                       <div *ngIf="f.jamaat.errors?.['required']">
                         Jamaat is required
                       </div>
@@ -101,28 +67,17 @@
 
                   <div class="col-md-6">
                     <div class="form-label-group">
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="jamiyat"
-                        formControlName="jamiyat"
-                        placeholder="Enter Jamiyat"
-                        [class.is-invalid]="
+                      <input type="text" class="form-control" id="jamiyat" formControlName="jamiyat"
+                        placeholder="Enter Jamiyat" [class.is-invalid]="
                           f.jamiyat.invalid &&
                           (f.jamiyat.dirty || f.jamiyat.touched)
-                        "
-                      />
-                      <label class="form-label"
-                        >Jamiyat <span class="text-danger">*</span></label
-                      >
+                        " />
+                      <label class="form-label">Jamiyat <span class="text-danger">*</span></label>
                     </div>
-                    <div
-                      class="invalid-feedback d-block"
-                      *ngIf="
+                    <div class="invalid-feedback d-block" *ngIf="
                         f.jamiyat.invalid &&
                         (f.jamiyat.dirty || f.jamiyat.touched)
-                      "
-                    >
+                      ">
                       <div *ngIf="f.jamiyat.errors?.['required']">
                         Jamiyat is required
                       </div>
@@ -131,27 +86,17 @@
 
                   <div class="col-md-6">
                     <div class="form-label-group">
-                      <input
-                        type="date"
-                        class="form-control"
-                        id="fromDate"
-                        formControlName="fromDate"
+                      <input type="date" class="form-control" id="fromDate" formControlName="fromDate"
                         [class.is-invalid]="
                           f.fromDate.invalid &&
                           (f.fromDate.dirty || f.fromDate.touched)
-                        "
-                      />
-                      <label class="form-label"
-                        >From Date <span class="text-danger">*</span></label
-                      >
+                        " />
+                      <label class="form-label">From Date <span class="text-danger">*</span></label>
                     </div>
-                    <div
-                      class="invalid-feedback d-block"
-                      *ngIf="
+                    <div class="invalid-feedback d-block" *ngIf="
                         f.fromDate.invalid &&
                         (f.fromDate.dirty || f.fromDate.touched)
-                      "
-                    >
+                      ">
                       <div *ngIf="f.fromDate.errors?.['required']">
                         From Date is required
                       </div>
@@ -160,27 +105,17 @@
 
                   <div class="col-md-6">
                     <div class="form-label-group">
-                      <input
-                        type="date"
-                        class="form-control"
-                        id="tillDate"
-                        formControlName="tillDate"
+                      <input type="date" class="form-control" id="tillDate" formControlName="tillDate"
                         [class.is-invalid]="
                           f.tillDate.invalid &&
                           (f.tillDate.dirty || f.tillDate.touched)
-                        "
-                      />
-                      <label class="form-label"
-                        >Till Date <span class="text-danger">*</span></label
-                      >
+                        " />
+                      <label class="form-label">Till Date <span class="text-danger">*</span></label>
                     </div>
-                    <div
-                      class="invalid-feedback d-block"
-                      *ngIf="
+                    <div class="invalid-feedback d-block" *ngIf="
                         f.tillDate.invalid &&
                         (f.tillDate.dirty || f.tillDate.touched)
-                      "
-                    >
+                      ">
                       <div *ngIf="f.tillDate.errors?.['required']">
                         Till Date is required
                       </div>
@@ -189,30 +124,18 @@
 
                   <div class="col-md-6">
                     <div class="form-label-group">
-                      <input
-                        type="number"
-                        class="form-control"
-                        id="volunteerLimit"
-                        formControlName="volunteerLimit"
-                        placeholder="Enter Volunteer Limit"
-                        min="1"
-                        [class.is-invalid]="
+                      <input type="number" class="form-control" id="volunteerLimit" formControlName="volunteerLimit"
+                        placeholder="Enter Volunteer Limit" min="1" [class.is-invalid]="
                           f.volunteerLimit.invalid &&
                           (f.volunteerLimit.dirty || f.volunteerLimit.touched)
-                        "
-                      />
-                      <label class="form-label"
-                        >Volunteer Limit
-                        <span class="text-danger">*</span></label
-                      >
+                        " />
+                      <label class="form-label">Volunteer Limit
+                        <span class="text-danger">*</span></label>
                     </div>
-                    <div
-                      class="invalid-feedback d-block"
-                      *ngIf="
+                    <div class="invalid-feedback d-block" *ngIf="
                         f.volunteerLimit.invalid &&
                         (f.volunteerLimit.dirty || f.volunteerLimit.touched)
-                      "
-                    >
+                      ">
                       <div *ngIf="f.volunteerLimit.errors?.['required']">
                         Volunteer Limit is required
                       </div>
@@ -224,12 +147,7 @@
 
                   <div class="col-md-6">
                     <div class="form-label-group">
-                      <select
-                        class="form-control"
-                        disabled
-                        id="adminApproval"
-                        formControlName="adminApproval"
-                      >
+                      <select class="form-control" disabled id="adminApproval" formControlName="adminApproval">
                         <option value="Pending">Pending</option>
                         <option value="Approved">Approved</option>
                         <option value="Rejected">Rejected</option>
@@ -244,18 +162,12 @@
                 <div class="row">
                   <div class="col-md-12">
                     <div class="form-label-group">
-                      <textarea
-                        class="form-control"
-                        id="aboutMiqaat"
-                        formControlName="aboutMiqaat"
-                        placeholder="Enter About Miqaat"
-                        rows="8"
-                        maxlength="500"
-                      ></textarea>
+                      <textarea class="form-control" id="aboutMiqaat" formControlName="aboutMiqaat"
+                        placeholder="Enter About Miqaat" rows="8" maxlength="500"></textarea>
                       <label class="form-label">About Miqaat</label>
                       <small class="form-text text-muted">
                         {{
-                          miqaatForm.get("aboutMiqaat")?.value?.length || 0
+                        miqaatForm.get("aboutMiqaat")?.value?.length || 0
                         }}/500 characters
                       </small>
                     </div>
@@ -272,19 +184,61 @@
                         <p class="mb-1" *ngIf="miqaatData?.createdAt">
                           <strong>Created At:</strong>
                           {{
-                            moment(miqaatData.createdAt).format(
-                              "DD MMM YYYY HH:mm"
-                            )
+                          moment(miqaatData.createdAt).format(
+                          "DD MMM YYYY HH:mm"
+                          )
                           }}
                         </p>
                         <p class="mb-0" *ngIf="miqaatData?.updatedAt">
                           <strong>Last Updated:</strong>
                           {{
-                            moment(miqaatData.updatedAt).format(
-                              "DD MMM YYYY HH:mm"
-                            )
+                          moment(miqaatData.updatedAt).format(
+                          "DD MMM YYYY HH:mm"
+                          )
                           }}
                         </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Captain's Report Section -->
+                  <div class="col-md-12 mt-3"
+                    *ngIf="miqaatData?.miqaatImage1 || miqaatData?.miqaatImage2 || miqaatData?.notes">
+                    <div class="card border-primary">
+                      <div class="card-header bg-primary text-white">
+                        <h6 class="mb-0"><i class="fa fa-file-text mr-2"></i>Captain's Report</h6>
+                      </div>
+                      <div class="card-body">
+                        <p class="mb-2">
+                          <strong>Captain Name:</strong>
+                          {{ miqaatData?.captainName || "N/A" }}
+                        </p>
+
+                        <!-- Images -->
+                        <div class="row mb-3" *ngIf="miqaatData?.miqaatImage1 || miqaatData?.miqaatImage2">
+                          <div class="col-md-6" *ngIf="miqaatData?.miqaatImage1">
+                            <p class="mb-1"><strong>Image 1:</strong></p>
+                            <img [src]="getImageUrl(miqaatData.miqaatImage1)" alt="Miqaat Image 1"
+                              class="img-fluid img-thumbnail" style="max-height: 200px; cursor: pointer;"
+                              (click)="openImage(miqaatData.miqaatImage1)">
+                            <p class="text-muted small mt-1">{{ miqaatData.miqaatImage1 }}</p>
+                          </div>
+                          <div class="col-md-6" *ngIf="miqaatData?.miqaatImage2">
+                            <p class="mb-1"><strong>Image 2:</strong></p>
+                            <img [src]="getImageUrl(miqaatData.miqaatImage2)" alt="Miqaat Image 2"
+                              class="img-fluid img-thumbnail" style="max-height: 200px; cursor: pointer;"
+                              (click)="openImage(miqaatData.miqaatImage2)">
+                            <p class="text-muted small mt-1">{{ miqaatData.miqaatImage2 }}</p>
+                          </div>
+                        </div>
+
+                        <!-- Notes -->
+                        <div *ngIf="miqaatData?.notes">
+                          <p class="mb-1"><strong>Notes:</strong></p>
+                          <div class="p-2 bg-light rounded">
+                            {{ miqaatData.notes }}
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -294,25 +248,12 @@
 
             <div class="row mt-3">
               <div class="col-12 text-end">
-                <button
-                  type="button"
-                  class="btn btn-secondary mr-2"
-                  (click)="goBack()"
-                  [disabled]="isBtnLoading"
-                >
+                <button type="button" class="btn btn-secondary mr-2" (click)="goBack()" [disabled]="isBtnLoading">
                   Cancel
                 </button>
-                <button
-                  type="submit"
-                  class="btn btn-primary"
-                  [disabled]="isBtnLoading || miqaatForm.invalid"
-                >
-                  <span
-                    *ngIf="isBtnLoading"
-                    class="spinner-border spinner-border-sm me-1"
-                    role="status"
-                    aria-hidden="true"
-                  ></span>
+                <button type="submit" class="btn btn-primary" [disabled]="isBtnLoading || miqaatForm.invalid">
+                  <span *ngIf="isBtnLoading" class="spinner-border spinner-border-sm me-1" role="status"
+                    aria-hidden="true"></span>
                   <i *ngIf="!isBtnLoading" class="ri-save-line mr-1"></i>
                   {{ isBtnLoading ? "Saving..." : "Save Changes" }}
                 </button>

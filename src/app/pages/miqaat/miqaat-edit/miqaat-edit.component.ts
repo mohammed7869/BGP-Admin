@@ -52,9 +52,9 @@ export class MiqaatEditComponent implements OnInit {
     this.miqaatService.getById(this.miqaatId).subscribe(
       (data) => {
         this.miqaatData = data;
-        
+
         // Format dates for input fields (YYYY-MM-DD format)
-        const fromDate = data.fromDate 
+        const fromDate = data.fromDate
           ? moment(data.fromDate).format("YYYY-MM-DD")
           : "";
         const tillDate = data.tillDate
@@ -242,6 +242,22 @@ export class MiqaatEditComponent implements OnInit {
 
   get f() {
     return this.miqaatForm.controls;
+  }
+
+  // Image URL path for miqaat reports
+  private readonly imageBasePath = 'file:///C:/var/www/bgp_uploads/miqaat_images/';
+
+  getImageUrl(imageName: string): string {
+    if (!imageName) return '';
+    // Since the images are stored locally, we use the local file path
+    // In production, this should be a proper URL served by the API
+    return this.imageBasePath + imageName;
+  }
+
+  openImage(imageName: string): void {
+    if (!imageName) return;
+    // Open image in a new tab
+    window.open(this.imageBasePath + imageName, '_blank');
   }
 }
 
