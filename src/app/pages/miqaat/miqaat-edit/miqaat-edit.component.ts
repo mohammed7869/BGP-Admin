@@ -5,6 +5,7 @@ import { MiqaatService } from "src/app/providers/services/miqaat.service";
 import { ToastrMessageService } from "src/app/providers/services/toastr-message.service";
 import { RecordCreationService } from "src/app/providers/services/record-creation.service";
 import * as moment from "moment";
+import { environment } from "src/environments/environment";
 
 @Component({
   selector: "app-miqaat-edit",
@@ -167,7 +168,9 @@ export class MiqaatEditComponent implements OnInit {
   onApprove(): void {
     if (
       confirm(
-        `Are you sure you want to approve miqaat "${this.miqaatData?.miqaatName || 'this miqaat'}"?`
+        `Are you sure you want to approve miqaat "${
+          this.miqaatData?.miqaatName || "this miqaat"
+        }"?`
       )
     ) {
       this.isBtnLoading = true;
@@ -205,7 +208,9 @@ export class MiqaatEditComponent implements OnInit {
   onReject(): void {
     if (
       confirm(
-        `Are you sure you want to reject miqaat "${this.miqaatData?.miqaatName || 'this miqaat'}"?`
+        `Are you sure you want to reject miqaat "${
+          this.miqaatData?.miqaatName || "this miqaat"
+        }"?`
       )
     ) {
       this.isBtnLoading = true;
@@ -244,20 +249,14 @@ export class MiqaatEditComponent implements OnInit {
     return this.miqaatForm.controls;
   }
 
-  // Image URL path for miqaat reports
-  private readonly imageBasePath = 'file:///C:/var/www/bgp_uploads/miqaat_images/';
-
   getImageUrl(imageName: string): string {
-    if (!imageName) return '';
-    // Since the images are stored locally, we use the local file path
-    // In production, this should be a proper URL served by the API
-    return this.imageBasePath + imageName;
+    if (!imageName) return "";
+    return `${environment.apiUrl}/bgp_uploads/miqaat_images/${imageName}`;
   }
 
   openImage(imageName: string): void {
     if (!imageName) return;
     // Open image in a new tab
-    window.open(this.imageBasePath + imageName, '_blank');
+    window.open(this.getImageUrl(imageName), "_blank");
   }
 }
-
