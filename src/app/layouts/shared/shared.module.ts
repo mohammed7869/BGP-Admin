@@ -5,7 +5,6 @@ import { RouterModule } from '@angular/router';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { ClickOutsideModule } from 'ng-click-outside';
-import { LanguageService } from '../../core/services/language.service';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { TopbarComponent } from './topbar/topbar.component';
@@ -25,6 +24,6 @@ import { RightsidebarComponent } from './rightsidebar/rightsidebar.component';
     RouterModule
   ],
   exports: [TopbarComponent, FooterComponent, SidebarComponent, RightsidebarComponent],
-  providers: [LanguageService]
+  providers: []
 })
 export class SharedModule { }
