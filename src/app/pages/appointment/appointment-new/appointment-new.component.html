@@ -1,0 +1,186 @@
+<div class="container py-4">
+  <div class="row mb-4">
+    <div class="col-12">
+      <h3 class="fw-bold mb-3">
+        <i class="fa fa-calendar-plus mr-2 text-primary"></i> Schedule Appointment
+      </h3>
+    </div>
+  </div>
+  <aw-wizard #wizard navBarLayout="large" [disableNavigationBar]=true>
+    <aw-wizard-step stepTitle="Patient Info">
+      <form (ngSubmit)="wizard.goToNextStep()" [formGroup]="bookingForm" autocomplete="off">
+        <div class="row">
+          <div class="form-group col-md-6 mb-3">
+            <label class="form-label">Patient Type</label>
+            <div class="btn-group w-100" role="group">
+              <button type="button" class="btn btn-outline-primary" [class.active]="bookingForm.value.patientType === 'New'" (click)="bookingForm.patchValue({patientType: 'New'})">New</button>
+              <button type="button" class="btn btn-outline-primary" [class.active]="bookingForm.value.patientType === 'Returning'" (click)="bookingForm.patchValue({patientType: 'Returning'})">Returning</button>
+            </div>
+          </div>
+          <div class="form-group col-md-6 mb-3">
+            <label class="form-label">Sex</label>
+            <select class="form-control" formControlName="sex">
+              <option value="">Select option</option>
+              <option *ngFor="let sex of sexOptions" [value]="sex">{{sex}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group col-md-6 mb-3">
+            <label class="form-label">First name</label>
+            <input type="text" class="form-control" formControlName="firstName" placeholder="First name">
+          </div>
+          <div class="form-group col-md-6 mb-3">
+            <label class="form-label">Last name</label>
+            <input type="text" class="form-control" formControlName="lastName" placeholder="Last name">
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group col-md-6 mb-3">
+            <label class="form-label">Phone number</label>
+            <input type="text" class="form-control" formControlName="phone" placeholder="(888) 888-8888">
+          </div>
+          <div class="form-group col-md-6 mb-3">
+            <label class="form-label">Email address</label>
+            <input type="email" class="form-control" formControlName="email" placeholder="Email address">
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group col-md-6 mb-3">
+            <label class="form-label">Date of birth</label>
+            <input type="date" class="form-control" formControlName="dob" placeholder="MM/DD/YYYY">
+          </div>
+          <div class="form-group col-md-6 mb-3">
+            <label class="form-label">Reason for visit?</label>
+            <textarea class="form-control" formControlName="reasonForVisit" rows="2"></textarea>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="form-group col-md-6 mb-3">
+            <label class="form-label">Insurance provider <span class="text-muted">(Optional)</span></label>
+            <select class="form-control" formControlName="insuranceProvider">
+              <option value="None">Select option</option>
+              <option *ngFor="let provider of insuranceProviders" [value]="provider">{{provider}}</option>
+            </select>
+          </div>
+          <div class="form-group col-md-6 mb-3">
+            <label class="form-label">Member ID</label>
+            <input type="text" class="form-control" formControlName="memberId" placeholder="Member ID">
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group col-md-6 mb-3">
+            <label class="form-label">Group number</label>
+            <input type="text" class="form-control" formControlName="groupNumber" placeholder="Group number">
+          </div>
+          <div class="form-group col-md-6 mb-3">
+            <label class="form-label">Phone number</label>
+            <input type="text" class="form-control" formControlName="insurancePhone" placeholder="(888) 888-8888">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 text-end">
+            <button type="button" class="btn btn-outline-secondary mr-2" (click)="wizard.goToPreviousStep()">Cancel</button>
+            <button type="submit" class="btn btn-primary" >Continue</button>
+            <!-- [disabled]="!bookingForm.valid" -->
+          </div>
+        </div>
+      </form>
+    </aw-wizard-step>
+    <aw-wizard-step stepTitle="Find a Time">
+      <div class="card mb-4">
+        <div class="card-body">
+          <form [formGroup]="bookingForm" autocomplete="off">
+            <div class="row mb-3">
+              <div class="form-group col-md-6 mb-3">
+                <label class="form-label">Calendar</label>
+                <select class="form-control" formControlName="calendarLocation">
+                  <option *ngFor="let location of calendarLocations" [value]="location">{{location}}</option>
+                </select>
+              </div>
+              <div class="form-group col-md-6 mb-3">
+                <label class="form-label">Week of</label>
+                <input type="date" class="form-control" formControlName="appointmentDate">
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-12 mb-2">
+                <span class="fw-bold">Available Times</span>
+              </div>
+              <div class="table-responsive mb-3">
+                <table class="table table-bordered bg-white">
+                  <thead class="table-light">
+                    <tr>
+                      <th *ngFor="let day of ['Mon','Tue','Wed','Thu','Fri','Sat']" class="text-center">{{day}}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let slot of availableTimes">
+                      <td *ngFor="let day of ['Mon','Tue','Wed','Thu','Fri','Sat']" class="text-center">
+                        <button type="button" class="btn btn-outline-primary btn-sm w-100 mb-1"
+                          (click)="bookingForm.patchValue({appointmentTime: slot, appointmentDay: day})"
+                       [ngClass]="{'active': bookingForm.value.appointmentTime === slot && bookingForm.value.appointmentDay === day}">
+                          {{slot}}
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="col-12">
+                <div class="card p-3 mb-2 bg-light">
+                  <label class="form-label fw-bold">Set Custom Time Slot</label>
+                  <div class="row g-2 align-items-center">
+                    <div class="col-auto">
+                      <input type="time" class="form-control" [(ngModel)]="customTimeSlot" name="customTimeSlot" [ngModelOptions]="{standalone: true}">
+                    </div>
+                    <div class="col-auto">
+                      <button type="button" class="btn btn-outline-success" (click)="setCustomTimeSlot()">Set Time</button>
+                    </div>
+                  </div>
+                  <div *ngIf="bookingForm.value.customTime" class="mt-2">
+                    <span class="badge bg-success">Custom Time: {{bookingForm.value.customTime}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="card-footer bg-white text-end">
+          <button type="button" class="btn btn-outline-secondary mr-2" (click)="wizard.goToPreviousStep()">Back</button>
+          <button type="button" class="btn btn-primary" [disabled]="!selectedTime" (click)="wizard.goToNextStep()">Continue</button>
+        </div>
+      </div>
+    </aw-wizard-step>
+    <aw-wizard-step stepTitle="Confirm">
+      <div class="card mb-4">
+        <div class="card-body">
+          <h5 class="fw-bold mb-3">Please complete the following to book this appointment:</h5>
+          <ul class="list-unstyled">
+            <li><span class="text-muted">Patient info:</span> {{bookingForm.value.firstName}} {{bookingForm.value.lastName}} ({{bookingForm.value.patientType}})</li>
+            <li><span class="text-muted">Phone:</span> {{bookingForm.value.phone}}</li>
+            <li><span class="text-muted">Email:</span> {{bookingForm.value.email}}</li>
+            <li><span class="text-muted">Date of birth:</span> {{bookingForm.value.dob}}</li>
+            <li><span class="text-muted">Sex:</span> {{bookingForm.value.sex}}</li>
+            <li><span class="text-muted">Reason:</span> {{bookingForm.value.reasonForVisit}}</li>
+            <li><span class="text-muted">Insurance:</span> {{bookingForm.value.insuranceProvider}}</li>
+            <li><span class="text-muted">Calendar:</span> {{bookingForm.value.calendarLocation}}</li>
+            <li><span class="text-muted">Date:</span> {{bookingForm.value.appointmentDate}}</li>
+            <li><span class="text-muted">Time:</span> {{bookingForm.value.appointmentTime}}</li>
+          </ul>
+        </div>
+        <div class="card-footer bg-white text-end">
+          <button type="button" class="btn btn-outline-secondary mr-2" (click)="wizard.goToPreviousStep()">Back</button>
+          <button type="button" class="btn btn-success" [disabled]="!bookingForm.valid || !bookingForm.value.appointmentTime" (click)="onSubmit()">Book Appointment</button>
+        </div>
+      </div>
+    </aw-wizard-step>
+    <aw-wizard-completion-step>
+      <div class="alert alert-success mt-4">
+        <i class="fa fa-check-circle mr-2"></i> Appointment booked successfully!
+      </div>
+    </aw-wizard-completion-step>
+  </aw-wizard>
+</div>
+

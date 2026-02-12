@@ -1,0 +1,241 @@
+<div class="card">
+  <div class="card-body">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-label-group">
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="name"
+                  placeholder="Enter page name"
+                  [class.is-invalid]="
+                    submitted && form.get('name').errors?.required
+                  "
+                />
+                <label class="form-label"
+                  >Page Name <span class="text-danger">*</span></label
+                >
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-label-group">
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="slug"
+                  placeholder="Enter page slug"
+                  [class.is-invalid]="
+                    submitted && form.get('slug').errors?.required
+                  "
+                />
+                <label class="form-label"
+                  >Slug <span class="text-danger">*</span></label
+                >
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-label-group">
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="title"
+                  placeholder="Enter page title"
+                  [class.is-invalid]="
+                    submitted && form.get('title').errors?.required
+                  "
+                />
+                <label class="form-label"
+                  >Page Title <span class="text-danger">*</span></label
+                >
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-label-group">
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="heading"
+                  placeholder="Enter page heading"
+                  [class.is-invalid]="
+                    submitted && form.get('heading').errors?.required
+                  "
+                />
+                <label class="form-label"
+                  >Page Heading <span class="text-danger">*</span></label
+                >
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-label-group">
+                <select
+                  class="form-control"
+                  formControlName="language"
+                  [class.is-invalid]="
+                    submitted && form.get('language').errors?.required
+                  "
+                >
+                  <option value="1">English</option>
+                  <option value="2">Arabic</option>
+                  <option value="3">French</option>
+                  <option value="4">Spanish</option>
+                </select>
+                <label class="form-label mr-2"
+                  >Language <span class="text-danger">*</span></label
+                >
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-label-group">
+                <input
+                  type="datetime-local"
+                  class="form-control"
+                  formControlName="publishDate"
+                />
+                <label class="form-label">Publish Date</label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-label-group">
+                <input
+                  type="datetime-local"
+                  class="form-control"
+                  formControlName="expiryDate"
+                />
+                <label class="form-label">Expiry Date</label>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="form-label-group">
+                <textarea
+                  class="form-control"
+                  formControlName="shortDesc"
+                  rows="2"
+                  placeholder="Enter short description"
+                ></textarea>
+                <label class="form-label">Short Description</label>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="mb-3">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    formControlName="isLandingPage"
+                    id="isLandingPage"
+                  />
+                  <label class="form-check-label" for="isLandingPage">
+                    Landing Page
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="mb-3">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    formControlName="isDraft"
+                    id="isDraft"
+                  />
+                  <label class="form-check-label" for="isDraft"> Draft </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="mb-3">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    formControlName="isHomePage"
+                    id="isHomePage"
+                  />
+                  <label class="form-check-label" for="isHomePage">
+                    Home Page
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="mb-3">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    formControlName="isPublished"
+                    id="isPublished"
+                  />
+                  <label class="form-check-label" for="isPublished">
+                    Is Published
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="row">
+            <div class="col-md-6">
+              <app-image-input
+                [imageId]="form.get('pageImageId').value"
+                label="Page Image"
+                placeholder="Select page image"
+                (imageSelected)="onPageImageSelected($event)"
+                (imageCleared)="onPageImageCleared()"
+              >
+              </app-image-input>
+            </div>
+            <div class="col-md-6">
+              <app-image-input
+                [imageId]="form.get('backgroundImageId').value"
+                label="Background Image"
+                placeholder="Select background image"
+                (imageSelected)="onBackgroundImageSelected($event)"
+                (imageCleared)="onBackgroundImageCleared()"
+              >
+              </app-image-input>
+            </div>
+          </div>
+        </div>
+        <div class="col-12">
+          <label class="form-label">Long Description</label>
+          <ckeditor
+            [editor]="Editor"
+            formControlName="longDesc"
+            [config]="{ placeholder: 'Enter page content...' }"
+          >
+          </ckeditor>
+        </div>
+
+        <div class="col-12 mt-2">
+          <div class="d-flex justify-content-start button-items">
+            <button
+              type="submit"
+              class="btn btn-primary btn-sm"
+              [disabled]="submitLoading"
+            >
+              <i class="ri-save-line" *ngIf="!submitLoading"></i>
+              <span
+                class="spinner-border spinner-border-sm me-1"
+                *ngIf="submitLoading"
+              ></span>
+              {{ submitLoading ? "Saving..." : recordData ? "Update" : "Save" }}
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary btn-sm"
+              (click)="onCancel()"
+            >
+              <i class="ri-close-line"></i> Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

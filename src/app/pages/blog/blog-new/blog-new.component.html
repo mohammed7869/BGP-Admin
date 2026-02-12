@@ -1,0 +1,220 @@
+<div class="card">
+  <div class="card-body">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-label-group">
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="title"
+                  placeholder="Enter blog post title"
+                  (blur)="generateSlug()"
+                  [class.is-invalid]="
+                    submitted && form.get('title').errors?.required
+                  "
+                />
+                <label class="form-label"
+                  >Title <span class="text-danger">*</span></label
+                >
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-label-group">
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="slug"
+                  placeholder="Enter URL slug"
+                  [class.is-invalid]="
+                    submitted && form.get('slug').errors?.required
+                  "
+                />
+                <label class="form-label"
+                  >Slug <span class="text-danger">*</span></label
+                >
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-label-group">
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="authorName"
+                  placeholder="Enter author name"
+                  [class.is-invalid]="
+                    submitted && form.get('authorName').errors?.required
+                  "
+                />
+                <label class="form-label"
+                  >Author Name <span class="text-danger">*</span></label
+                >
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-label-group">
+                <select
+                  class="form-control"
+                  formControlName="blogStatus"
+                  [class.is-invalid]="
+                    submitted && form.get('blogStatus').errors?.required
+                  "
+                >
+                  <option
+                    *ngFor="let blogStatus of appCommon.EnBlogStatus"
+                    [value]="blogStatus.id"
+                  >
+                    {{ blogStatus.text }}
+                  </option>
+                </select>
+                <label class="form-label mr-2"
+                  >Blog Status <span class="text-danger">*</span></label
+                >
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-label-group">
+                <select
+                  class="form-control"
+                  formControlName="visibility"
+                  [class.is-invalid]="
+                    submitted && form.get('visibility').errors?.required
+                  "
+                >
+                  <option
+                    *ngFor="let visibility of appCommon.EnVisibility"
+                    [value]="visibility.id"
+                  >
+                    {{ visibility.text }}
+                  </option>
+                </select>
+                <label class="form-label mr-2"
+                  >Visibility <span class="text-danger">*</span></label
+                >
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-label-group">
+                <input
+                  type="datetime-local"
+                  class="form-control"
+                  formControlName="publishedDate"
+                  [class.is-invalid]="
+                    submitted && form.get('publishedDate').errors?.required
+                  "
+                />
+                <label class="form-label"
+                  >Published Date <span class="text-danger">*</span></label
+                >
+              </div>
+            </div>
+            <div class="col-md-6">
+              <!-- <div class="form-label-group">
+                <select class="form-control" formControlName="contentType"
+                  [class.is-invalid]="submitted && form.get('contentType').errors?.required">
+                  <option *ngFor="let contentType of appCommon.EnContentType" [value]="contentType.id">
+                    {{contentType.text}}
+                  </option>
+                </select>
+                <label class="form-label mr-2">Content Type <span class="text-danger">*</span></label>
+              </div> -->
+            </div>
+            <div class="col-12">
+              <div class="form-label-group">
+                <textarea
+                  class="form-control"
+                  formControlName="excerpt"
+                  rows="2"
+                  placeholder="Enter a brief excerpt of the blog post"
+                  [class.is-invalid]="
+                    submitted && form.get('excerpt').errors?.required
+                  "
+                ></textarea>
+                <label class="form-label"
+                  >Excerpt <span class="text-danger">*</span></label
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="row">
+            <div class="col-12">
+              <div class="mb-3">
+                <label for="tags" class="form-label">Tags</label>
+                <input
+                  id="tags"
+                  type="text"
+                  class="form-control"
+                  placeholder="Enter tags separated by commas"
+                  formControlName="tags"
+                />
+                <small class="form-text font-size-11 text-muted">
+                  Enter tags separated by commas (e.g., technology, web
+                  development, angular)
+                </small>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <app-image-input
+                [imageId]="form.get('authorImageId').value"
+                label="Author Image"
+                placeholder="Select author image"
+                (imageSelected)="onAuthorImageSelected($event)"
+                (imageCleared)="onAuthorImageCleared()"
+              >
+              </app-image-input>
+            </div>
+            <div class="col-md-6">
+              <app-image-input
+                [imageId]="form.get('featuredImageId').value"
+                label="Featured Image"
+                placeholder="Select featured image"
+                (imageSelected)="onFeaturedImageSelected($event)"
+                (imageCleared)="onFeaturedImageCleared()"
+              >
+              </app-image-input>
+            </div>
+          </div>
+        </div>
+        <div class="col-12">
+          <label class="form-label"
+            >Content <span class="text-danger">*</span></label
+          >
+          <ckeditor
+            [editor]="Editor"
+            formControlName="content"
+            [config]="editorConfig"
+            (ready)="onEditorReady($event)"
+          >
+          </ckeditor>
+        </div>
+        <div class="col-12 mt-2">
+          <div class="d-flex justify-content-start button-items">
+            <button
+              type="submit"
+              class="btn btn-primary btn-sm"
+              [disabled]="submitLoading"
+            >
+              <i class="ri-save-line" *ngIf="!submitLoading"></i>
+              <span
+                class="spinner-border spinner-border-sm me-1"
+                *ngIf="submitLoading"
+              ></span>
+              {{ submitLoading ? "Saving..." : recordData ? "Update" : "Save" }}
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary btn-sm"
+              (click)="onCancel()"
+            >
+              <i class="ri-close-line"></i> Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,194 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box d-flex align-items-center justify-content-between mr-4 ml-4">
+                <div class="d-flex align-items-center">
+                    <button (click)="onCancel()" type="button" class="btn btn-light btn-sm mr-3">
+                        <i class="ri-arrow-left-line"></i>
+                    </button>
+                    <h4 class="mb-0">Profile details</h4>
+                </div>
+                <div class="page-title-right">
+                    <div class="d-flex align-items-center">
+                        <button type="button" class="btn btn-secondary btn-sm mr-2" (click)="onViewProfile()">
+                            View profile
+                        </button>
+                        <button type="button" class="btn btn-warning btn-sm mr-2" (click)="onSaveProfile()">
+                            Save profile
+                        </button>
+                        <div class="d-flex align-items-center justify-content-center bg-primary text-white rounded-circle ml-2" style="width: 40px; height: 40px;">
+                            <span class="font-weight-bold" style="font-size: 14px;">MS</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ml-5">
+                <h5 class="text-muted">{{doctorData.name}}</h5>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <form [formGroup]="form" (ngSubmit)="onSubmit()">
+                
+                <!-- Provider Info Section -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title mb-3">Provider info</h5>
+                        <div class="form-group">
+                            <label for="npiNumber">NPI Number</label>
+                            <input type="text" 
+                                   id="npiNumber" 
+                                   class="form-control" 
+                                   formControlName="npiNumber"
+                                   [ngClass]="{'is-invalid': submitted && f.npiNumber.errors}"
+                                   placeholder="Enter NPI Number">
+                            <div class="invalid-feedback" *ngIf="submitted && f.npiNumber.errors">
+                                <div *ngIf="f.npiNumber.errors.required">NPI Number is required</div>
+                                <div *ngIf="f.npiNumber.errors.pattern">NPI Number must be 10 digits</div>
+                            </div>
+                            <small class="form-text text-muted">
+                                The NPI number dictates the profile name and specialty for accuracy on the Care Connect marketplace.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profile Photo Section -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title mb-3">Profile photo</h5>
+                        <div class="alert alert-warning" role="alert">
+                            <i class="ri-alert-line mr-2"></i>
+                            Editing this content will also change the image displayed on the Provider Profile page on your website.
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="text-center">
+                                    <div class="d-flex flex-column align-items-center justify-content-center bg-light border border-2 border-dashed rounded mx-auto" style="width: 200px; height: 200px;">
+                                        <i class="ri-user-3-line text-muted" style="font-size: 48px;"></i>
+                                        <p class="text-muted mt-2 mb-0" style="font-size: 14px;">Upload Photo</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label for="imageDescription">Image Description</label>
+                                    <input type="text" 
+                                           id="imageDescription" 
+                                           class="form-control" 
+                                           formControlName="imageDescription"
+                                           [ngClass]="{'is-invalid': submitted && f.imageDescription.errors}"
+                                           placeholder="Enter image description">
+                                    <div class="invalid-feedback" *ngIf="submitted && f.imageDescription.errors">
+                                        <div *ngIf="f.imageDescription.errors.required">Image Description is required</div>
+                                    </div>
+                                    <small class="form-text text-muted">
+                                        Image size should be between 231 x 200 and 2400 x 1440
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Online Scheduling Section -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title mb-3">Online scheduling</h5>
+                        <p class="text-muted mb-3">
+                            Set your location and time availability which will be shown to patients during online scheduling.
+                        </p>
+                        <button type="button" class="btn btn-outline-primary">
+                            Manage your availability <i class="ri-arrow-right-line ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Your Locations Section -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title mb-3">Your locations</h5>
+                        <div class="alert alert-info" role="alert">
+                            <i class="ri-information-line mr-2"></i>
+                            The locations below are associated with this provider in your account configuration. Locations must have a phone number and address to be included on your profile. To make any changes, please reach out to Customer Care.
+                        </div>
+                        <div class="locations-list">
+                            <div class="border rounded p-3 mb-3 bg-light" *ngFor="let location of doctorData.locations">
+                                <div class="d-flex align-items-start">
+                                    <div class="mr-3">
+                                        <span class="badge badge-secondary">{{location.code}}</span>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-1 font-weight-medium">{{location.name}}</h6>
+                                        <p class="mb-1 text-muted" style="font-size: 14px;">{{location.address}}</p>
+                                        <p class="mb-0 text-muted" style="font-size: 14px;">{{location.phone}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- About Section -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title mb-3">About</h5>
+                        <div class="alert alert-warning" role="alert">
+                            <i class="ri-alert-line mr-2"></i>
+                            Editing this content will also change the image displayed on the Provider Profile page on your website.
+                        </div>
+                        <div class="form-group">
+                            <label for="about">Biography</label>
+                            <textarea id="about" 
+                                      class="form-control" 
+                                      rows="10"
+                                      formControlName="about"
+                                      [ngClass]="{'is-invalid': submitted && f.about.errors}"
+                                      placeholder="Enter doctor's biography"></textarea>
+                            <div class="invalid-feedback" *ngIf="submitted && f.about.errors">
+                                <div *ngIf="f.about.errors.required">Biography is required</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Care Connect Global Settings Section -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title mb-3">Care Connect Global Settings</h5>
+                        <p class="text-muted mb-3">
+                            Changes take 24 hours to take effect. Disabling the profile will remove it from search results.
+                        </p>
+                        <div class="form-group">
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" 
+                                       class="custom-control-input" 
+                                       id="isPublished"
+                                       formControlName="isPublished">
+                                <label class="custom-control-label font-weight-medium" for="isPublished">
+                                    Published
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="d-flex justify-content-end">
+                            <button type="button" class="btn btn-light mr-2" (click)="onCancel()">
+                                Cancel
+                            </button>
+                            <button type="submit" class="btn btn-warning">
+                                Save Profile
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
